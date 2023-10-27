@@ -60,41 +60,6 @@ def submit_form():
             return 'Information not saved in our database!'
     else:
         return 'Something went wrong, try again!'
-'''
-Les bases de dades són conjunts de dades diferents emagatzemades i hi ha les DBMS : Data base management system que són colecions de programes
-que ens permetes accedir a les bases de dades i treballar amb dades i controlar l'accés a les dades.
-Hi ha bases de dades relacionals i noSQL: Les relacionals són les més populars (Mongo DB, Postgree, SQLServer, HIVE..)
-Segueixen el mateix format que vol dir que tenen 2 o més taules amb files i columnes on les files representen entrades de dades i
-les columnes representen tipus de dades diferents i la relació entre files i columnes és l'esquema que en una base de dades relacionals
-s'ha de definir prèviament a l'entrada de les dades.
-Hi haurà valors que es repetiran en les diferents taules (foreign key) i que ens permetran entrenllaçar una taula amb una altrei per tant relacionar-les.
-Totes les BDD relacionals utilitzen SQL que és el protocol de comunicació entre el servidor i la base de dades!
-
-Les bases de dades no relacionals o NoSQL com Cassandra, CouchDB, mongoDB, hbase, etc. et permeten poder crear una app sense haver de definir
-l'esquema previ de les dades. Així com en les relacionals havies de definir l'esquema de les dades amb les no relacionals, NO!
-Això fa que puguin ser molt diferents les unes de les altres a diferència de les bases de dades relacionals que normalment segueixen un mateix esquema.
-Però en canvi serveixen en ocasions on hi ha una quantitat enorme de dades no estructurades i és més com una estructura de carpetes que 
-poden emmagatzemar dades semblants però amb info en qualsevol tipus d'arxiu.
-
-Mongo DB és document orientated i guarda la info com a documents. PEr fer-nos una idea podem pensar en les bases de ddes relacionals com:
-Una carpeta que conté 1 fitxer users, 1 fitxer tweets, 1 fitxer following..
-En canvi una No SQL com MongoDB faria un fitxer per user1, un altre fitxer per user2 i dins de cada fitxer tota la info relacionada.
-Si volguessim extreure average de followers per exemple és molt més ràpida una SQL on tenim directament el fitxer de followers perquè
-NOSQL hauríem d'accedir a cadascun dels users per extreure els followers.
-
-Mongo DB té el seu propi Query lenguage però fa el mateix que faria el SQL.
-Ara el que farem serà crear la nostra pròpia base de dades a fora perquè no sigui localhost sinó que estigui fora. 
-Utilitzarem python anyware que ens permetrà fer un post dels nostres arxius que tenim en local gratix.
-I github. Crearem un projecte al github i posarem al terminal git clone i l'adreça: git clone https://github.com/markuzkuz/portfo.git
-Fent això hem creat la carpeta portfo dins el nostre Portfolio i ara hem de copiar als arxius de la nostre web
-
-
-'''
-
-
-
-
-
 
 '''
 
