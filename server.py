@@ -17,7 +17,7 @@ def html_page(page_name):
     return render_template(page_name)
 
 
-# Ara crearem una altra ruta per poder grab data de l'apartat del formulari utilitzant Py i Flask: The request Object
+# Ara crearem una altra ruta per poder fer grab data de l'apartat del formulari utilitzant Py i Flask: The request Object
 # Modificarem el form del contact html i posarem que la acció és submit_form i el method = 'post' perquè ens porti
 # A la pàgina submit_form i posi thank you !
 # Ara per això no estem rebent aquestes dades, de moment li donem feedback al que les envia, ara aprendrem a rebre-les nosaltres.
