@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CDIgen UTM-CSIC</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" >
+    <meta http-equiv=”refresh”>
+    
+    <!-- SELECT2 -->
+    <link  href="static/css/select2.min.css" rel="stylesheet">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/bootstrap-select.min.css" rel="stylesheet">
+
+
+    <!-- Favicon -->
+    <link href="static/assets/favicon_blue.png" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="static/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="static/css/style.css" rel="stylesheet">
+</head>
+<style>
+    #container {
+        display: flex;
+    }
+    #div1 {
+        border: 2px solid red;
+    }
+    #div2 {
+        border: 2px solid green;
+    }
+    #div1, #div2 {
+      width: 200px;
+      height: 365px;
+      
+      margin: 20px;
+      padding: 10px;
+    }
+    #adcp,#ffe,#mag,#mcs,#mbe,#sss,#srs,#sbp{
+        border: 2px solid black;
+    	padding: 5px
+    }
+    #organizaciones ,#cdSelect {  
+        padding: 2px;
+        display: flex;
+        width: 500px;
+        height: 150px;
+
+    }
+    #overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+        z-index: 9999; /* Ensure it's above everything else */
+        display: none; /* Initially hidden */
+    }
+
+    .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border: 4px solid #f3f3f3; /* Light grey border */
+        border-top: 4px solid #3498db; /* Blue border for the spinner */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite; /* Rotate animation */
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+  </style>
+<body>
+    <div id="overlay">
+        <div class="spinner"></div>
+    </div>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-light pt-3 d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
+                    <div class="d-inline-flex align-items-center">
+                        <p><i class="fa fa-envelope mr-2"></i>data@utm.csic.es</p>
+                        <p class="text-body px-3">|</p>
+                        <p><i class="fa fa-phone-alt mr-2"></i>+34 932 309 610</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-primary px-3" href="https://twitter.com/datautm">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a class="text-primary pl-3" href="https://www.youtube.com/watch?v=sRKKV17o3GI">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid position-relative nav-bar p-0">
+        <div class="container-lg position-relative p-0 px-lg-3" style="z-index: 9;">
+            <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-5">
+                <a href="index.html" class="navbar-brand">
+                    <h1 class="m-0 text-primary"><span class="text-dark">Data Centre</span> UTM-CSIC</h1>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto py-0">
+                        <a onclick="window.location.href = 'index.html';" class="nav-item nav-link">Home</a>
+                        <a href="http://data.utm.csic.es/portal/" class="nav-item nav-link">About us</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+    <!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center mb-3 pb-3">
+                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">CDIgen</h6>
+                <h1>Automatically generation of CDI's</h1>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-form bg-white" style="padding: 30px;">
+                        <div id="success"></div>
+                        <form method="post" action ="download_file" id="survey-form" name="survey-form">
+                            <fieldset>
+                                <label for="vessel_input">
+                                   Vessel *
+                                   <select id="vessel_input" name="vessel_input" class="m-t-xs" onclick="loadDoc();" required >
+                                        <option value="select" selected>select</option>
+                                      <option value="sdg">Sarmiento de Gamboa</option>
+                                      <option value="hes">Hespérides</option>
+                                   </select>
+                                </label>
+                             </fieldset>
+                            <fieldset>
+                                <label>Select a CSR reference</label>
+                                <br>
+
+                                <label class = "select2">
+                                    <select data-live-search="true"  id="cdSelect" name ="cdSelect" class="select2" onloadstart="loadDoc ()" width= "1000">
+                                        <option value="UNKNOWN">Unknown</option>
+                                    </select>
+                                    <button id="fetchButton" class="custom-btn" onclick="fetchCsrCodeList()" title="Update CSR code list">
+                                        <!-- Adjust the content of the button as needed -->
+                                        <img src="static/img/reload.ico" alt="Reload" style="width: 20px; height: 20px;">
+                                    </button>
+                                </label>
+                                
+  
+                            </fieldset>
+                            <fieldset>
+                               <label for="cruise_name" >
+                               Cruise Name *
+                               <input class="" type="text" id="cruise_name" name="cruise_name" placeholder="Enter the cruise name" onchange="validateForm()"  required  />
+                               </label>
+                            </fieldset>
+                            <fieldset>
+                               <label for="cruise_id" id="cruise_id">
+                               Cruise ID *
+                               <input class="" type="cruise_id" id="cruise_id" name="cruise_id" placeholder="Enter the Cruise ID"  required />
+                               </label>
+                            </fieldset>
+                            <fieldset>
+                               <label for="date_inicial" id="date_inicial">
+                               Initial date *
+                                <input type="date" id = date_inicial name="date_inicial" required>
+                               <!--<input class="" type="date_inicial" id="date_inicial" name="date_inicial" placeholder="Enter the initial date" required> --><!-- s'haura d'afegir que acabi amb els segons a 00 -->
+                               </label>
+                            </fieldset>
+                            <fieldset>
+                               <label for="date_final" id="date_final">
+                                 Final date*
+                                 <input type="date" id = date_final name="date_final" required>
+                                 <!--<input class="" type="date_final" id="date_final" name="date_final" placeholder="Enter the final date" required> --><!-- s'haura d'afegir que acabi amb els segons a 00 -->
+                                </label>
+                            </fieldset>
+
+                            <fieldset>  
+                                
+                                <label class="select2" >
+                                    <select data-live-search="true" id="organizaciones" name="organizacion" onchange="cargarResultadosSeleccionados(); "   class="select2" width= "1000" required >
+                                        <option value=""></option>
+                                
+                                    </select>
+                                </label>
+                                <label id="resultados" name = "resultados"></label>
+                            </fieldset>
+
+
+                           <fieldset>  
+                            <p>Drag the CDIs you want to generate into the rectangle:</p>
+                            <div class="container text-center"  id = "container">               
+                                <div  id="div1" >                                
+                                    <h5 class="form-check-label"  data-id="adcp" width="88" height="31" id = "adcp" align="center">ADCP</h5>                              
+                                    <h5 class="form-check-label"  data-id="ffe" width="88" height="31" id = "ffe" align="center">FFE</h5>
+                                    <h5 class="form-check-label"  data-id="mag" width="88" height="31"  id = "mag" align="center" >MAG</h5>  
+                                    <h5 class="form-check-label"  data-id="mbe" width="88" height="31" id = "mbe" align="center">MBE</h5>                              
+                                    <h5 class="form-check-label"  data-id="mcs" width="88" height="31" id = "mcs" align="center">MCS</h5>
+                                    <h5 class="form-check-label"  data-id="sss" width="88" height="31"  id = "sss" align="center" >SSS</h5>    
+                                    <h5 class="form-check-label"  data-id="srs" width="88" height="31" id = "srs" align="center">SRS</h5>                              
+                                    <h5 class="form-check-label"  data-id="sbp" width="88" height="31" id = "sbp" align="center">SBP</h5>
+                                                                     
+                                </div>                               
+                                <div id="div2" ></div>
+                            </div>
+                                                               
+                           </fieldset>
+                        <div class="container text-center">   
+                           <button id="submit" type="submit" class="btn btn-primary py-md-3 px-md-5 mt-2" >Generate metadata  </button>
+                        </div>        
+                         </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <script>
+        function fetchCsrCodeList() {
+            // Add loading class to the button to change cursor
+            document.getElementById("fetchButton").classList.add("loading");
+
+            // Perform the fetch operation
+            fetch("/fetch_csr_code_list")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(responseText => {
+                    alert(responseText);  // You can handle the response here
+                    
+                    // Remove the loading class after the fetch operation is complete
+                    document.getElementById("fetchButton").classList.remove("loading");
+                })
+                .catch(error => {
+                    console.error("Fetch error:", error);
+
+                    // Remove the loading class if an error occurs during the fetch operation
+                    document.getElementById("fetchButton").classList.remove("loading");
+                });
+        }
+
+        // Function to handle form submission
+        function handleSubmit(event) {
+            // Show the overlay with the loading spinner
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        // Attach the event listener to the form
+        document.getElementById("survey-form").addEventListener("submit", handleSubmit);
+
+    </script>
+    <script>
+        function validateForm() {
+            var cdSelectValue = document.getElementById("cdSelect").value;
+            console.log(cdSelectValue)
+            var cruiseNameValue = document.getElementById("cruise_name").value;
+            console.log(cruiseNameValue)
+            if (cdSelectValue !== cruiseNameValue) {
+                alert("CSR reference and Cruise Name are not the same.");
+                return false; // Prevent form submission
+            }
+        }
+    </script>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="static/lib/easing/easing.min.js"></script>
+    <script src="static/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="static/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="static/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="static/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="static/mail/jqBootstrapValidation.min.js"></script>
+    <script src="static/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="static/js/main.js"></script>
+
+    <!-- organitzacions -->
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/select2.min.js"></script>
+    <script src="static/js/script_select2_csr.js"></script>
+    <script src="static/js/script_org.js"></script>
+    <script src="static/js/script_select2.js"></script>
+
+    
+
+
+    <!-- sortable -->
+    <script src="static/js/Sortable.min.js"></script>
+    <script src="static/js/options.js"></script>
+
+    <script>
+        // Call the function to clear local storage when the page is loaded
+        clearLocalStorage();
+
+        function clearLocalStorage() {
+            // Check if the browser supports local storage
+            if (typeof(Storage) !== "undefined") {
+                // Clear all items from local storage
+                localStorage.clear();
+                console.log("Local storage cleared successfully.");
+            } else {
+                console.log("Local storage is not supported in this browser.");
+            }
+        }
+    </script>
+</body>
+
+</html>
