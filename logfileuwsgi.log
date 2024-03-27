@@ -22622,3 +22622,644 @@ spawned uWSGI worker 4 (pid: 35690, cores: 1)
 spawned uWSGI worker 5 (pid: 35691, cores: 1)
 [pid: 35688|app: 0|req: 1/1] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 07:48:58 2024] GET /individual.html => generated 29025 bytes in 23 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
 [pid: 35688|app: 0|req: 2/2] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 07:49:07 2024] POST /upload_json => generated 265 bytes in 85 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 35688|app: 0|req: 3/3] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 08:26:01 2024] GET /individual.html => generated 29025 bytes in 4 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 35691|app: 0|req: 1/4] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 08:26:09 2024] POST /upload_json => generated 265 bytes in 25 msecs (HTTP/1.1 500) 4 headers in 170 bytes (2 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 08:26:56 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55cd57d45510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x55cd57d45510 pid: 35947 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 35947)
+spawned uWSGI worker 1 (pid: 35953, cores: 1)
+spawned uWSGI worker 2 (pid: 35954, cores: 1)
+spawned uWSGI worker 3 (pid: 35955, cores: 1)
+spawned uWSGI worker 4 (pid: 35956, cores: 1)
+spawned uWSGI worker 5 (pid: 35957, cores: 1)
+[pid: 35953|app: 0|req: 1/1] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 08:27:06 2024] GET /individual.html => generated 29025 bytes in 23 msecs (HTTP/1.1 200) 3 headers in 114 bytes (2 switches on core 0)
+[pid: 35955|app: 0|req: 1/2] 161.111.139.73 () {46 vars in 867 bytes} [Wed Mar 27 08:27:08 2024] GET /individual.html => generated 29025 bytes in 24 msecs (HTTP/1.1 200) 3 headers in 114 bytes (2 switches on core 0)
+[pid: 35955|app: 0|req: 2/3] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 08:27:17 2024] POST /upload_json => generated 43 bytes in 5 msecs (HTTP/1.1 200) 4 headers in 142 bytes (1 switches on core 0)
+[pid: 35957|app: 0|req: 1/4] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 08:45:33 2024] GET /individual.html => generated 29025 bytes in 24 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:03:46 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55b5a328d510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55b5a328d510 pid: 36092 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36092)
+spawned uWSGI worker 1 (pid: 36097, cores: 1)
+spawned uWSGI worker 2 (pid: 36098, cores: 1)
+spawned uWSGI worker 3 (pid: 36099, cores: 1)
+spawned uWSGI worker 4 (pid: 36100, cores: 1)
+spawned uWSGI worker 5 (pid: 36101, cores: 1)
+[pid: 36099|app: 0|req: 1/1] 161.111.139.73 () {40 vars in 751 bytes} [Wed Mar 27 09:03:55 2024] GET /index.html => generated 9563 bytes in 21 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+[pid: 36099|app: 0|req: 2/2] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:03:58 2024] GET /individual.html => generated 29026 bytes in 13 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36099|app: 0|req: 3/3] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 09:04:28 2024] GET /individual.html => generated 29026 bytes in 2 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36098|app: 0|req: 1/4] 161.111.139.73 () {46 vars in 867 bytes} [Wed Mar 27 09:04:29 2024] GET /individual.html => generated 29026 bytes in 23 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36097|app: 0|req: 1/5] 161.111.139.73 () {42 vars in 806 bytes} [Wed Mar 27 09:04:57 2024] GET /global.html => generated 16000 bytes in 21 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36097|app: 0|req: 2/6] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:05:18 2024] GET /individual.html => generated 29026 bytes in 13 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36098|app: 0|req: 2/7] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:06:12 2024] POST /upload_json => generated 43 bytes in 6 msecs (HTTP/1.1 200) 4 headers in 142 bytes (1 switches on core 0)
+[pid: 36097|app: 0|req: 3/8] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:06:18 2024] POST /download_step1 => generated 265 bytes in 8 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 36101|app: 0|req: 1/9] 161.111.139.73 () {40 vars in 704 bytes} [Wed Mar 27 09:06:18 2024] GET /favicon.ico => generated 265 bytes in 18 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:08:59 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5615cd118510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x5615cd118510 pid: 36114 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36114)
+spawned uWSGI worker 1 (pid: 36118, cores: 1)
+spawned uWSGI worker 2 (pid: 36119, cores: 1)
+spawned uWSGI worker 3 (pid: 36120, cores: 1)
+spawned uWSGI worker 4 (pid: 36121, cores: 1)
+spawned uWSGI worker 5 (pid: 36122, cores: 1)
+[pid: 36119|app: 0|req: 1/1] 161.111.139.73 () {46 vars in 867 bytes} [Wed Mar 27 09:09:34 2024] GET /individual.html => generated 29026 bytes in 23 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36119|app: 0|req: 2/2] 161.111.139.73 () {46 vars in 867 bytes} [Wed Mar 27 09:09:36 2024] GET /individual.html => generated 29026 bytes in 2 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36120|app: 0|req: 1/3] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:10:24 2024] POST /upload_json => generated 43 bytes in 16 msecs (HTTP/1.1 200) 4 headers in 142 bytes (1 switches on core 0)
+[pid: 36118|app: 0|req: 1/4] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:10:28 2024] POST /download_step1 => generated 265 bytes in 16 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 36121|app: 0|req: 1/5] 161.111.139.73 () {40 vars in 704 bytes} [Wed Mar 27 09:10:28 2024] GET /favicon.ico => generated 265 bytes in 19 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+[pid: 36121|app: 0|req: 2/6] 161.111.139.73 () {40 vars in 715 bytes} [Wed Mar 27 09:11:52 2024] GET /favicon.ico => generated 265 bytes in 2 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+[pid: 36122|app: 0|req: 1/7] 161.111.139.73 () {40 vars in 743 bytes} [Wed Mar 27 09:12:08 2024] GET /static => generated 265 bytes in 17 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+[pid: 36121|app: 0|req: 3/8] 161.111.139.73 () {40 vars in 696 bytes} [Wed Mar 27 09:12:08 2024] GET /favicon.ico => generated 265 bytes in 2 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+[pid: 36121|app: 0|req: 4/9] 161.111.139.73 () {40 vars in 716 bytes} [Wed Mar 27 09:13:59 2024] GET /favicon.ico => generated 265 bytes in 2 msecs (HTTP/1.1 500) 3 headers in 131 bytes (2 switches on core 0)
+[pid: 36121|app: 0|req: 5/10] 161.111.139.73 () {40 vars in 715 bytes} [Wed Mar 27 09:14:01 2024] GET /favicon.ico => generated 265 bytes in 2 msecs (HTTP/1.1 500) 3 headers in 131 bytes (2 switches on core 0)
+[pid: 36121|app: 0|req: 6/11] 161.111.139.73 () {40 vars in 719 bytes} [Wed Mar 27 09:14:09 2024] GET /favicon.ico => generated 265 bytes in 2 msecs (HTTP/1.1 500) 3 headers in 131 bytes (2 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:14:47 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55f1baec8510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55f1baec8510 pid: 36209 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36209)
+spawned uWSGI worker 1 (pid: 36214, cores: 1)
+spawned uWSGI worker 2 (pid: 36215, cores: 1)
+spawned uWSGI worker 3 (pid: 36216, cores: 1)
+spawned uWSGI worker 4 (pid: 36217, cores: 1)
+spawned uWSGI worker 5 (pid: 36218, cores: 1)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:15:05 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5573eb4df510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x5573eb4df510 pid: 36224 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36224)
+spawned uWSGI worker 1 (pid: 36229, cores: 1)
+spawned uWSGI worker 2 (pid: 36230, cores: 1)
+spawned uWSGI worker 3 (pid: 36231, cores: 1)
+spawned uWSGI worker 4 (pid: 36232, cores: 1)
+spawned uWSGI worker 5 (pid: 36233, cores: 1)
+[pid: 36230|app: 0|req: 1/1] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 09:15:13 2024] GET /individual.html => generated 29026 bytes in 22 msecs (HTTP/1.1 200) 3 headers in 114 bytes (2 switches on core 0)
+[pid: 36233|app: 0|req: 1/2] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:16:08 2024] POST /upload_json => generated 43 bytes in 16 msecs (HTTP/1.1 200) 4 headers in 142 bytes (2 switches on core 0)
+[pid: 36231|app: 0|req: 1/3] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:16:12 2024] POST /download_step1 => generated 265 bytes in 16 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 36229|app: 0|req: 1/4] 161.111.139.73 () {40 vars in 704 bytes} [Wed Mar 27 09:16:12 2024] GET /favicon.ico => generated 265 bytes in 17 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+[pid: 36229|app: 0|req: 2/5] 161.111.139.73 () {40 vars in 719 bytes} [Wed Mar 27 09:17:46 2024] GET /favicon.ico => generated 265 bytes in 3 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:19:11 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55772d618510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x55772d618510 pid: 36265 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36265)
+spawned uWSGI worker 1 (pid: 36271, cores: 1)
+spawned uWSGI worker 2 (pid: 36272, cores: 1)
+spawned uWSGI worker 3 (pid: 36273, cores: 1)
+spawned uWSGI worker 4 (pid: 36274, cores: 1)
+spawned uWSGI worker 5 (pid: 36275, cores: 1)
+[pid: 36272|app: 0|req: 1/1] 161.111.139.73 () {40 vars in 751 bytes} [Wed Mar 27 09:19:17 2024] GET /index.html => generated 9563 bytes in 20 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+[pid: 36275|app: 0|req: 1/2] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:19:19 2024] GET /individual.html => generated 29026 bytes in 22 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36275|app: 0|req: 2/3] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:19:59 2024] POST /upload_json => generated 43 bytes in 5 msecs (HTTP/1.1 200) 4 headers in 142 bytes (5 switches on core 0)
+[pid: 36275|app: 0|req: 3/4] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:20:03 2024] POST /download_step1 => generated 265 bytes in 6 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 36275|app: 0|req: 4/5] 161.111.139.73 () {40 vars in 704 bytes} [Wed Mar 27 09:20:03 2024] GET /favicon.ico => generated 265 bytes in 4 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:21:59 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x56087f34d510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x56087f34d510 pid: 36285 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36285)
+spawned uWSGI worker 1 (pid: 36290, cores: 1)
+spawned uWSGI worker 2 (pid: 36291, cores: 1)
+spawned uWSGI worker 3 (pid: 36292, cores: 1)
+spawned uWSGI worker 4 (pid: 36293, cores: 1)
+spawned uWSGI worker 5 (pid: 36294, cores: 1)
+[pid: 36292|app: 0|req: 1/1] 161.111.139.73 () {40 vars in 751 bytes} [Wed Mar 27 09:22:06 2024] GET /index.html => generated 9563 bytes in 20 msecs (HTTP/1.1 200) 3 headers in 113 bytes (2 switches on core 0)
+[pid: 36292|app: 0|req: 2/2] 161.111.139.73 () {44 vars in 804 bytes} [Wed Mar 27 09:22:07 2024] GET /index.html => generated 9563 bytes in 1 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+[pid: 36291|app: 0|req: 1/3] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:22:09 2024] GET /individual.html => generated 29026 bytes in 24 msecs (HTTP/1.1 200) 3 headers in 114 bytes (2 switches on core 0)
+[pid: 36291|app: 0|req: 2/4] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:22:44 2024] POST /upload_json => generated 43 bytes in 5 msecs (HTTP/1.1 200) 4 headers in 142 bytes (1 switches on core 0)
+[pid: 36293|app: 0|req: 1/5] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:22:48 2024] POST /download_step1 => generated 265 bytes in 24 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 36290|app: 0|req: 1/6] 161.111.139.73 () {40 vars in 704 bytes} [Wed Mar 27 09:22:48 2024] GET /favicon.ico => generated 265 bytes in 19 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:25:12 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5630ab90b510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x5630ab90b510 pid: 36325 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36325)
+spawned uWSGI worker 1 (pid: 36330, cores: 1)
+spawned uWSGI worker 2 (pid: 36331, cores: 1)
+spawned uWSGI worker 3 (pid: 36332, cores: 1)
+spawned uWSGI worker 4 (pid: 36333, cores: 1)
+spawned uWSGI worker 5 (pid: 36334, cores: 1)
+[pid: 36331|app: 0|req: 1/1] 161.111.139.73 () {40 vars in 751 bytes} [Wed Mar 27 09:25:19 2024] GET /index.html => generated 9563 bytes in 20 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+[pid: 36334|app: 0|req: 1/2] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:25:21 2024] GET /individual.html => generated 29026 bytes in 24 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36330|app: 0|req: 1/3] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:26:17 2024] POST /upload_json => generated 43 bytes in 14 msecs (HTTP/1.1 200) 4 headers in 142 bytes (1 switches on core 0)
+[pid: 36333|app: 0|req: 1/4] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:26:21 2024] POST /download_step1 => generated 265 bytes in 27 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 36332|app: 0|req: 1/5] 161.111.139.73 () {40 vars in 704 bytes} [Wed Mar 27 09:26:21 2024] GET /favicon.ico => generated 265 bytes in 18 msecs (HTTP/1.1 500) 3 headers in 131 bytes (1 switches on core 0)
+[pid: 36333|app: 0|req: 2/6] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 09:28:15 2024] GET /individual.html => generated 29026 bytes in 19 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:31:39 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x555bb13e4510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x555bb13e4510 pid: 36349 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36349)
+spawned uWSGI worker 1 (pid: 36355, cores: 1)
+spawned uWSGI worker 2 (pid: 36356, cores: 1)
+spawned uWSGI worker 3 (pid: 36357, cores: 1)
+spawned uWSGI worker 4 (pid: 36358, cores: 1)
+spawned uWSGI worker 5 (pid: 36359, cores: 1)
+[pid: 36355|app: 0|req: 1/1] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 09:31:45 2024] GET /individual.html => generated 29026 bytes in 23 msecs (HTTP/1.1 200) 3 headers in 114 bytes (2 switches on core 0)
+[pid: 36358|app: 0|req: 1/2] 161.111.139.73 () {46 vars in 867 bytes} [Wed Mar 27 09:31:47 2024] GET /individual.html => generated 29026 bytes in 24 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36358|app: 0|req: 2/3] 161.111.139.73 () {46 vars in 770 bytes} [Wed Mar 27 09:32:23 2024] POST /upload_json => generated 265 bytes in 13 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+[pid: 36358|app: 0|req: 3/4] 161.111.139.73 () {44 vars in 829 bytes} [Wed Mar 27 09:32:26 2024] GET /index.html => generated 9563 bytes in 7 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+29SG20240115
+NSM-2017
+https://edmo.seadatanet.org/report/4051
+hola
+corer_gravedad
+hola
+None
+[pid: 36358|app: 0|req: 4/5] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:32:26 2024] POST /download_step1 => generated 6786 bytes in 241 msecs (HTTP/1.1 200) 4 headers in 152 bytes (1 switches on core 0)
+[pid: 36359|app: 0|req: 1/6] 161.111.139.73 () {44 vars in 835 bytes} [Wed Mar 27 09:32:27 2024] GET /underway.html => generated 15201 bytes in 21 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:36:17 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55ee94d81510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55ee94d81510 pid: 36397 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36397)
+spawned uWSGI worker 1 (pid: 36401, cores: 1)
+spawned uWSGI worker 2 (pid: 36402, cores: 1)
+spawned uWSGI worker 3 (pid: 36403, cores: 1)
+spawned uWSGI worker 4 (pid: 36404, cores: 1)
+spawned uWSGI worker 5 (pid: 36405, cores: 1)
+[pid: 36401|app: 0|req: 1/1] 161.111.139.73 () {40 vars in 751 bytes} [Wed Mar 27 09:36:26 2024] GET /index.html => generated 9563 bytes in 20 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+[pid: 36403|app: 0|req: 1/2] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:36:28 2024] GET /individual.html => generated 29026 bytes in 24 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36403|app: 0|req: 2/3] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:37:39 2024] POST /upload_json => generated 265 bytes in 14 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+29SG20240115
+DREAMER-2
+https://edmo.seadatanet.org/report/4051
+hola
+rov
+hola
+None
+[pid: 36403|app: 0|req: 3/4] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:37:42 2024] POST /download_step1 => generated 6786 bytes in 180 msecs (HTTP/1.1 200) 4 headers in 152 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:44:40 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x557a8c7f7510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x557a8c7f7510 pid: 36471 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36471)
+spawned uWSGI worker 1 (pid: 36476, cores: 1)
+spawned uWSGI worker 2 (pid: 36477, cores: 1)
+spawned uWSGI worker 3 (pid: 36478, cores: 1)
+spawned uWSGI worker 4 (pid: 36479, cores: 1)
+spawned uWSGI worker 5 (pid: 36480, cores: 1)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:45:20 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x56260d98d510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x56260d98d510 pid: 36508 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36508)
+spawned uWSGI worker 1 (pid: 36513, cores: 1)
+spawned uWSGI worker 2 (pid: 36514, cores: 1)
+spawned uWSGI worker 3 (pid: 36515, cores: 1)
+spawned uWSGI worker 4 (pid: 36516, cores: 1)
+spawned uWSGI worker 5 (pid: 36517, cores: 1)
+[pid: 36514|app: 0|req: 1/1] 161.111.139.73 () {40 vars in 751 bytes} [Wed Mar 27 09:45:26 2024] GET /index.html => generated 9563 bytes in 19 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+[pid: 36516|app: 0|req: 1/2] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:45:30 2024] GET /individual.html => generated 29026 bytes in 24 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36513|app: 0|req: 1/3] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:46:12 2024] POST /upload_json => generated 265 bytes in 21 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+29SG20240115
+TRANSIT
+https://edmo.seadatanet.org/report/2182
+hola
+rov
+hola
+None
+[pid: 36515|app: 0|req: 1/4] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:46:16 2024] POST /download_step1 => generated 6786 bytes in 71 msecs (HTTP/1.1 200) 4 headers in 152 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:49:16 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55b4e805b510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x55b4e805b510 pid: 36527 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36527)
+spawned uWSGI worker 1 (pid: 36531, cores: 1)
+spawned uWSGI worker 2 (pid: 36532, cores: 1)
+spawned uWSGI worker 3 (pid: 36533, cores: 1)
+spawned uWSGI worker 4 (pid: 36534, cores: 1)
+spawned uWSGI worker 5 (pid: 36535, cores: 1)
+[pid: 36532|app: 0|req: 1/1] 161.111.139.73 () {40 vars in 751 bytes} [Wed Mar 27 09:49:26 2024] GET /index.html => generated 9563 bytes in 20 msecs (HTTP/1.1 200) 3 headers in 113 bytes (1 switches on core 0)
+[pid: 36532|app: 0|req: 2/2] 161.111.139.73 () {42 vars in 814 bytes} [Wed Mar 27 09:49:27 2024] GET /individual.html => generated 29026 bytes in 14 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36532|app: 0|req: 3/3] 161.111.139.73 () {44 vars in 845 bytes} [Wed Mar 27 09:50:23 2024] GET /individual.html => generated 29026 bytes in 2 msecs (HTTP/1.1 200) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 36532|app: 0|req: 4/4] 161.111.139.73 () {46 vars in 772 bytes} [Wed Mar 27 09:51:27 2024] POST /upload_json => generated 265 bytes in 15 msecs (HTTP/1.1 500) 4 headers in 170 bytes (1 switches on core 0)
+29SG20240115
+DREAMER-2
+https://edmo.seadatanet.org/report/2182
+hola
+rov
+hola
+None
+[pid: 36532|app: 0|req: 5/5] 161.111.139.73 () {50 vars in 1006 bytes} [Wed Mar 27 09:51:34 2024] POST /download_step1 => generated 6786 bytes in 83 msecs (HTTP/1.1 200) 4 headers in 152 bytes (1 switches on core 0)
+SIGINT/SIGTERM received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket portfo.sock removed.
+*** Starting uWSGI 2.0.23 (64bit) on [Wed Mar 27 09:56:38 2024] ***
+compiled with version: 11.4.0 on 02 February 2024 10:40:59
+os: Linux-5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024
+nodename: dev
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 4
+current working directory: /home/utm/portfo
+detected binary path: /home/utm/portfo/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63504
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address portfo.sock fd 3
+Python version: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x56444e29e510
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x56444e29e510 pid: 36578 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 36578)
+spawned uWSGI worker 1 (pid: 36582, cores: 1)
+spawned uWSGI worker 2 (pid: 36583, cores: 1)
+spawned uWSGI worker 3 (pid: 36584, cores: 1)
+spawned uWSGI worker 4 (pid: 36585, cores: 1)
+spawned uWSGI worker 5 (pid: 36586, cores: 1)

@@ -221,8 +221,9 @@ def download_file():
 
 @app.route('/download_step1', methods=['POST', 'GET'])
 def download_step1():
-
+    
     if request.method == "POST":
+
         cruise_id = request.values.get('cruise_id')
         print (cruise_id)
         csr_code = request.values.get("cdSelect")
@@ -234,7 +235,7 @@ def download_step1():
 
         if vessel_input == "sdg":
             vessel_reduit='sdg' 
-        elif vessel_input == "hes":
+        elif vessel_input == "hes": 
             vessel_reduit="hes"
         url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
         r = requests.get(url_bbox)
@@ -264,32 +265,6 @@ def download_step1():
 
 
 
-@app.route('/download_step2', methods=['POST', 'GET'])
-def download_step2():
-    if request.method == "POST":
-        html = "http://161.111.137.92:8001/app_1.html"
-        try:
-            if "select-0" in html:
-                select0 = request.values.get('select-0')
-                print (select0)
-        except:
-            return render_template('error.html')    
-
-    html = "http://161.111.137.92:8001/app_1.html"
-    try:
-        if "select-0" in html:
-            select0 = request.values.get('select0')
-            print (select0)
-    except:
-        return render_template('error.html')       
-        
-
-        #grabar_general(cruise_id, cruise_name,vessel_input, data, valor_org, csr_code)
-
-
-        return render_template('service.html')        
-
-
 @app.route('/descargar/<cruise_id>')
 def descarga(cruise_id):
     # Path to the ZIP file to be downloaded
@@ -315,15 +290,23 @@ def save_json_to_file(json_data, filename):
     else:
         # If the file does not exist, create a new file
         mode = 'x'
-
+    
     # Write JSON data to file
     with open(file_path, mode) as file:
         json.dump(json_data, file)
     
-    with open(file_path, encoding='utf-8') as inputfile:
-        df = pd.read_json(inputfile)
-
-    df.to_csv('csvfile.csv', encoding='utf-8', index=False)
+def save_json_to_csv(json_data, filename):
+    # Convertir el JSON en DataFrame de Pandas
+    df = pd.DataFrame(json_data)
+    print (df)
+    # Directorio y ruta del archivo CSV
+    directory = 'static/csv'
+    file_path = os.path.join(directory, filename[:-4] + '.csv')  # Eliminar extensión .json
+    
+    # Guardar DataFrame como archivo CSV
+    df.to_csv(file_path, index=False)
+    
+    return file_path
 
 @app.route('/upload_json', methods=['POST'])
 def upload_json():
@@ -331,6 +314,7 @@ def upload_json():
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
         save_json_to_file(json_data, filename)
+        save_json_to_csv(json_data, filename)
         # Return a response indicating success
         logging.info('JSON data saved successfully')
         return jsonify({'message': 'JSON data saved successfully'})
