@@ -1,0 +1,75 @@
+2024-03-26 11:58:55,171 DEBUG urllib3.connectionpool uWSGIWorker2Core0 : Starting new HTTP connection (1): datahub.utm.csic.es:80
+2024-03-26 11:58:55,232 DEBUG urllib3.connectionpool uWSGIWorker2Core0 : http://datahub.utm.csic.es:80 "GET /ws/getBBox/?id=hes20231106 HTTP/1.1" 200 1
+2024-03-26 12:11:51,813 INFO root uWSGIWorker5Core0 : JSON data saved successfully
+2024-03-26 12:11:55,138 DEBUG urllib3.connectionpool uWSGIWorker5Core0 : Starting new HTTP connection (1): datahub.utm.csic.es:80
+2024-03-26 12:11:55,170 DEBUG urllib3.connectionpool uWSGIWorker5Core0 : http://datahub.utm.csic.es:80 "GET /ws/getBBox/?id=sdg20240115 HTTP/1.1" 200 50
+2024-03-26 12:14:58,148 INFO root uWSGIWorker5Core0 : JSON data saved successfully
+2024-03-26 12:16:33,474 ERROR portfo uWSGIWorker2Core0 : Exception on /upload_json [POST]
+Traceback (most recent call last):
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/utm/portfo/./portfo.py", line 330, in upload_json
+    save_json_to_file(json_data, filename)
+  File "/home/utm/portfo/./portfo.py", line 309, in save_json_to_file
+    file_path = os.path.join(directory, filename)
+  File "/usr/lib/python3.10/posixpath.py", line 90, in join
+    genericpath._check_arg_types('join', a, *p)
+  File "/usr/lib/python3.10/genericpath.py", line 152, in _check_arg_types
+    raise TypeError(f'{funcname}() argument must be str, bytes, or '
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'NoneType'
+2024-03-26 12:21:07,882 DEBUG urllib3.connectionpool uWSGIWorker5Core0 : Starting new HTTP connection (1): datahub.utm.csic.es:80
+2024-03-26 12:21:07,915 DEBUG urllib3.connectionpool uWSGIWorker5Core0 : http://datahub.utm.csic.es:80 "GET /ws/getBBox/?id=sdg20240115 HTTP/1.1" 200 50
+2024-03-27 07:47:44,094 ERROR portfo uWSGIWorker3Core0 : Exception on /upload_json [POST]
+Traceback (most recent call last):
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/utm/portfo/./portfo.py", line 333, in upload_json
+    save_json_to_file(json_data, filename)
+  File "/home/utm/portfo/./portfo.py", line 323, in save_json_to_file
+    with open('jsonfile.json', encoding='utf-8') as inputfile:
+FileNotFoundError: [Errno 2] No such file or directory: 'jsonfile.json'
+2024-03-27 07:49:07,713 ERROR portfo uWSGIWorker2Core0 : Exception on /upload_json [POST]
+Traceback (most recent call last):
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/utm/portfo/./portfo.py", line 333, in upload_json
+    save_json_to_file(json_data, filename)
+  File "/home/utm/portfo/./portfo.py", line 324, in save_json_to_file
+    df = pd.read_json(inputfile)
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/pandas/io/json/_json.py", line 815, in read_json
+    return json_reader.read()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/pandas/io/json/_json.py", line 1025, in read
+    obj = self._get_object_parser(self.data)
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/pandas/io/json/_json.py", line 1051, in _get_object_parser
+    obj = FrameParser(json, **kwargs).parse()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/pandas/io/json/_json.py", line 1187, in parse
+    self._parse()
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/pandas/io/json/_json.py", line 1399, in _parse
+    self.obj = DataFrame(
+  File "/home/utm/portfo/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 875, in __init__
+    raise ValueError("DataFrame constructor not properly called!")
+ValueError: DataFrame constructor not properly called!
