@@ -113,6 +113,20 @@
     }
 </style>
 
+<script>
+    // Function to clear the options in the select element
+    function clearSelectOptions() {
+    var select = document.getElementById("cdSelect");
+    var options = select.getElementsByTagName('option');
+    // Loop through all options and remove them except for the "Unknown" option
+    for (var i = options.length - 1; i >= 0; i--) {
+        if (options[i].value !== "UNKNOWN") {
+            select.removeChild(options[i]);
+        }
+    }
+}
+</script>
+
 <body>
     <div id="overlay">
         <div class="spinner"></div>
@@ -181,7 +195,7 @@
                             <fieldset>
                                 <label for="vessel_input">
                                     Vessel *
-                                    <select id="vessel_input" name="vessel_input" class="m-t-xs" onclick="loadDoc();"
+                                    <select id="vessel_input" name="vessel_input" class="m-t-xs" onclick="clearSelectOptions(); loadDoc();"
                                         required>
                                         <option value="select" selected>select</option>
                                         <option value="sdg">Sarmiento de Gamboa</option>
@@ -240,16 +254,17 @@
                                 <div id="contenedor-selects">
                                     <div>
                                         <p>Select the samples and station file</p>
-
+                                        
 
                                         <div>
+                                            
                                             <input type="file" id="miInput" class="archivo" accept=".csv" style="display: none;" onchange="displayFileName()">
                                             <button onclick="document.getElementById('miInput').click()">Choose File</button>
                                             <span id="fileName" style="margin-left: 5px;"></span>
+                                            
+                                            
+                                            <label hidden id="lbResultado">1</label> 
                                         </div>
-
-
-
                                         <h4></h4>
                                         <br>
                                         <select class="valores-unicos" id="select-0" name="select-0">
@@ -262,12 +277,12 @@
                                             <option value="CTD_ros_ladcp">CTD_ros_ladcp</option>
                                             <option value="ROV">ROV</option>
                                         </select>
-                                        <button class="custom-btn agregar-fila" title="Add more CDIs"> <!-- Adjust the
-                                        content of the button as needed -->
+                                        <button class="custom-btn agregar-fila" title="Add more CDIs">
                                             <img src="static/img/add.png" style="width: 20px; height: 20px;">
                                         </button>
                                     </div>
                                 </div>
+                                
                                 <hr />
                                 <script>
                                     let valoresUnicos = new Set(); // Almacenará los valores únicos del CSV
@@ -323,17 +338,21 @@
                                             contenedor.appendChild(nuevaFila);
                                             const nuevoSelect = nuevaFila.querySelector('.valores-unicos');
                                             procesarCSV(csvContent, nuevoSelect); // Usamos el contenido del CSV global
-
+                                            var selects = document.getElementsByTagName('select');
                                             const nuevoBoton = nuevaFila.querySelector('.eliminar-fila');
                                             nuevoBoton.addEventListener('click', function () {
                                                 contenedor.removeChild(nuevaFila); // Eliminar la fila al hacer clic en el botón "-"
                                                 contadorSelects--; // Decrementar el contador de selects al eliminar una fila
-                                                cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
-                                                maximoValoresUnicos = valoresUnicos.size - 1; // Actualizar el máximo de valores únicos al eliminar una fila
-
-
+                                                
+                                                
                                                 // Contar la cantidad de elementos 'select'
                                                 var cantidadSelects = selects.length;
+                                                var cantidadSelectsLabel = document.getElementById('cantidadSelectsLabel');
+                                                //cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
+                                                maximoValoresUnicos = valoresUnicos.size - 1; // Actualizar el máximo de valores únicos al eliminar una fila
+                                                document.getElementById('lbResultado').innerHTML = ((cantidadSelects - 3) / 2);
+
+
 
                                                 // Mostrar la cantidad de elementos 'select'
                                                 console.log("Cantidad de selects: " + ((cantidadSelects - 3) / 2)); //he posat un tres pq li resti els tres selects que no son del samples and stations
@@ -344,9 +363,9 @@
                                             var cantidadSelects = selects.length;
 
                                             var cantidadSelectsLabel = document.getElementById('cantidadSelectsLabel');
-                                            cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
+                                            //cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
 
-
+                                            document.getElementById('lbResultado').innerHTML = ((cantidadSelects - 3) / 2);
                                             // Mostrar la cantidad de elementos 'select'
                                             console.log("Cantidad de selects: " + ((cantidadSelects - 3) / 2)); //he posat un tres pq li resti els tres selects que no son del samples and stations
                                         } else {
@@ -508,7 +527,6 @@
             document.getElementById("survey-form").addEventListener("submit", handleSubmit);
 
         </script>
-        <!-- FALTARIA POSAR AQUEST SCRIPT PER VALIDAR SI EL CSR REF I EL CRUISE NAME SON ELS MATEIXOS
 <script>
     function validateForm() {
         var cdSelectValue = document.getElementById("cdSelect").value;
@@ -519,7 +537,7 @@
             return false; // Prevent form submission
         }
     }
-</script>-->
+</script>
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -529,10 +547,6 @@
         <script src="static/lib/tempusdominus/js/moment.min.js"></script>
         <script src="static/lib/tempusdominus/js/moment-timezone.min.js"></script>
         <script src="static/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-        <!-- Contact Javascript File -->
-        <script src="static/mail/jqBootstrapValidation.min.js"></script>
-        <script src="static/mail/contact.js"></script>
 
         <!-- Template Javascript -->
         <script src="static/js/main.js"></script>
@@ -544,12 +558,9 @@
         <script src="static/js/script_org.js"></script>
         <script src="static/js/script_select2.js"></script>
 
-
-
-
-        <!-- sortable -->
+        <!-- sortable 
         <script src="static/js/Sortable.min.js"></script>
-        <script src="static/js/options.js"></script>
+        <script src="static/js/options.js"></script> -->
 
         <script>
             // Call the function to clear local storage when the page is loaded
