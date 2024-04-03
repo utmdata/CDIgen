@@ -179,7 +179,7 @@
                             <fieldset>
                                <label for="cruise_name" >
                                Cruise Name *
-                               <input class="" type="text" id="cruise_name" name="cruise_name" placeholder="Enter the cruise name" onchange="validateForm()"  required  />
+                               <input class="" type="text" id="cruise_name" name="cruise_name" placeholder="Enter the cruise name" onchange="csrMatches()"  required  />
                                </label>
                             </fieldset>
                             <fieldset>
@@ -290,7 +290,11 @@
                 alert("Please drag the CDI's that you want to generate into the green box.");
                 return false; // Prevent form submission
             }
-            
+            //IF all the conditions are true, allow form submission
+            return true;
+        }
+
+        function csrMatches() { 
             // Check if CSR reference and Cruise Name are the same
             var cdSelectValue = document.getElementById("cdSelect").value;
             var cruiseNameValue = document.getElementById("cruise_name").value;
