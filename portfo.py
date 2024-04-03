@@ -17,7 +17,6 @@ from shutil import make_archive,copy
 import zipfile, tempfile
 import json
 
-
 #Ruta estàtica de Flask a static/tareas
 # Define the directory to save the generated zip file
 ZIP_FOLDER = os.path.join(app.static_folder, 'tareas')
@@ -219,11 +218,87 @@ def download_file():
             remove(cdi_general)"""
 
 
-@app.route('/download_step1', methods=['POST', 'GET'])
-def download_step1():
-    
-    if request.method == "POST":
 
+
+@app.route('/descargar/<cruise_id>')
+def descarga(cruise_id):
+    # Path to the ZIP file to be downloaded
+    ruta_zip = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+    response=  send_file(ruta_zip, mimetype='application/zip', as_attachment=True)
+    #os.remove (ruta_zip)
+    return response
+
+@app.route('/fetch_csr_code_list', methods=['GET'])
+def fetch_csr_code_list():
+    fetch_and_save_csr_code_list()
+    return "CSR code list fetch updated successfully."
+
+
+  
+
+
+def save_json_to_file(json_data, filename):
+    directory = 'static/csv'
+    file_path = os.path.join(directory, filename)
+    
+    # Check if the file exists
+    if os.path.exists(file_path):
+        # If the file exists, replace it
+        mode = 'w'
+    else:
+        # If the file does not exist, create a new file
+        mode = 'x'
+
+    # Write JSON data to file
+    with open(file_path, mode) as file:
+        json.dump(json_data, file)
+    
+
+
+
+@app.route('/upload_json', methods=['POST'])
+def upload_json():
+    if request.method == 'POST':   
+        global global_file_path    
+        global_file_path 
+        json_data = request.get_json()  # Get JSON data from the request body
+        filename = 'uploaded_data.json'
+        directory = 'static/csv'
+        
+        save_json_to_file(json_data, filename)
+        logging.info('JSON data saved successfully')
+        data = json.loads(json_data)
+        name=datetime.now() 
+        print (name)
+        name= str(name)
+        name= name.replace(":", "").replace("-", "").replace(" ", "").replace(".", "")
+        print (name)
+        file_path = os.path.join(directory, name + ".csv") 
+        # Creación del DataFrame
+        df = pd.DataFrame(data)
+
+        # Renombrar las columnas
+        df.columns = ['First_lat', 'First_long', 'End_lat', 'End_long', 'First_time', 'End_time', 'Instrument', 'Coments']
+        print (df)
+        df.to_csv(file_path, header=True, index=False)
+        print(file_path)
+
+        global_file_path = file_path
+        print(global_file_path)
+        logging.info('CSV data saved successfully')
+        # Return a response indicating success
+        response_data = {'message': 'JSON data saved successfully', 'file_path': global_file_path}
+        #print("Response JSON:", response_data)
+
+        # Devolver la respuesta JSON
+        return jsonify(response_data)
+        #return jsonify({'message': 'JSON data saved successfully',"file_path" : global_file_path})
+    
+@app.route('/download_step1', methods=['POST', 'GET'])
+def download_step1():          
+          
+        print("aquest es el path",global_file_path)
+        
         cruise_id = request.values.get('cruise_id')
         print (cruise_id)
         csr_code = request.values.get("cdSelect")
@@ -243,10 +318,9 @@ def download_step1():
         valor_org= url_org
         try : 
             posicio_primer_espai= r.text[4:-2].index(" ")
-
         except:
-            return render_template('error.html', url_bbox=url_bbox, cruise_id= cruise_id)
-        
+            return render_template('error.html', url_bbox=url_bbox, cruise_id= cruise_id)  
+              
         select0 = request.values.get('select-0')
         print("hola")
         print (select0)
@@ -259,66 +333,7 @@ def download_step1():
         except:
             print("no hi select1")
                    
-        return render_template('service.html')  
-        #grabar_general(cruise_id, cruise_name,vessel_input, data, valor_org, csr_code)
-
-
-
-
-@app.route('/descargar/<cruise_id>')
-def descarga(cruise_id):
-    # Path to the ZIP file to be downloaded
-    ruta_zip = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
-    response=  send_file(ruta_zip, mimetype='application/zip', as_attachment=True)
-    #os.remove (ruta_zip)
-    return response
-
-@app.route('/fetch_csr_code_list', methods=['GET'])
-def fetch_csr_code_list():
-    fetch_and_save_csr_code_list()
-    return "CSR code list fetch updated successfully."
-
-
-def save_json_to_file(json_data, filename):
-    directory = 'static/csv'
-    file_path = os.path.join(directory, filename)
-    
-    # Check if the file exists
-    if os.path.exists(file_path):
-        # If the file exists, replace it
-        mode = 'w'
-    else:
-        # If the file does not exist, create a new file
-        mode = 'x'
-    
-    # Write JSON data to file
-    with open(file_path, mode) as file:
-        json.dump(json_data, file)
-    
-def save_json_to_csv(json_data, filename):
-    # Convertir el JSON en DataFrame de Pandas
-    df = pd.DataFrame(json_data)
-    print (df)
-    # Directorio y ruta del archivo CSV
-    directory = 'static/csv'
-    file_path = os.path.join(directory, filename[:-4] + '.csv')  # Eliminar extensión .json
-    
-    # Guardar DataFrame como archivo CSV
-    df.to_csv(file_path, index=False)
-    
-    return file_path
-
-@app.route('/upload_json', methods=['POST'])
-def upload_json():
-    if request.method == 'POST':
-        json_data = request.get_json()  # Get JSON data from the request body
-        filename = 'uploaded_data.json'
-        save_json_to_file(json_data, filename)
-        save_json_to_csv(json_data, filename)
-        # Return a response indicating success
-        logging.info('JSON data saved successfully')
-        return jsonify({'message': 'JSON data saved successfully'})
-    
+        return render_template('service.html')
 
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
