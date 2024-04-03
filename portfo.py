@@ -260,7 +260,7 @@ def save_json_to_file(json_data, filename):
 def upload_json():
     if request.method == 'POST':   
         global global_file_path    
-        global_file_path 
+        global_file_path = []
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
         directory = 'static/csv'
