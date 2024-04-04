@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>CDIgen UTM-CSIC</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"> <!--Adding some changes -->
 
 
     <!-- Favicon -->
@@ -12,7 +12,7 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -24,6 +24,7 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="static/css/style.css" rel="stylesheet">
 </head>
+
 <body>
     <div id="overlay">
         <div class="spinner"></div>
@@ -69,7 +70,8 @@
                     <div class="navbar-nav ml-auto py-0">
                         <a onclick="window.location.href = 'index.html';" class="nav-item nav-link">Home</a>
                         <a href="http://data.utm.csic.es/portal/" class="nav-item nav-link">About us</a>
-                        <a onclick="window.location.href = 'contact.html';" class="nav-item nav-link">CDIgen</a><!-- posa active perque estigui de color diferent als altres -->
+                        <a onclick="window.location.href = 'contact.html';"
+                            class="nav-item nav-link">CDIgen</a><!-- posa active perque estigui de color diferent als altres -->
                     </div>
                 </div>
             </nav>
@@ -78,6 +80,7 @@
     <!-- Navbar End -->
     <!-- Contact Start -->
 
+    <!-- Contact Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="text-center mb-3 pb-3">
@@ -86,28 +89,28 @@
                 <br>
                 <br>
                 <div class="container text-center" action="descargar">
-        
+
                     <a href="{{ url_for('descarga', cruise_id=cruise_id) }}" download="{{ cruise_id }}.zip">
-                        <button class="btn btn-primary py-md-3 px-md-5 mt-2" >Download zip file</button>
+                        <button id="downloadButton" class="btn btn-primary py-md-3 px-md-5 mt-2">Download zip
+                            file</button>
                     </a>
                     <br>
+                    <br>
+                    <p id="timer" style="display: none;">Remaining time: <span id="timerValue"></span></p>
                     <br>
                     <br>
                     <br>
                     <br>
                     <br>
                     <a>
-                        <button class="btn btn py-md-3 px-md-5 mt-2" onclick="window.location.href = 'index.html';" >Start again</button>
+                        <button class="btn btn py-md-3 px-md-5 mt-2"
+                            onclick="window.location.href = 'index.html';">Start again</button>
                     </a>
                 </div>
 
             </div>
         </div>
     </div>
-
-
-    
-
     <!-- Contact End -->
 
     <!-- Back to Top -->
@@ -133,43 +136,118 @@
     <script>
         // Function to handle form submission
         function handleSubmit(event) {
-        // Show the overlay with the loading spinner
-        document.getElementById("overlay").style.display = "block";
-    }
+            // Show the overlay with the loading spinner
+            document.getElementById("overlay").style.display = "block";
+        }
 
-    // Attach the event listener to the form
-    document.getElementById("survey-form").addEventListener("submit", handleSubmit);
+        document.addEventListener('DOMContentLoaded', function () {
+            var clickCount = 0;
+            var maxClicks = 5; // Maximum number of clicks allowed
+            var clickInterval = 60000; // 1 minute in milliseconds
+            var remainingTime = clickInterval / 1000; // Remaining time in seconds
+            var timerInterval; // Interval for the timer
+
+            // Function to reset the click count and remaining time after a minute
+            function resetClickCountAndTime() {
+                clickCount = 0;
+                remainingTime = clickInterval / 1000;
+                updateTimerDisplay();
+                console.log('Click count reset.');
+                document.getElementById('downloadButton').disabled = false; // Enable the button
+                document.getElementById('timer').style.display = 'none'; // Hide the timer
+                clearInterval(timerInterval); // Clear the timer interval
+            }
+
+            // Function to enable/disable the button based on click count
+            function toggleButtonState() {
+                if (clickCount >= maxClicks) {
+                    document.getElementById('downloadButton').disabled = true;
+                    document.getElementById('timer').style.display = 'block'; // Show the timer
+                    startTimer(); // Start the timer
+                    console.log('Button disabled after reaching the click limit.');
+                } else {
+                    document.getElementById('downloadButton').disabled = false;
+                    document.getElementById('timer').style.display = 'none'; // Hide the timer
+                    clearInterval(timerInterval); // Clear the timer interval
+                }
+            }
+
+            // Function to update the timer display
+            function updateTimerDisplay() {
+                var minutes = Math.floor(remainingTime / 60);
+                var seconds = remainingTime % 60;
+                document.getElementById('timer').innerText = minutes + 'm ' + seconds + 's';
+            }
+
+            // Start the timer
+            function startTimer() {
+                updateTimerDisplay();
+                timerInterval = setInterval(function () {
+                    remainingTime--;
+                    if (remainingTime <= 0) {
+                        clearInterval(timerInterval);
+                        resetClickCountAndTime();
+                    }
+                    updateTimerDisplay();
+                }, 1000);
+            }
+
+            // Increment the click count and toggle button state
+            function handleClick() {
+                clickCount++;
+                console.log('Click count:', clickCount);
+                toggleButtonState();
+            }
+
+            // Reset click count and remaining time every minute
+            setInterval(resetClickCountAndTime, clickInterval);
+
+            // Listen for button clicks
+            document.getElementById('downloadButton').addEventListener('click', handleClick);
+        });
+
 
     </script>
 
     <style>
         #overlay {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
-        z-index: 9999; /* Ensure it's above everything else */
-        display: none; /* Initially hidden */
-    }
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            /* Semi-transparent white background */
+            z-index: 9999;
+            /* Ensure it's above everything else */
+            display: none;
+            /* Initially hidden */
+        }
 
-    .spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        border: 4px solid #f3f3f3; /* Light grey border */
-        border-top: 4px solid #3498db; /* Blue border for the spinner */
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite; /* Rotate animation */
-    }
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 4px solid #f3f3f3;
+            /* Light grey border */
+            border-top: 4px solid #3498db;
+            /* Blue border for the spinner */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            /* Rotate animation */
+        }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 
 </body>
