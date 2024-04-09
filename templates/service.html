@@ -85,22 +85,24 @@
                 <h1>The {{ cruise_id }} metadata have been generated</h1>
                 <br>
                 <br>
-                <div class="container text-center" action="descargar">
-        
-                    <a href="{{ url_for('descarga', cruise_id=cruise_id) }}" download="{{ cruise_id }}.zip">
-                        <button class="btn btn-primary py-md-3 px-md-5 mt-2" >Download zip file</button>
-                    </a>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <a>
+                    <div class="container text-center">
+                        <form action="{{ url_for('descarga', cruise_id=cruise_id) }}" method="POST">
+                            <!-- Google reCAPTCHA -->
+                            <div class="g-recaptcha" data-sitekey="6LfpHa0pAAAAAAyELez0pBq8fQQKL829YAgxniN6" data-action="download"></div>
+                            <br/>
+                            <!-- Download button -->
+                            <input type="submit" class="btn btn-primary py-md-3 px-md-5 mt-2" value="Download zip file">
+                        </form>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <!-- Start again button -->
                         <button class="btn btn py-md-3 px-md-5 mt-2" onclick="window.location.href = 'index.html';" >Start again</button>
-                    </a>
-                </div>
-
+                    </div>
+                    
             </div>
         </div>
     </div>
