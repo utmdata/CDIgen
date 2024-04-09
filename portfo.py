@@ -9,14 +9,13 @@ import pandas as pd
 import os
 from os import path, remove
 from datetime import datetime
-import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, general, ctd_script,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
+import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, scripts.generalweb, scripts.xbt ,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
 import requests
 import shutil
 import logging
 from shutil import make_archive,copy
 import zipfile, tempfile
 import json
-
 
 #Ruta estàtica de Flask a static/tareas
 # Define the directory to save the generated zip file
@@ -183,7 +182,8 @@ def download_file():
         
         print(tareas_cdi)
         if tareas_cdi == [] or None or "":
-            return render_template('error_variables.html')
+            #return render_template('error_variables.html')
+            return "no variables"
         elif valor_org == []:
             return render_template ("error_org.html")
         else:
@@ -204,26 +204,91 @@ def download_file():
 
         return render_template('service.html', cruise_id=cruise_id)
 
-"""def grabar_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data,valor_org, csr_code):
-        input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
-        general.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code)
 
-        if "met" in data:
-            ctd_script.funcio_ctd (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
+#global_file_path = ""  si ho poso aqui mai s'actualitza
+def save_json_to_file(json_data, filename):
+    
+    directory = 'static/csv'
+    file_path = os.path.join(directory, filename)
+    
+    # Check if the file exists
+    if os.path.exists(file_path):
+        # If the file exists, replace it
+        mode = 'w'
+    else:
+        # If the file does not exist, create a new file
+        mode = 'x'
+
+    # Write JSON data to file
+    with open(file_path, mode) as file:
+        json.dump(json_data, file)
+
+path_global=""
+
+
+@app.route('/upload_json', methods=['POST'])
+def upload_json():
+    if request.method == 'POST': 
+        
+        json_data = request.get_json()  # Get JSON data from the request body
+        filename = 'uploaded_data.json'
+        directory = 'static/csv'
+        
+        save_json_to_file(json_data, filename)
+        logging.info('JSON data saved successfully')
+        data = json.loads(json_data)
+        name=datetime.now() 
+        print (name)
+        name= str(name)
+        name= name.replace(":", "").replace("-", "").replace(" ", "").replace(".", "")
+        print (name)
+        file_path = os.path.join(directory, name + ".csv") 
+        # Creación del DataFrame
+        df = pd.DataFrame(data)
+
+        # Renombrar las columnas
+        df.columns = ['First_lat', 'First_long', 'End_lat', 'End_long', 'First_time', 'End_time', 'Instrument', 'Coments']
+        print (df)
+        
+        df.to_csv(file_path, header=True, index=False)
+
+        global_file_path = file_path 
+
+        print (global_file_path)
+        
+        globals().update({"path_global":global_file_path})
+
+        
+
+        logging.info('CSV data saved successfully')
+        # Return a response indicating success
+        response_data = {'message': 'JSON data saved successfully', 'file_path': global_file_path}
+        #print("Response JSON:", response_data)
+
+        # Devolver la respuesta JSON
+        return jsonify(response_data)
+        #return jsonify({'message': 'JSON data saved successfully',"file_path" : global_file_path})
+
+def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv):
+        print("select de grabar_ind", selects)
+        scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects)
+
+        if "XBT" in selects:
+            scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv)
+            print(" xbt")
         else:
-            print ("No ctd")
-
+            print("no hi ha select")
+        
         cdi_general =cruise_id + "_general.xml"
 
         if path.exists(cdi_general):
-            remove(cdi_general)"""
+            remove(cdi_general)  
+
 
 
 @app.route('/download_step1', methods=['POST', 'GET'])
-def download_step1():
-    
-    if request.method == "POST":
-
+def download_step1():  
+        ruta_csv = "static/csv/20240403125018849073.csv"
         cruise_id = request.values.get('cruise_id')
         print (cruise_id)
         csr_code = request.values.get("cdSelect")
@@ -233,36 +298,27 @@ def download_step1():
         vessel_input = request.values.get("vessel_input")
         cruise_name = request.values.get("cruise_name")
 
+        #contadorselects = request.values.get("lbResultado")
+        #print ("contador selects:", contadorselects)
+
         if vessel_input == "sdg":
             vessel_reduit='sdg' 
         elif vessel_input == "hes": 
             vessel_reduit="hes"
-        url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
-        r = requests.get(url_bbox)
-        
-        valor_org= url_org
-        try : 
-            posicio_primer_espai= r.text[4:-2].index(" ")
-
-        except:
-            return render_template('error.html', url_bbox=url_bbox, cruise_id= cruise_id)
-        
-        select0 = request.values.get('select-0')
-        print("hola")
-        print (select0)
-        
-            
-        try:
-            select1 = request.values.get('select-1')
-            print("hola")
-            print (select1)
-        except:
-            print("no hi select1")
-                   
-        return render_template('service.html')  
-        #grabar_general(cruise_id, cruise_name,vessel_input, data, valor_org, csr_code)
 
 
+        
+        contadorselects = 10 #el contadorselects shauria d'agafar del html
+
+        selects = []
+        for i in range(contadorselects):
+            select_value = request.values.get('select-' + str(i))
+            selects.append(select_value)
+
+        print("Valores de selects:", selects)
+        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv)
+
+        return render_template('service.html')
 
 
 @app.route('/descargar/<cruise_id>')
@@ -277,48 +333,6 @@ def descarga(cruise_id):
 def fetch_csr_code_list():
     fetch_and_save_csr_code_list()
     return "CSR code list fetch updated successfully."
-
-
-def save_json_to_file(json_data, filename):
-    directory = 'static/csv'
-    file_path = os.path.join(directory, filename)
-    
-    # Check if the file exists
-    if os.path.exists(file_path):
-        # If the file exists, replace it
-        mode = 'w'
-    else:
-        # If the file does not exist, create a new file
-        mode = 'x'
-    
-    # Write JSON data to file
-    with open(file_path, mode) as file:
-        json.dump(json_data, file)
-    
-def save_json_to_csv(json_data, filename):
-    # Convertir el JSON en DataFrame de Pandas
-    df = pd.DataFrame(json_data)
-    print (df)
-    # Directorio y ruta del archivo CSV
-    directory = 'static/csv'
-    file_path = os.path.join(directory, filename[:-4] + '.csv')  # Eliminar extensión .json
-    
-    # Guardar DataFrame como archivo CSV
-    df.to_csv(file_path, index=False)
-    
-    return file_path
-
-@app.route('/upload_json', methods=['POST'])
-def upload_json():
-    if request.method == 'POST':
-        json_data = request.get_json()  # Get JSON data from the request body
-        filename = 'uploaded_data.json'
-        save_json_to_file(json_data, filename)
-        save_json_to_csv(json_data, filename)
-        # Return a response indicating success
-        logging.info('JSON data saved successfully')
-        return jsonify({'message': 'JSON data saved successfully'})
-    
 
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')

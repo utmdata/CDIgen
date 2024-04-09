@@ -179,7 +179,7 @@
                             <fieldset>
                                <label for="cruise_name" >
                                Cruise Name *
-                               <input class="" type="text" id="cruise_name" name="cruise_name" placeholder="Enter the cruise name" onchange="validateForm()"  required  />
+                               <input class="" type="text" id="cruise_name" name="cruise_name" placeholder="Enter the cruise name" onchange="csrMatches()"  required  />
                                </label>
                             </fieldset>
                             <fieldset>
@@ -224,7 +224,7 @@
                                     <h5 class="form-check-label"  data-id="sbe" width="88" height="31"  id = "sbe" align="center" >SBE</h5>  
                                      <!-- faltaria gravimetria i flurometre?? -->                                  
                                 </div>                               
-                                <div id="div2"></div>
+                                <div id="div2" ></div>
                             </div>
                                                                
                            </fieldset>
@@ -276,7 +276,7 @@
                 event.preventDefault();
                 return;
             }
-            // Show the overlay with the loading spinner
+            // If validation passes, the form will be submitted: Show the overlay with the loading spinner
             document.getElementById("overlay").style.display = "block";
         }
 
@@ -284,25 +284,29 @@
         document.getElementById("survey-form").addEventListener("submit", handleSubmit);
 
         function validateForm() {
-        // Check if the content of div2 is empty or not
-        var divContent = document.getElementById("div2").textContent.trim();
-        if (divContent == 0) {
-            alert("Please fill in the required field.");
-            return false; // Prevent form submission
+            // Check if the content of div2 is empty or not
+            var divContent = document.getElementById("div2").textContent.trim();
+            if (divContent === "") {
+                alert("Please drag the CDI's that you want to generate into the green box.");
+                return false; // Prevent form submission
+            }
+            //IF all the conditions are true, allow form submission
+            return true;
         }
-        
-        // Check if CSR reference and Cruise Name are the same
-        var cdSelectValue = document.getElementById("cdSelect").value;
-        var cruiseNameValue = document.getElementById("cruise_name").value;
-        if (cdSelectValue !== cruiseNameValue) {
-            alert("CSR reference and Cruise Name are not the same.");
-            return false; // Prevent form submission
-        }
-        
-        // If both validations pass, allow form submission
-        return true;
-    }
 
+        function csrMatches() { 
+            // Check if CSR reference and Cruise Name are the same
+            var cdSelectValue = document.getElementById("cdSelect").value;
+            var cruiseNameValue = document.getElementById("cruise_name").value;
+            
+            if (cdSelectValue !== cruiseNameValue) {
+                alert("CSR reference and Cruise Name are not the same.");
+                return false; // Prevent form submission
+            }
+
+            //IF all the conditions are true, allow form submission
+            return true;
+        }
     </script>
 
     <!-- JavaScript Libraries -->

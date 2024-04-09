@@ -236,35 +236,21 @@
                                         placeholder="Enter the Cruise ID" required />
                                 </label>
                             </fieldset>
-                            <fieldset>
-                                <label for="date_inicial" id="date_inicial">
-                                    Initial date *
-                                    <input type="date" id=date_inicial name="date_inicial" required>
-                                    <!--<input class="" type="date_inicial" id="date_inicial" name="date_inicial" placeholder="Enter the initial date" required> --><!-- s'haura d'afegir que acabi amb els segons a 00 -->
-                                </label>
-                            </fieldset>
-                            <fieldset>
-                                <label for="date_final" id="date_final">
-                                    Final date*
-                                    <input type="date" id=date_final name="date_final" required>
-                                    <!--<input class="" type="date_final" id="date_final" name="date_final" placeholder="Enter the final date" required> --><!-- s'haura d'afegir que acabi amb els segons a 00 -->
-                                </label>
-                            </fieldset>
+                            
                             <fieldset>
                                 <div id="contenedor-selects">
                                     <div>
                                         <p>Select the samples and station file</p>
                                         
-
                                         <div>
                                             
                                             <input type="file" id="miInput" class="archivo" accept=".csv" style="display: none;" onchange="displayFileName()">
                                             <button onclick="document.getElementById('miInput').click()">Choose File</button>
                                             <span id="fileName" style="margin-left: 5px;"></span>
                                             
-                                            
-                                            <label hidden id="lbResultado">1</label> 
+                                            <label id="lbResultado" name="lbResultado">1</label> 
                                         </div>
+                                        <
                                         <h4></h4>
                                         <br>
                                         <select class="valores-unicos" id="select-0" name="select-0">
@@ -280,7 +266,9 @@
                                         <button class="custom-btn agregar-fila" title="Add more CDIs">
                                             <img src="static/img/add.png" style="width: 20px; height: 20px;">
                                         </button>
+                                       
                                     </div>
+                                    
                                 </div>
                                 
                                 <hr />
