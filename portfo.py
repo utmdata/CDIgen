@@ -228,8 +228,10 @@ path_global=""
 
 @app.route('/upload_json', methods=['POST'])
 def upload_json():
-    if request.method == 'POST': 
-        
+    if request.method == 'POST':   
+        global global_file_path    
+        global_file_path = []
+        main
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
         directory = 'static/csv'
@@ -340,8 +342,6 @@ def download_step1():
         shutil.rmtree(source_folder)
 
         return render_template('service.html', cruise_id=cruise_id)
-
-
 
 @app.route('/descargar/<cruise_id>')
 def descarga(cruise_id):
