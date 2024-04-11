@@ -148,7 +148,7 @@ def download_file():
 
         url_org = request.values.get("organizacion")
         print( url_org)
-
+        
         cruise_name = request.values.get("cruise_name")
         date_inicial_input = request.values.get("date_inicial")
         print(date_inicial_input)
@@ -269,12 +269,12 @@ def upload_json():
         return jsonify(response_data)
         #return jsonify({'message': 'JSON data saved successfully',"file_path" : global_file_path})
 
-def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv):
+def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final):
         print("select de grabar_ind", selects)
-        scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects)
+        scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
 
         if "XBT" in selects:
-            scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv)
+            scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" xbt")
         else:
             print("no hi ha select")
@@ -288,7 +288,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
 
 @app.route('/download_step1', methods=['POST', 'GET'])
 def download_step1():  
-        ruta_csv = "static/csv/20240403125018849073.csv"
+        ruta_csv = "static/csv/20240408093620617707.csv"
         cruise_id = request.values.get('cruise_id')
         print (cruise_id)
         csr_code = request.values.get("cdSelect")
@@ -297,7 +297,7 @@ def download_step1():
         print( url_org)
         vessel_input = request.values.get("vessel_input")
         cruise_name = request.values.get("cruise_name")
-
+        valor_org= url_org
         #contadorselects = request.values.get("lbResultado")
         #print ("contador selects:", contadorselects)
 
@@ -306,9 +306,17 @@ def download_step1():
         elif vessel_input == "hes": 
             vessel_reduit="hes"
 
+        date_inicial_input = request.values.get("date_inicial")
+        print(date_inicial_input)
+        año, mes, dia = date_inicial_input.split("-")
+        date_inicial= "{}/{}/{} 00:00:00".format(dia, mes, año)
+        print (date_inicial)
 
-        
-        contadorselects = 10 #el contadorselects shauria d'agafar del html
+        date_final_input = request.values.get("date_final")
+        año, mes, dia = date_final_input.split("-")
+        date_final= "{}/{}/{} 00:00:00".format(dia, mes, año)
+        print (date_final)
+        contadorselects = 10 #el contadorselects hauria de ser el numero maxims de tipus de cdis que podem generar
 
         selects = []
         for i in range(contadorselects):
@@ -316,9 +324,23 @@ def download_step1():
             selects.append(select_value)
 
         print("Valores de selects:", selects)
-        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv)
+        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final)
 
-        return render_template('service.html')
+        source_folder = os.path.abspath(cruise_id)
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        
+        if path.exists(zip_filename):
+            remove(zip_filename)
+    
+        # Compress the folder into a ZIP file
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        shutil.make_archive(zip_filename[:-4], 'zip', source_folder)
+
+        #Delete the original folder from portfo folder
+        shutil.rmtree(source_folder)
+
+        return render_template('service.html', cruise_id=cruise_id)
+
 
 
 @app.route('/descargar/<cruise_id>')
