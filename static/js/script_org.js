@@ -110,7 +110,7 @@ function loadDoc() {
   document.getElementById("overlay").style.display = "block";
   
   //fetch response
-  fetch("http://161.111.137.92:8001/static/csrCodeList.xml")
+  fetch("http://datahub.utm.csic.es/cdigen/static/csrCodeList.xml")
       .then(response => {
       if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

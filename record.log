@@ -671,3 +671,8 @@ Traceback (most recent call last):
 ValueError: DataFrame constructor not properly called!
 2024-03-27 09:51:34,219 DEBUG urllib3.connectionpool uWSGIWorker2Core0 : Starting new HTTP connection (1): datahub.utm.csic.es:80
 2024-03-27 09:51:34,276 DEBUG urllib3.connectionpool uWSGIWorker2Core0 : http://datahub.utm.csic.es:80 "GET /ws/getBBox/?id=sdg20240115 HTTP/1.1" 200 50
+2024-04-09 11:33:49,511 INFO werkzeug MainThread : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.17:5000
+2024-04-09 11:33:49,511 INFO werkzeug MainThread : [33mPress CTRL+C to quit[0m
