@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, request, redirect, jsonify ,s
 from flask_cors import CORS
 
 app = Flask(__name__, static_url_path='/static')
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://datahub.utm.csic.es"}})
 import csv
 import cgi
 import pandas as pd
@@ -10,6 +10,7 @@ import os
 from os import path, remove
 from datetime import datetime
 import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, scripts.generalweb, scripts.xbt ,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
+import scripts.ctd
 import requests
 import shutil
 import logging
@@ -20,6 +21,7 @@ import json
 #Ruta estàtica de Flask a static/tareas
 # Define the directory to save the generated zip file
 ZIP_FOLDER = os.path.join(app.static_folder, 'tareas')
+ruta_csv = ""
 
 # Function to fetch and save the CSR code list XML file
 def fetch_and_save_csr_code_list():
@@ -138,7 +140,7 @@ valor_org =[] #crec que es innecesaria aquesta funcio: revisar he borrat la func
 
 @app.route('/download_file', methods=['POST', 'GET'])
 def download_file():
-    if request.method == "POST":
+    if request.method == "POST" or request.method == "GET":
         global tareas_cdi
         global valor_org
         cruise_id = request.values.get('cruise_id')
@@ -148,7 +150,7 @@ def download_file():
 
         url_org = request.values.get("organizacion")
         print( url_org)
-
+        
         cruise_name = request.values.get("cruise_name")
         date_inicial_input = request.values.get("date_inicial")
         print(date_inicial_input)
@@ -181,10 +183,10 @@ def download_file():
         data = tareas_cdi
         
         print(tareas_cdi)
-        if tareas_cdi == [] or None or "":
+        #if tareas_cdi == [] or None or "":
             #return render_template('error_variables.html')
-            return "no variables"
-        elif valor_org == []:
+            #return "no variables"
+        if valor_org == []:
             return render_template ("error_org.html")
         else:
             grabar_underway(cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code)
@@ -229,7 +231,6 @@ path_global=""
 @app.route('/upload_json', methods=['POST'])
 def upload_json():
     if request.method == 'POST': 
-        
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
         directory = 'static/csv'
@@ -267,15 +268,21 @@ def upload_json():
 
         # Devolver la respuesta JSON
         return jsonify(response_data)
+        #return jsonify({'file_path': file_path})
         #return jsonify({'message': 'JSON data saved successfully',"file_path" : global_file_path})
 
-def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv):
+def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final):
         print("select de grabar_ind", selects)
-        scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects)
+        scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
 
         if "XBT" in selects:
-            scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv)
+            scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" xbt")
+        else:
+            print("no hi ha select")
+        if "CTD" in selects:
+            scripts.ctd.funcio_ctd (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" ctd")
         else:
             print("no hi ha select")
         
@@ -287,8 +294,11 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
 
 
 @app.route('/download_step1', methods=['POST', 'GET'])
-def download_step1():  
-        ruta_csv = "static/csv/20240403125018849073.csv"
+def download_step1():
+        #global ruta_csv  
+        ruta_csv = "http://datahub.utm.csic.es/cdigen/static/csv/1.csv"
+        #ruta_csv = request.values.get("file_path")
+        print(ruta_csv)
         cruise_id = request.values.get('cruise_id')
         print (cruise_id)
         csr_code = request.values.get("cdSelect")
@@ -297,7 +307,7 @@ def download_step1():
         print( url_org)
         vessel_input = request.values.get("vessel_input")
         cruise_name = request.values.get("cruise_name")
-
+        valor_org= url_org
         #contadorselects = request.values.get("lbResultado")
         #print ("contador selects:", contadorselects)
 
@@ -306,9 +316,17 @@ def download_step1():
         elif vessel_input == "hes": 
             vessel_reduit="hes"
 
+        date_inicial_input = request.values.get("date_inicial")
+        print(date_inicial_input)
+        año, mes, dia = date_inicial_input.split("-")
+        date_inicial= "{}/{}/{} 00:00:00".format(dia, mes, año)
+        print (date_inicial)
 
-        
-        contadorselects = 10 #el contadorselects shauria d'agafar del html
+        date_final_input = request.values.get("date_final")
+        año, mes, dia = date_final_input.split("-")
+        date_final= "{}/{}/{} 00:00:00".format(dia, mes, año)
+        print (date_final)
+        contadorselects = 10 #el contadorselects hauria de ser el numero maxims de tipus de cdis que podem generar
 
         selects = []
         for i in range(contadorselects):
@@ -316,24 +334,48 @@ def download_step1():
             selects.append(select_value)
 
         print("Valores de selects:", selects)
-        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv)
+        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final)
 
-        return render_template('service.html')
+        source_folder = os.path.abspath(cruise_id)
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        
+        if path.exists(zip_filename):
+            remove(zip_filename)
+    
+        # Compress the folder into a ZIP file
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        print(zip_filename)
+        shutil.make_archive(zip_filename[:-4], 'zip', source_folder)
+
+        #Delete the original folder from portfo folder
+        shutil.rmtree(source_folder)
+
+        return render_template('service.html', cruise_id=cruise_id)
 
 
+#Ara està posat perquè funcioni a la web datahub (perquè estic fent proves)
+"""@app.route('/descargar/<cruise_id>')
+def descargar(cruise_id):
+    # Path to the ZIP file to be downloaded
+    ruta_zip = 'https://datahub.utm.csic.es/cdigen/static/tareas/'+ f'{cruise_id}.zip'
+    #ruta_zip = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+    print(ruta_zip)
+    logging.info(f'Downloading {cruise_id}...')
+    response=  send_file(ruta_zip, mimetype='application/zip', as_attachment=True)
+    return response"""
+
+#Perquè funcioni al servidor (161.111.137.92) modificar la funció del botó al service.html com a descarga enlloc de descargar.
 @app.route('/descargar/<cruise_id>')
 def descarga(cruise_id):
     # Path to the ZIP file to be downloaded
     ruta_zip = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
     response=  send_file(ruta_zip, mimetype='application/zip', as_attachment=True)
-    #os.remove (ruta_zip)
     return response
 
 @app.route('/fetch_csr_code_list', methods=['GET'])
 def fetch_csr_code_list():
     fetch_and_save_csr_code_list()
     return "CSR code list fetch updated successfully."
-
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 

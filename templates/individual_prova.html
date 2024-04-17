@@ -236,20 +236,7 @@
                                         placeholder="Enter the Cruise ID" required />
                                 </label>
                             </fieldset>
-                            <fieldset>
-                                <label for="date_inicial" id="date_inicial">
-                                Initial date *
-                                 <input type="date" id = date_inicial name="date_inicial" required>
-                                <!--<input class="" type="date_inicial" id="date_inicial" name="date_inicial" placeholder="Enter the initial date" required> --><!-- s'haura d'afegir que acabi amb els segons a 00 -->
-                                </label>
-                             </fieldset>
-                             <fieldset>
-                                <label for="date_final" id="date_final">
-                                  Final date*
-                                  <input type="date" id = date_final name="date_final" required>
-                                  <!--<input class="" type="date_final" id="date_final" name="date_final" placeholder="Enter the final date" required> --><!-- s'haura d'afegir que acabi amb els segons a 00 -->
-                                 </label>
-                             </fieldset>
+                            
                             <fieldset>
                                 <div id="contenedor-selects">
                                     <div>
@@ -261,15 +248,21 @@
                                             <button onclick="document.getElementById('miInput').click()">Choose File</button>
                                             <span id="fileName" style="margin-left: 5px;"></span>
                                             
-                                            <label hidden id="lbResultado" name="lbResultado" value="lbResultado">1</label> 
+                                            <label id="lbResultado" name="lbResultado" value="lbResultado">1</label> 
                                         </div>
                                         
                                         <h4></h4>
                                         <br>
                                         <select class="valores-unicos" id="select-0" name="select-0">
                                         </select>
-                                        
-
+                                        <img src="static/img/arrow.png" alt="Arrow" style="width: 20px; height: 20px;">
+                                        <select class="otro-tipo">
+                                            <option value="CTD" name="CTD">CTD</option>
+                                            <option value="CTD_ladcp" name="CTD_ladcp">CTD_ladcp</option>
+                                            <option value="CTD_und">CTD_und</option>
+                                            <option value="CTD_ros_ladcp">CTD_ros_ladcp</option>
+                                            <option value="ROV">ROV</option>
+                                        </select>
                                         <button class="custom-btn agregar-fila" title="Add more CDIs">
                                             <img src="static/img/add.png" style="width: 20px; height: 20px;">
                                         </button>
@@ -317,7 +310,14 @@
                                         <div>
                                             <select class="valores-unicos" id="select-${contadorSelects}" name="select-${contadorSelects}">
                                             </select>
-                                            
+                                            <img src="static/img/arrow.png" alt="Arrow" style="width: 20px; height: 20px;">
+                                            <select class="otro-tipo" >
+                                                <option value="CTD" id="CTD">CTD</option>
+                                                <option value="CTD_ladcp">CTD_ladcp</option>
+                                                <option value="CTD_und">CTD_und</option>
+                                                <option value="CTD_ros_ladcp">CTD_ros_ladcp</option>
+                                                <option value="ROV">ROV</option>
+                                            </select>
                                             <button class="custom-btn eliminar-fila" title="Remove CDIs">
                                                  <img src="static/img/minus.png" style="width: 16px; height: 16px;">
                                             </button>
@@ -411,7 +411,7 @@
                                             console.log(jsonData); // This is where you have your JSON data
 
                                             // Send the JSON data to the server
-                                            fetch('/cdigen/upload_json', {
+                                            fetch('/upload_json', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -484,7 +484,7 @@
                 document.getElementById("fetchButton").classList.add("loading");
 
                 // Perform the fetch operation
-                fetch("/cdigen/fetch_csr_code_list")
+                fetch("/fetch_csr_code_list")
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -540,11 +540,10 @@
         <script src="static/js/main.js"></script>
 
         <!-- organitzacions -->
-        <script src="static/js/script_org.js"></script>
         <script src="static/js/jquery-3.6.0.min.js"></script>
         <script src="static/js/select2.min.js"></script>
         <script src="static/js/script_select2_csr.js"></script>
-        
+        <script src="static/js/script_org.js"></script>
         <script src="static/js/script_select2.js"></script>
 
         <!-- sortable 
