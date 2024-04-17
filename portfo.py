@@ -183,6 +183,7 @@ def download_file():
         data = tareas_cdi
         
         print(tareas_cdi)
+
         #if tareas_cdi == [] or None or "":
             #return render_template('error_variables.html')
             #return "no variables"
@@ -220,7 +221,16 @@ def save_json_to_file(json_data, filename):
     else:
         # If the file does not exist, create a new file
         mode = 'x'
+        
+    # Write JSON data to file
+    with open(file_path, mode) as file:
+    json.dump(json_data, file)
 
+path_global=""
+
+@app.route('/upload_json', methods=['POST'])
+def upload_json():
+    if request.method == 'POST': 
     # Write JSON data to file
     with open(file_path, mode) as file:
         json.dump(json_data, file)
@@ -230,7 +240,7 @@ path_global=""
 
 @app.route('/upload_json', methods=['POST'])
 def upload_json():
-    if request.method == 'POST': 
+    if request.method == 'POST':   
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
         directory = 'static/csv'
@@ -280,6 +290,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             print(" xbt")
         else:
             print("no hi ha select")
+
         if "CTD" in selects:
             scripts.ctd.funcio_ctd (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" ctd")
@@ -291,14 +302,9 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
         if path.exists(cdi_general):
             remove(cdi_general)  
 
-
-
 @app.route('/download_step1', methods=['POST', 'GET'])
-def download_step1():
-        #global ruta_csv  
-        ruta_csv = "http://datahub.utm.csic.es/cdigen/static/csv/1.csv"
-        #ruta_csv = request.values.get("file_path")
-        print(ruta_csv)
+def download_step1():  
+        ruta_csv = "static/csv/20240408093620617707.csv"
         cruise_id = request.values.get('cruise_id')
         print (cruise_id)
         csr_code = request.values.get("cdSelect")
@@ -352,19 +358,35 @@ def download_step1():
 
         return render_template('service.html', cruise_id=cruise_id)
 
+        date_final_input = request.values.get("date_final")
+        año, mes, dia = date_final_input.split("-")
+        date_final= "{}/{}/{} 00:00:00".format(dia, mes, año)
+        print (date_final)
+        contadorselects = 10 #el contadorselects hauria de ser el numero maxims de tipus de cdis que podem generar
 
-#Ara està posat perquè funcioni a la web datahub (perquè estic fent proves)
-"""@app.route('/descargar/<cruise_id>')
-def descargar(cruise_id):
-    # Path to the ZIP file to be downloaded
-    ruta_zip = 'https://datahub.utm.csic.es/cdigen/static/tareas/'+ f'{cruise_id}.zip'
-    #ruta_zip = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
-    print(ruta_zip)
-    logging.info(f'Downloading {cruise_id}...')
-    response=  send_file(ruta_zip, mimetype='application/zip', as_attachment=True)
-    return response"""
+        selects = []
+        for i in range(contadorselects):
+            select_value = request.values.get('select-' + str(i))
+            selects.append(select_value)
 
-#Perquè funcioni al servidor (161.111.137.92) modificar la funció del botó al service.html com a descarga enlloc de descargar.
+        print("Valores de selects:", selects)
+        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final)
+
+        source_folder = os.path.abspath(cruise_id)
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        
+        if path.exists(zip_filename):
+            remove(zip_filename)
+    
+        # Compress the folder into a ZIP file
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        shutil.make_archive(zip_filename[:-4], 'zip', source_folder)
+
+        #Delete the original folder from portfo folder
+        shutil.rmtree(source_folder)
+
+        return render_template('service.html', cruise_id=cruise_id)
+
 @app.route('/descargar/<cruise_id>')
 def descarga(cruise_id):
     # Path to the ZIP file to be downloaded
