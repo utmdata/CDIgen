@@ -183,6 +183,7 @@ def download_file():
         data = tareas_cdi
         
         print(tareas_cdi)
+
         #if tareas_cdi == [] or None or "":
             #return render_template('error_variables.html')
             #return "no variables"
@@ -219,7 +220,16 @@ def save_json_to_file(json_data, filename):
     else:
         # If the file does not exist, create a new file
         mode = 'x'
+        
+    # Write JSON data to file
+    with open(file_path, mode) as file:
+    json.dump(json_data, file)
 
+path_global=""
+
+@app.route('/upload_json', methods=['POST'])
+def upload_json():
+    if request.method == 'POST': 
     # Write JSON data to file
     with open(file_path, mode) as file:
         json.dump(json_data, file)
@@ -228,7 +238,7 @@ def save_json_to_file(json_data, filename):
 
 @app.route('/upload_json', methods=['POST'])
 def upload_json():
-    if request.method == 'POST': 
+    if request.method == 'POST':   
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
         directory = 'static/csv'
@@ -269,6 +279,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             print(" xbt")
         else:
             print("no hi ha select")
+
         if "CTD" in selects:
             scripts.ctd.funcio_ctd (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" ctd")
@@ -279,8 +290,6 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
 
         if path.exists(cdi_general):
             remove(cdi_general)  
-
-
 
 @app.route('/download_step1', methods=['POST', 'GET'])
 def download_step1():
