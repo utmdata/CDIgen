@@ -388,20 +388,6 @@
                                         return JSON.stringify(result);
                                     }
 
-                                    /*//Evento change para el input de archivo
-                                    const archivoInput = document.querySelector('.archivo');
-                                    archivoInput.addEventListener('change', function (evt) {
-                                        const file = evt.target.files[0];
-                                        const reader = new FileReader();
-                                        reader.onload = function (e) {
-                                            csvContent = e.target.result; // Almacenamos el contenido del CSV globalmente
-                                            const primerSelect = document.querySelector('.valores-unicos');
-                                            procesarCSV(csvContent, primerSelect); // Procesamos el CSV y llenamos el primer select
-                                            console.log(csvContent)
-                                        };
-                                        reader.readAsText(file);
-                                    });*/
-
                                     // Evento change para el input de archivo
                                     const archivoInput = document.querySelector('.archivo');
                                     archivoInput.addEventListener('change', function (evt) {

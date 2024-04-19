@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect, jsonify ,send_file, Response, send_from_directory, send_file, request
 from flask_cors import CORS
+from flask import session
 
 app = Flask(__name__, static_url_path='/static')
 CORS(app, resources={r"/*": {"origins": "http://datahub.utm.csic.es"}})
@@ -16,7 +17,7 @@ import shutil
 import logging
 from shutil import make_archive,copy
 import zipfile, tempfile
-import json
+import json, re
 
 #Ruta estàtica de Flask a static/tareas
 # Define the directory to save the generated zip file
@@ -130,7 +131,6 @@ tareas_cdi = []
 @app.route('/guardar_tareas', methods=['POST'])
 def guardar_tareas():
     global tareas_cdi
-    #print ("tareas posades antigues",tareas_cdi)
     nuevo_valor_tareas_cdi = request.json.get('tareas_cdi')
     tareas_cdi = nuevo_valor_tareas_cdi
     #print("tareas_cdi actualizado:", tareas_cdi)
@@ -208,7 +208,6 @@ def download_file():
         return render_template('service.html', cruise_id=cruise_id)
 
 
-#global_file_path = ""  si ho poso aqui mai s'actualitza
 def save_json_to_file(json_data, filename):
     
     directory = 'static/csv'
@@ -235,7 +234,6 @@ def upload_json():
     with open(file_path, mode) as file:
         json.dump(json_data, file)
 
-path_global=""
 
 
 @app.route('/upload_json', methods=['POST'])
@@ -253,6 +251,9 @@ def upload_json():
         name= str(name)
         name= name.replace(":", "").replace("-", "").replace(" ", "").replace(".", "")
         print (name)
+        name_csv = name + ".csv"
+        logging.info(f'name_csv: {name_csv}')
+        print(name_csv)
         file_path = os.path.join(directory, name + ".csv") 
         # Creación del DataFrame
         df = pd.DataFrame(data)
@@ -263,26 +264,14 @@ def upload_json():
         
         df.to_csv(file_path, header=True, index=False)
 
-        global_file_path = file_path 
-
-        print (global_file_path)
-        
-        globals().update({"path_global":global_file_path})
-
-        
-
         logging.info('CSV data saved successfully')
         # Return a response indicating success
-        response_data = {'message': 'JSON data saved successfully', 'file_path': global_file_path}
-        #print("Response JSON:", response_data)
-
-        # Devolver la respuesta JSON
-        return jsonify(response_data)
-        #return jsonify({'file_path': file_path})
-        #return jsonify({'message': 'JSON data saved successfully',"file_path" : global_file_path})
+        return jsonify({'message': 'JSON data saved successfully',"file_path" : file_path})
 
 def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final):
         print("select de grabar_ind", selects)
+        print("ruta_csv inside grabar_individual:", ruta_csv)  # Add this print statement to check the value of ruta_csv
+
         scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
 
         if "XBT" in selects:
@@ -303,8 +292,31 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             remove(cdi_general)  
 
 @app.route('/download_step1', methods=['POST', 'GET'])
-def download_step1():  
-        ruta_csv = "static/csv/20240408093620617707.csv"
+def download_step1():
+    filename = None  # Set a default value for the filename
+    ruta_csv = None
+    if request.method == 'POST':
+        # Retrieve name_csv from server logs
+        log_file = './record.log'
+        with open(log_file, 'r') as file:
+            log_content = file.read()
+            match = re.findall(r'name_csv:\s*(\d+\.csv)', log_content)
+            if match:
+                filename = match[-1] #Get the last ruta_csv value
+            else:
+                # Handle case where name_csv is not found in logs
+                return "Error: name_csv not found in logs"
+
+        if filename is not None:
+            try:
+                ruta_csv = f"http://datahub.utm.csic.es/cdigen/static/csv/{filename}"
+                print("ruta_csv:", ruta_csv)
+            except Exception as e:
+                print("Error constructing ruta_csv:", e)
+        else:
+            print("Filename is None. Unable to construct ruta_csv.")
+            # Handle case where filename is None
+
         cruise_id = request.values.get('cruise_id')
         print (cruise_id)
         csr_code = request.values.get("cdSelect")
@@ -351,35 +363,6 @@ def download_step1():
         # Compress the folder into a ZIP file
         zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
         print(zip_filename)
-        shutil.make_archive(zip_filename[:-4], 'zip', source_folder)
-
-        #Delete the original folder from portfo folder
-        shutil.rmtree(source_folder)
-
-        return render_template('service.html', cruise_id=cruise_id)
-
-        date_final_input = request.values.get("date_final")
-        año, mes, dia = date_final_input.split("-")
-        date_final= "{}/{}/{} 00:00:00".format(dia, mes, año)
-        print (date_final)
-        contadorselects = 10 #el contadorselects hauria de ser el numero maxims de tipus de cdis que podem generar
-
-        selects = []
-        for i in range(contadorselects):
-            select_value = request.values.get('select-' + str(i))
-            selects.append(select_value)
-
-        print("Valores de selects:", selects)
-        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final)
-
-        source_folder = os.path.abspath(cruise_id)
-        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
-        
-        if path.exists(zip_filename):
-            remove(zip_filename)
-    
-        # Compress the folder into a ZIP file
-        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
         shutil.make_archive(zip_filename[:-4], 'zip', source_folder)
 
         #Delete the original folder from portfo folder
