@@ -10,8 +10,7 @@ from datetime import datetime
 import requests, argparse
 from lxml import etree
 import copy
-#importem els scripts de cada cdi
-import scripts.met_script,  scripts.ts_script, scripts.sbe_script
+
 
 
 def crear_carpeta (nombre_carpeta):
@@ -23,8 +22,9 @@ def crear_carpeta (nombre_carpeta):
             # Si la carpeta ya existe, imprime un mensaje
             print(f"La carpeta '{nombre_carpeta}' ya existe.")
             
-def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code):
+def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code):
   
+
   
   if csr_code != "UNKNOWN":
     #agafem el xml i busquem en ell la campanya que estem fent. aqui s'agafa el identificador i i la descripció per posar al xml
@@ -117,7 +117,9 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
     vessel_reduit="hes"
     vessel = "Hespérides"
     
-
+  url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+ vessel_reduit + cruise_id[4:12]
+  r = requests.get(url_bbox)
+  input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
  
   dia= cruise_id[10:12]
   mes=cruise_id[8:10]
@@ -136,19 +138,7 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
   nombre_carpeta = cruise_id
 
   crear_carpeta (nombre_carpeta)
-  
-  underway_met =nombre_carpeta + "/" +cruise_id + "_met.xml"
-  underway_ts =nombre_carpeta + "/" +cruise_id + "_ts.xml"
-  underway_sbe = nombre_carpeta + "/" + cruise_id + "_sbe.xml"
 
-  #if path.exists(underway_general):
-    #remove(underway_general)
-  if path.exists(underway_met):
-    remove(underway_met)
-  if path.exists(underway_ts):
-    remove(underway_ts)
-  if path.exists(underway_sbe):
-    remove(underway_sbe)
 
   shutil.copy("model_underway.xml", underway_general)
   print (underway_general)
