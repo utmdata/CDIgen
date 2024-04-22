@@ -13,15 +13,16 @@ import copy
 
 #Definim el namespace perquè el trobi en el XML
 
+
 def eliminar_columnes(csv_name):
   arxiu = pd.read_csv(csv_name)
-  arxiu = arxiu.reindex(columns=["cruise_id","latitude", "longitude","Instrument", "instrument","vessel", "id", "met_cat" ,"Coments"])
+  arxiu = arxiu.reindex(columns=["cruise_id","latitude", "longitude","Instrument", "instrument","vessel", "id", "met_cat"])
   arxiu = arxiu.rename (columns={'latitude': 'lat', 'longitude': 'lon', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'codiid'})
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
-def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final):
-    cdi_model = "_xbt"
+def funcio_ctd (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final):
+    cdi_model = "_ctd"
     
     fila=0
     lista_id=[]
@@ -55,7 +56,7 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     output_file= cdi_individual
 
     #canviar paràmetres
-    num_parametres = 3
+    num_parametres = 8
     for _ in range(num_parametres-1):
         tree = etree.parse(input_file)
         root = tree.getroot()
@@ -72,34 +73,93 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
         tree.write(output_file, xml_declaration=True, encoding="utf-8",method="xml")
 
     tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'Vertical spatial coordinates'
-    posList_1.set ("codeListValue","AHGT")
-    posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList_1.text =  'Salinity of the water column'
+    posList_1.set ("codeListValue","PSAL")
+    posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_2.text =  'Temperature of the water column'
     posList_2.set ("codeListValue","TEMP")
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'Sound velocity and travel time in the water column'
-    posList_1.set ("codeListValue","SVEL")
+    posList= tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList.text =  'Electrical conductivity of the water column'
+    posList.set ("codeListValue","CNDC")
+    posList= tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList.text =  'Transmittance and attenuance of the water column'
+    posList.set ("codeListValue","ATTN")
+    posList= tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList.text =  'Dissolved oxygen parameters in the water column'
+    posList.set ("codeListValue","DOXY")
+    posList= tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList.text =  'Density of the water column'
+    posList.set ("codeListValue","SIGT")    
+    posList= tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList.text =  'Chlorophyll pigment concentrations in water bodies'
+    posList.set ("codeListValue","CPWC")
+    posList= tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList.text =  'Visible waveband radiance and irradiance measurements in the water column'
+    posList.set ("codeListValue","VSRW")
 
     tree.write(output_file)
+    #canviar instruments
+    num_instruments = 8
+    for _ in range(num_instruments-1):
+        tree = etree.parse(input_file)
+        root = tree.getroot()
+        element_to_copy = root.find(".//sdn:SDN_DeviceCategoryCode", namespaces=namespace)
+        # Crear una copia del elemento y su elemento padre
+        copied_element = element_to_copy.makeelement(element_to_copy.tag, element_to_copy.attrib, nsmap=namespace)
+        copied_element.text = element_to_copy.text
+        parent_element = element_to_copy.getparent()
+        copied_parent_element = parent_element.makeelement(parent_element.tag, parent_element.attrib, nsmap=namespace)
+        # Agregar la copia del elemento en el elemento padre copiado
+        copied_parent_element.append(copied_element)
+        # Reemplazar el elemento original con el elemento padre copiado en el árbol XML
+        parent_element.getparent().append(copied_parent_element)
+        tree.write(output_file, xml_declaration=True, encoding="utf-8",method="xml")
 
-    #canviar intruments ( de unknown al meteorological data)
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'bathythermographs'
-    posList_1.set ("codeListValue","132")
+    posList_1.text =  'CTD'
+    posList_1.set ("codeListValue","130")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'fluorometers'
+    posList_1.set ("codeListValue","113")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'dissolved gas sensors'
+    posList_1.set ("codeListValue","351")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'salinity sensor'
+    posList_1.set ("codeListValue","350")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'water temperature sensor'
+    posList_1.set ("codeListValue","134")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'transmissometers'
+    posList_1.set ("codeListValue","124")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'radiometers'
+    posList_1.set ("codeListValue","122")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'altimeters'
+    posList_1.set ("codeListValue","379")
+
     tree.write(output_file)
 
 
     #canviar sensor segons el vaixell
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'Lockheed Martin Sippican T-5 XBT probe'
-    posList_1.set ("codeListValue","TOOL0262")
+    posList_1.text =  'Sea-Bird SBE 911plus CTD'
+    posList_1.set ("codeListValue","TOOL0058")
     tree.write(output_file)
 
-    cdi_global=cruise_id + "/" + cruise_id + "_xbt.xml"
+    cdi_global=cruise_id + "/" + cruise_id + cdi_model +".xml"
     shutil.copy (cdi_individual,cdi_global)
     
     
@@ -121,12 +181,12 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     samples_and_stations = pd.read_csv(ruta_csv, names = header_list)
     samples = pd.DataFrame(samples_and_stations)
 
-    if path.exists(cruise_id + "_xbt.txt"):
-      remove(cruise_id + "_xbt.txt")
+    if path.exists(cruise_id + cdi_model + ".txt"):
+      remove(cruise_id +cdi_model +  ".txt")
 
     #canviar segons el cdi:   
 
-    select_instrument = "XBT"
+    select_instrument = "CTD"
 
     shutil.copy(cdi_individual, "static/csv/cdi_model_1.xml")
     filename = "cdi_model_1.xml"
@@ -141,7 +201,7 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     instrument.to_csv("static/csv/samples.csv", index=False)
 
     
-    cdi_model = "_xbt" #canviar  
+    
     samples = pd.read_csv("static/csv/samples.csv")
     samples.index = np.arange(1, len(samples) + 1) # que els index comencin per 1 no per 0
     samples = samples.rename_axis('index').reset_index()
@@ -180,7 +240,7 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     for i in range(0,total_lines):
       name=str(samples.loc [i,"index"])
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
-      text = " XBT "  #canviar  
+      text = "CTD"  #canviar  
 
       name2= cruise_name  + text + name + " data"  
       fila=fila+1
@@ -191,8 +251,8 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
       name=str(samples.loc [i,"index"])
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
-
-      name3= "Water column data launched on board the R/V "+ vessel +" during the " + cruise_name +" cruise." #canviar  
+      name3= "Water column data acquired on board the R/V " + vessel + " with a SeaBird SBE911 plus" + text + " during the " + cruise_name + " cruise."
+       
       fila=fila+1
       lista_abstract.append(name3)
     samples['abstract'] = lista_abstract
@@ -330,13 +390,14 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     #afegir dataset name
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_NAME')]", namespaces=namespace)[0]
-    posList.text = cruise_name + " XBT data"
+    posList.text = cruise_name + " " + text   + " data"
     tree.write(cdi_global)
 
     #afegir ABSTRACT
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = "Water column data from "+ str(total_lines) +" launched on board the R/V "+ vessel +" during the " + cruise_name +" cruise."
+    posList.text = "Water column data from "+ str(total_lines) +  " " + text + "s " + "acquired on board the R/V " + vessel + " with a SeaBird SBE911 plus" + text + " during the " + cruise_name + " cruise."
+   
     tree.write(cdi_global)
     print(total_lines)
 
@@ -366,6 +427,8 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
     posList.text = final_position
     tree.write(cdi_global)
+
+
 
     eliminar_columnes(csv_name)
     os.remove ("static/csv/samples.csv")

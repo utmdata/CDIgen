@@ -11,8 +11,6 @@ import requests, argparse
 from lxml import etree
 import copy
 #importem els scripts de cada cdi
-import scripts.met_script,  scripts.ts_script, scripts.sbe_script
-
 
 def crear_carpeta (nombre_carpeta):
     try:
@@ -22,10 +20,10 @@ def crear_carpeta (nombre_carpeta):
     except FileExistsError:
             # Si la carpeta ya existe, imprime un mensaje
             print(f"La carpeta '{nombre_carpeta}' ya existe.")
-            
-def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code):
-  
-  
+
+def general (cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final):
+  print(selects)
+  fila=0  
   if csr_code != "UNKNOWN":
     #agafem el xml i busquem en ell la campanya que estem fent. aqui s'agafa el identificador i i la descripció per posar al xml
     xml_file = "http://161.111.137.92:8001/static/csrCodeList.xml"
@@ -36,9 +34,7 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
     for cruisename in root.findall(".//{http://www.opengis.net/gml}cruisename"):
         if cruisename.text == csr_code:
             description_csr = cruisename.getparent().find("{http://www.opengis.net/gml}description").text
-            id_csr = cruisename.getparent().find("{http://www.opengis.net/gml}identifier").text
-            
-            
+            id_csr = cruisename.getparent().find("{http://www.opengis.net/gml}identifier").text            
     print (id_csr)
     print(description_csr)
   
@@ -71,6 +67,8 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
   query_params = {'query': sparql_query, 'accept': 'application/json'}
 
   response = requests.get(sparql_endpoint, params=query_params)
+  print(response)
+
 
   if response.status_code == 200:
       data = response.json()
@@ -125,37 +123,23 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
 
   fila=0
 
-  if path.exists("model_underway.txt"):
-    remove("model_underway.txt")
+  if path.exists("model_cdi_sensegml.xml.txt"):
+    remove("model_cdi_sensegml.xml.txt")
   
-
-
-  underway_general =cruise_id + "_underway.xml"
+  cdi_individual =cruise_id + "_cdi.xml"
   
   nombre_carpeta = cruise_id
 
   crear_carpeta (nombre_carpeta)
   
-  underway_met =nombre_carpeta + "/" +cruise_id + "_met.xml"
-  underway_ts =nombre_carpeta + "/" +cruise_id + "_ts.xml"
-  underway_sbe = nombre_carpeta + "/" + cruise_id + "_sbe.xml"
 
-  #if path.exists(underway_general):
-    #remove(underway_general)
-  if path.exists(underway_met):
-    remove(underway_met)
-  if path.exists(underway_ts):
-    remove(underway_ts)
-  if path.exists(underway_sbe):
-    remove(underway_sbe)
-
-  shutil.copy("model_underway.xml", underway_general)
-  print (underway_general)
+  shutil.copy("model_cdi_sensegml.xml", cdi_individual)
+  print (cdi_individual)
 
   #Posem la url perque trobi el gml i l'enganxi en el xml
-  input_file= underway_general
+  input_file= cdi_individual
   input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
-  output_file= underway_general
+  output_file= cdi_individual
 
 
   #Definim el namespace perquè el trobi en el XML
@@ -166,43 +150,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
       'sdn': 'http://www.seadatanet.org',
       'gmx': 'http://www.isotc211.org/2005/gmx'
   }
-
-
-  #afegim GML
-  url = input_url
-
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gml:posList[contains(text(), '-1 -1 -1 -1')]", namespaces=namespace)[0]
-  posList.text = requests.get(url).text.strip()
-  tree.write(output_file)
-  #print('Your GMLs coordinates were successfully added to your new XML document.')"""
-
-  #afegim BOUNDING BOX
-  url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
-  print (url_bbox)
-  tree = etree.parse(input_file)
-  r = requests.get(url_bbox)
-  coord= r.text[4:-2] #nomes coordenades 4separades per espais i comes
-  posicio_primer_espai= r.text[4:-2].index(" ")
-  posicio_coma= r.text[4:-2].index(",")
-  w= coord[0:posicio_primer_espai]
-  s= coord[posicio_primer_espai:posicio_coma].strip()
-  coord_2=coord[posicio_coma:]
-  coord_2= coord_2[1:]
-  posicio_segon_espai= coord_2.index(" ")
-  e= coord_2[0:posicio_segon_espai].strip()
-  n= coord_2[posicio_segon_espai:].strip()
-
-  posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-  posList_w.text=w
-  posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-  posList_s.text= s
-  posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-  posList_e.text= e
-  posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
-  posList_n.text=n
-
-  tree.write(output_file)
 
   #afegim short id
   tree = etree.parse(input_file)
@@ -223,28 +170,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
   posList.text = data
   tree.write(output_file)
 
-  #afegim data inicial
-  hora_inicial = date_inicial[11:]
-  begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
-
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gml:beginPosition[contains(text(), '2023-01-01T00:00:00')]", namespaces=namespace)[0]
-  posList.text = begin_position
-  tree.write(output_file)
-
-  #afegim data final
-  hora_final = date_final[11:]
-  data_final = date_final[:10]
-  dia_final= data_final[0:2]
-  mes_final=data_final[3:5]
-  any_final=data_final[6:10]
-
-  final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gml:endPosition[contains(text(), '2023-01-02T00:00:00')]", namespaces=namespace)[0]
-  posList.text = final_position
-  tree.write(output_file)
-
   #afegim org_name
   tree = etree.parse(input_file)
   posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
@@ -258,7 +183,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
   posList.text = org_name
   posList.set ("codeListValue",notation)
   tree.write(output_file)
-
  
   #afegim street
   tree = etree.parse(input_file)
@@ -282,7 +206,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
   posList.text = country
   tree.write(output_file)
 
-
   #afegim email
   tree = etree.parse(input_file)
   posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
@@ -293,8 +216,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
   posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
   posList.text = email
   tree.write(output_file)
-
-
 
   #afegim csrcodelist
   tree = etree.parse(input_file)

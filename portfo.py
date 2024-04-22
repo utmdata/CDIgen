@@ -11,7 +11,7 @@ import os
 from os import path, remove
 from datetime import datetime
 import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, scripts.generalweb, scripts.xbt ,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
-import scripts.ctd
+import scripts.ctd, scripts.dre , scripts.ctd_ros, scripts.xsv , scripts.ctd_ros_ladcp, scripts.grv, scripts.tra, scripts.moc
 import requests
 import shutil
 import logging
@@ -74,6 +74,12 @@ def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_in
         else:
             print ("No met")
 
+        
+        if "grv" in data:
+            scripts.grv.funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
+        else:
+            print ("No grv")    
+
         if "ts" in data:
             scripts.ts_script.funcio_ts (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
         else:
@@ -120,7 +126,7 @@ def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_in
         if "sbp" in data:
             scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
         else: 
-            print ("No sbp")   
+            print ("No sbp")
         
         underway_general =cruise_id + "_underway.xml"
 
@@ -183,7 +189,6 @@ def download_file():
         data = tareas_cdi
         
         print(tareas_cdi)
-
         #if tareas_cdi == [] or None or "":
             #return render_template('error_variables.html')
             #return "no variables"
@@ -220,16 +225,7 @@ def save_json_to_file(json_data, filename):
     else:
         # If the file does not exist, create a new file
         mode = 'x'
-        
-    # Write JSON data to file
-    with open(file_path, mode) as file:
-    json.dump(json_data, file)
 
-path_global=""
-
-@app.route('/upload_json', methods=['POST'])
-def upload_json():
-    if request.method == 'POST': 
     # Write JSON data to file
     with open(file_path, mode) as file:
         json.dump(json_data, file)
@@ -238,7 +234,7 @@ def upload_json():
 
 @app.route('/upload_json', methods=['POST'])
 def upload_json():
-    if request.method == 'POST':   
+    if request.method == 'POST': 
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
         directory = 'static/csv'
@@ -278,18 +274,104 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" xbt")
         else:
-            print("no hi ha select")
+            print("no hi ha select de XBT")
 
         if "CTD" in selects:
             scripts.ctd.funcio_ctd (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" ctd")
         else:
-            print("no hi ha select")
-        
-        cdi_general =cruise_id + "_general.xml"
+            print("no hi ha select de CTD")
 
+        if "CTD_ROS" in selects:
+            scripts.ctd_ros.funcio_ctd_ros (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" ctd_ros")
+        else:
+            print("no hi ha select de CTD_ROS")   
+
+        if "CTD_ROS_LADCP" in selects:
+            scripts.ctd_ros_ladcp.funcio_ctd_ros_ladcp (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" ctd_ros_ladcp")
+        else:
+            print("no hi ha select de CTD_ROS_LADCP")  
+                     
+        if "DRE" in selects:
+            scripts.dre.funcio_dre (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" dre")
+        else:
+            print("no hi ha select de DRE")
+        
+
+        if "SVP" in selects:
+            scripts.svp.funcio_svp (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" svp")
+        else:
+            print("no hi ha select de SVP")
+        
+        if "XSV" in selects:
+            scripts.xsv.funcio_xsv (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" xsv")
+        else:
+            print("no hi ha select de XSV")
+        
+        if "TRA" in selects:
+            scripts.tra.funcio_tra (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" tra")
+        else:
+            print("no hi ha select de TRA")
+        
+        if "MOC" in selects:
+            scripts.moc.funcio_moc (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" moc")
+        else:
+            print("no hi ha select de MOC")
+
+        if "ADCP" in selects:
+            
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.adcp.funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No adcp")
+
+        if "ffe" in selects:
+            scripts.ffe.funcio_ffe (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No ffe")   
+
+        if "mag" in selects:
+            scripts.mag.funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No mag")
+        if "mbe" in selects:
+            scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No mbe")
+
+        if "mcs" in selects:
+            scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No mcs") 
+
+        if "sss" in selects:
+            scripts.sss.funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No sss")
+
+        if "srs" in selects:
+            scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No srs")
+
+        if "sbp" in selects:
+            scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No sbp")
+        
+
+
+        cdi_general =cruise_id + "_general.xml"
         if path.exists(cdi_general):
             remove(cdi_general)  
+
 
 @app.route('/download_step1', methods=['POST', 'GET'])
 def download_step1():
