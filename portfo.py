@@ -1,7 +1,7 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify ,send_file, Response, send_from_directory, send_file, request
+from flask import Flask, render_template, url_for, request, redirect, jsonify ,send_file, Response, send_from_directory, send_file
 from flask_cors import CORS
 from flask import session
-
+#Define static route to flask into the folder static
 app = Flask(__name__, static_url_path='/static')
 CORS(app, resources={r"/*": {"origins": "http://datahub.utm.csic.es"}})
 import csv
@@ -19,7 +19,7 @@ from shutil import make_archive,copy
 import zipfile, tempfile
 import json, re
 
-#Ruta estàtica de Flask a static/tareas
+#Route from flask to serve static files
 # Define the directory to save the generated zip file
 ZIP_FOLDER = os.path.join(app.static_folder, 'tareas')
 ruta_csv = ""
@@ -50,7 +50,7 @@ def fetch_and_save_csr_code_list():
         print(f"An error occurred: {str(e)}")
 
 
-# Ara aprendrem a fer tota l'associació de diferents pàgines a HTML d'una forma eficient i sense haver d'afegir cada cop una funció per cada pàgina.
+#Routing various html pages:
 
 @app.route('/')
 def my_home():
@@ -63,7 +63,7 @@ def html_page(page_name):
     return render_template(page_name)
 
 
-# Ara podem accedir a aquestes dades amb el Flask attribute request.
+#Starting the metadata generation process for the underway variables:
 
 def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data,valor_org, csr_code):
         input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
@@ -89,44 +89,7 @@ def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_in
             scripts.sbe_script.funcio_sbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
         else: 
             print ("No sbe")
-        """if "adcp" in data:
-            scripts.adcp.funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No adcp")
 
-        if "ffe" in data:
-            scripts.ffe.funcio_ffe (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No ffe")   
-
-        if "mag" in data:
-            scripts.mag.funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No mag")
-        if "mbe" in data:
-            scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No mbe")
-
-        if "mcs" in data:
-            scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No mcs") 
-
-        if "sss" in data:
-            scripts.sss.funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No sss")
-
-        if "srs" in data:
-            scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No srs")
-
-        if "sbp" in data:
-            scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No sbp")"""
         
         underway_general =cruise_id + "_underway.xml"
 
@@ -346,42 +309,42 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
         else: 
             print ("No adcp")
 
-        if "ffe" in selects:
+        if "FFE" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.ffe.funcio_ffe (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No ffe")   
 
-        if "mag" in selects:
+        if "MAG" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.mag.funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No mag")
-        if "mbe" in selects:
+        if "MBE" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No mbe")
 
-        if "mcs" in selects:
+        if "MCS" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No mcs") 
 
-        if "sss" in selects:
+        if "SSS" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.sss.funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No sss")
 
-        if "srs" in selects:
+        if "SRS" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No srs")
 
-        if "sbp" in selects:
+        if "SBP" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
