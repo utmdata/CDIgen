@@ -14,7 +14,7 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data):
+def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
@@ -47,13 +47,13 @@ def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text = cruise_id + "_sbp"
+    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_sbp"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + "_sbp"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text = cruise_id + "_sbp"
+    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_sbp"
     tree.write(output_file)
 
     #afegir dataset name
@@ -70,10 +70,10 @@ def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
 
 #canviar parameters
     num_parametres = 2
-    for _ in range(num_parametres):
+    for _ in range(num_parametres-1):
         tree = etree.parse(input_file)
         root = tree.getroot()
-        element_to_copy = root.find(".//sdn:SDN_DeviceCategoryCode", namespaces=namespace)
+        element_to_copy = root.find(".//sdn:SDN_ParameterDiscoveryCode", namespaces=namespace)
         # Crear una copia del elemento y su elemento padre
         copied_element = element_to_copy.makeelement(element_to_copy.tag, element_to_copy.attrib, nsmap=namespace)
         copied_element.text = element_to_copy.text
@@ -105,7 +105,7 @@ def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
 
 
 
-    #no canviem el sensor pq no existeix la Kongsberg EK 60 biological echosounder
+    #no canviem el sensor pq no existeix 
     """#canviar sensor
     tree = etree.parse(input_file)
     posList_1 = tree.xpath(".//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]

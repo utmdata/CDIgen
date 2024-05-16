@@ -14,7 +14,7 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-def funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data):
+def funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
@@ -47,13 +47,13 @@ def funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input,
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text = cruise_id + "_adcp"
+    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_adcp"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + "_adcp"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text = cruise_id + "_adcp"
+    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + "_adcp"
     tree.write(output_file)
 
     #afegir dataset name
