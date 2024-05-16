@@ -1,3 +1,4 @@
+
 import pandas as pd
 import glob
 from datetime import datetime
@@ -20,7 +21,7 @@ def eliminar_columnes(csv_name):
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
-def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final):
+def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv,date_inicial, date_final):
     cdi_model = "_xbt"
     
     fila=0
@@ -72,13 +73,13 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
         tree.write(output_file, xml_declaration=True, encoding="utf-8",method="xml")
 
     tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Vertical spatial coordinates'
     posList_1.set ("codeListValue","AHGT")
-    posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_2.text =  'Temperature of the water column'
     posList_2.set ("codeListValue","TEMP")
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Sound velocity and travel time in the water column'
     posList_1.set ("codeListValue","SVEL")
 
@@ -180,9 +181,9 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     for i in range(0,total_lines):
       name=str(samples.loc [i,"index"])
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
-      text = " XBT "  #canviar  
+      text = "XBT"  #canviar  
 
-      name2= cruise_name  + text + name + " data"  
+      name2= cruise_name  + " " +text +" " + name + " data"  
       fila=fila+1
       lista_name.append(name2)
     samples['name'] = lista_name
@@ -192,7 +193,7 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       name=str(samples.loc [i,"index"])
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
 
-      name3= "Water column data launched on board the R/V "+ vessel +" during the " + cruise_name +" cruise." #canviar  
+      name3= "Water column data XBT launched on board the R/V "+ vessel +" during the " + cruise_name +" cruise." #canviar  
       fila=fila+1
       lista_abstract.append(name3)
     samples['abstract'] = lista_abstract
@@ -336,7 +337,7 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     #afegir ABSTRACT
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = "Water column data from "+ str(total_lines) +" launched on board the R/V "+ vessel +" during the " + cruise_name +" cruise."
+    posList.text = "Water column data from "+ str(total_lines) +" XBT launched on board the R/V "+ vessel +" during the " + cruise_name +" cruise."
     tree.write(cdi_global)
     print(total_lines)
 
@@ -366,6 +367,8 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
     posList.text = final_position
     tree.write(cdi_global)
+
+
 
     eliminar_columnes(csv_name)
     os.remove ("static/csv/samples.csv")

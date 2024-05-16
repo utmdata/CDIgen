@@ -253,7 +253,7 @@ def funcio_ctd_ros_ladcp (cruise_id, cruise_name, vessel_input, ruta_csv, date_i
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
       text = "CTD, rosette and LADCP"  #canviar  
 
-      name2= cruise_name  + text + name + " data"  
+      name2= cruise_name  +" " + text +" " + name + " data"  
       fila=fila+1
       lista_name.append(name2)
     samples['name'] = lista_name

@@ -56,7 +56,7 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     #canviar paràmetres
     tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown)]", namespaces=namespace)[0]
+    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Microzooplankton taxonomic abundance in water bodies'
     posList_1.set ("codeListValue","MATX")
     
@@ -336,7 +336,7 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     #afegir ABSTRACT
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = "Data from" + str(total_lines) +"biological samples acquired on board the R/V" +vessel +" during the " + cruise_name +" cruise."
+    posList.text = "Data from " + str(total_lines) +" biological samples acquired on board the R/V" +vessel +" during the " + cruise_name +" cruise."
     tree.write(cdi_global)
     print(total_lines)
 

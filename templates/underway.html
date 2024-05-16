@@ -42,12 +42,12 @@
     }
     #div1, #div2 {
       width: 200px;
-      height: 150px;
+      height: 195px;
       
       margin: 10px;
       padding: 10px;
     }
-    #met, #ts, #sbe{
+    #met, #ts, #sbe, #grv{
         border: 2px solid black;
     	padding: 5px
     }
@@ -65,7 +65,7 @@
         top: 0;
         left: 0;
         background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
-        z-index: 9999; /* Ensure it's above everything else */
+        z-index: 9999; /* Ensure it's above everything else */ 
         display: none; /* Initially hidden */
     }
 
@@ -103,11 +103,14 @@
                 </div>
                 <div class="col-lg-6 text-center text-lg-right">
                     <div class="d-inline-flex align-items-center">
-                        <a class="text-primary px-3" href="https://twitter.com/datautm">
+                        <a class="text-primary pl-3" href="https://twitter.com/datautm">
                             <i class="fab fa-twitter"></i>
                         </a>
                         <a class="text-primary pl-3" href="https://www.youtube.com/watch?v=sRKKV17o3GI">
                             <i class="fab fa-youtube"></i>
+                        </a>
+                        <a class="text-primary pl-3" href="https://www.github.com/utmdata/">
+                            <i class="fab fa-github"></i>
                         </a>
                     </div>
                 </div>
@@ -221,8 +224,9 @@
                                 <div  id="div1" >                                
                                     <h5 class="form-check-label"  data-id="met" width="88" height="31" id = "met" align="center">MET</h5>                              
                                     <h5 class="form-check-label"  data-id="ts" width="88" height="31" id = "ts" align="center">TSS</h5>
-                                    <h5 class="form-check-label"  data-id="sbe" width="88" height="31"  id = "sbe" align="center" >SBE</h5>  
-                                     <!-- faltaria gravimetria i flurometre?? -->                                  
+                                    <h5 class="form-check-label"  data-id="sbe" width="88" height="31"  id = "sbe" align="center" >SBE</h5> 
+                                    <h5 class="form-check-label"  data-id="grv" width="88" height="31"  id = "grv" align="center" >GRV</h5>   
+                                     <!-- faltaria flurometre?? -->                                  
                                 </div>                               
                                 <div id="div2" ></div>
                             </div>

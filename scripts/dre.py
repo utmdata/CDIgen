@@ -157,9 +157,9 @@ def funcio_dre (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       id= '<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:' + cruise_id + cdi_model + '"  target="_blank">View in metadata catalog</a>' 
       
       lista_met_cat.append(id)
-      
     samples['met_cat'] = lista_met_cat
-    #<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:29SG20230719_ctd_ros_ladcp"  target="_blank">View in metadata catalog</a>
+  
+  #<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:29SG20230719_ctd_ros_ladcp"  target="_blank">View in metadata catalog</a>
     for i in range(0,total_lines):    
       lista_vessel.append(vessel_mayus)
     samples['vessel'] = lista_vessel
@@ -331,7 +331,7 @@ def funcio_dre (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     #afegir ABSTRACT
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = "Data from samples acquired on board the R/V" + vessel +" during the " + cruise_name +" cruise."
+    posList.text = "Data from samples acquired on board the R/V " + vessel +" during the " + cruise_name +" cruise."
     tree.write(cdi_global)
     print(total_lines)
 

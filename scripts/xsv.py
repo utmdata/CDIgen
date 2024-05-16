@@ -72,10 +72,10 @@ def funcio_xsv (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
         tree.write(output_file, xml_declaration=True, encoding="utf-8",method="xml")
 
     tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Sound velocity and travel time in the water column'
     posList_1.set ("codeListValue","SVEL")
-    posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_2.text =  'Vertiocal spatial coordinates'
     posList_2.set ("codeListValue","AHGT")
 

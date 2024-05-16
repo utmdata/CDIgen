@@ -11,7 +11,6 @@ import requests, argparse
 from lxml import etree
 import copy
 #importem els scripts de cada cdi
-import scripts.met_script,  scripts.ts_script, scripts.sbe_script
 
 
 def crear_carpeta (nombre_carpeta):
@@ -48,23 +47,26 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
 
 
   sparql_query = '''
-      SELECT ?org (CONCAT(?name, " (", ?altName, ")") AS ?orgName) ?notation ?tel ?altName ?street ?codepostal ?locality ?email ?country ?web
+      SELECT ?org ?name ?altName (CONCAT(?name, " (", ?altName, ")") AS ?orgName) ?notation ?street ?codepostal ?locality ?country ?web
+
       WHERE {{
-      ?org a <http://www.w3.org/ns/org#Organization> ;
-          <http://www.w3.org/2004/02/skos/core#altName> ?altName ;
-          <http://www.w3.org/ns/org#name> ?name ;
-          <http://www.w3.org/2006/vcard/ns#tel> ?tel ;
-          <http://www.w3.org/2004/02/skos/core#notation> ?notation ;
-          <http://www.w3.org/2006/vcard/ns#street-address> ?street ;
-          <http://www.w3.org/2006/vcard/ns#postal-code> ?codepostal ;
-          <http://www.w3.org/2006/vcard/ns#locality> ?locality ;
-          <http://www.w3.org/2006/vcard/ns#email> ?email ;
-          <http://www.w3.org/2006/vcard/ns#country-name> ?country ;
-          <http://www.w3.org/2000/01/rdf-schema#seeAlso> ?web .
+
+          ?org a <http://www.w3.org/ns/org#Organization> ;
+                  <http://www.w3.org/ns/org#name> ?name ;
+                <http://www.w3.org/2004/02/skos/core#notation> ?notation ;
+                <http://www.w3.org/2006/vcard/ns#street-address> ?street ;
+                <http://www.w3.org/2006/vcard/ns#postal-code> ?codepostal ;
+                <http://www.w3.org/2006/vcard/ns#locality> ?locality ;
+                <http://www.w3.org/2006/vcard/ns#country-name> ?country ;
+                <http://www.w3.org/2000/01/rdf-schema#seeAlso> ?web ;
+                <http://www.w3.org/2004/02/skos/core#altName> ?altName.
+                
+
+          
+
       
       FILTER (?org = <{0}>)
       }}
-
       '''.format(valor_org)
 
   sparql_endpoint = 'https://edmo.seadatanet.org/sparql/sparql'
@@ -75,6 +77,7 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
 
   if response.status_code == 200:
       data = response.json()
+      print(data)
       results = data.get('results', {}).get('bindings', [])
   # org,org_name,notation,tel,alt_name,street,codepostal,locality, country, web, email
       for result in results:
@@ -86,13 +89,13 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
           street = result.get('street', {}).get('value', 'N/A')
           codepostal = result.get('codepostal', {}).get('value', 'N/A')
           locality = result.get('locality', {}).get('value', 'N/A')
-          email = result.get('email', {}).get('value', 'N/A')
+          #email = result.get('email', {}).get('value', 'N/A')
           country = result.get('country', {}).get('value', 'N/A')
           web = result.get('web', {}).get('value', 'N/A')
           
           # Modify the email address before printing
-          email = result.get('email', {}).get('value', 'N/A')
-          email = email.replace('mailto:', '').replace('%40', '@')
+          #email = result.get('email', {}).get('value', 'N/A')
+          #email = email.replace('mailto:', '').replace('%40', '@')
 
           print(f'Organization URI: {org}')
           print(f'Organization Name: {org_name}')
@@ -102,11 +105,54 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
           print(f'Street: {street}')
           print(f'Postal Code: {codepostal}')
           print(f'Locality: {locality}')
-          print(f'Email: {email}')
+          #print(f'Email: {email}')
           print(f'Country: {country}')
           print(f'Web: {web}')
           print('-' * 30)
-       
+
+  sparql_query_email = '''
+    SELECT ?org ?name ?altName (CONCAT(?name, " (", ?altName, ")") AS ?orgName) ?email
+
+    WHERE {{
+
+        ?org a <http://www.w3.org/ns/org#Organization> ;
+                <http://www.w3.org/2006/vcard/ns#email> ?email.
+            
+    FILTER (?org = <{0}>)
+    }}
+    '''.format(valor_org)
+
+  sparql_endpoint = 'https://edmo.seadatanet.org/sparql/sparql'
+  query_params_email = {'query': sparql_query_email, 'accept': 'application/json'}
+
+  response = requests.get(sparql_endpoint, params=query_params_email)
+  print(response)
+
+  if response.status_code == 200:
+      data = response.json()
+      print("data:",data)
+      results = data.get('results', {}).get('bindings', [])
+      #results = "{'head': {'vars': ['org', 'name', 'altName', 'orgName', 'email']}, 'results': {'bindings': []}}"
+      resultat = "{'head': {'vars': ['org', 'name', 'altName', 'orgName', 'email']}, 'results': {'bindings': []}}"
+      data = str (data)
+      if data == resultat: 
+          print("no hi ha email")
+          email = "sdn-userdesk@seadatanet.org"
+
+      elif data != resultat:
+              # org,org_name,notation,tel,alt_name,street,codepostal,locality, country, web, email
+          for result in results:
+              email = result.get('email', {}).get('value', 'N/A')
+              # Modify the email address before printing
+              email = result.get('email', {}).get('value', 'N/A')
+              email = email.replace('mailto:', '').replace('%40', '@')
+              print(f'Email: {email}')
+    
+
+
+
+
+
 
   if vessel_input == "sdg":
     vessel_mode = "Sarmiento"

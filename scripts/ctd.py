@@ -242,7 +242,7 @@ def funcio_ctd (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
       text = "CTD"  #canviar  
 
-      name2= cruise_name  + text + name + " data"  
+      name2= cruise_name  + " " +  text + " " + name + " data"  
       fila=fila+1
       lista_name.append(name2)
     samples['name'] = lista_name
@@ -251,7 +251,7 @@ def funcio_ctd (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
       name=str(samples.loc [i,"index"])
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
-      name3= "Water column data acquired on board the R/V " + vessel + " with a SeaBird SBE911 plus" + text + " during the " + cruise_name + " cruise."
+      name3= "Water column data acquired on board the R/V " + vessel + " with a SeaBird SBE911 plus " + text + " during the " + cruise_name + " cruise."
        
       fila=fila+1
       lista_abstract.append(name3)

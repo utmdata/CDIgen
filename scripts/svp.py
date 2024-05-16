@@ -20,7 +20,7 @@ def eliminar_columnes(csv_name):
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
-def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final):
+def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final):
     cdi_model = "_svp"
     
     fila=0
