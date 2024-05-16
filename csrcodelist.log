@@ -20,3 +20,109 @@
 2024-03-26 00:00:19,650 - INFO - CSR code list XML file saved successfully at 2024-03-26 00:00:19.650835.
 2024-03-27 00:00:14,108 - INFO - Script of csrcodelist started.
 2024-03-27 00:00:18,704 - INFO - CSR code list XML file saved successfully at 2024-03-27 00:00:18.703932.
+2024-03-28 00:00:14,106 - INFO - Script of csrcodelist started.
+2024-03-28 00:00:19,259 - INFO - CSR code list XML file saved successfully at 2024-03-28 00:00:19.259429.
+2024-03-29 00:00:14,108 - INFO - Script of csrcodelist started.
+2024-03-29 00:00:15,290 - INFO - CSR code list XML file saved successfully at 2024-03-29 00:00:15.290358.
+2024-03-30 00:00:14,117 - INFO - Script of csrcodelist started.
+2024-03-30 00:00:19,273 - INFO - CSR code list XML file saved successfully at 2024-03-30 00:00:19.273762.
+2024-03-31 00:00:14,105 - INFO - Script of csrcodelist started.
+2024-03-31 00:00:15,351 - INFO - CSR code list XML file saved successfully at 2024-03-31 00:00:15.351540.
+2024-04-01 00:00:14,110 - INFO - Script of csrcodelist started.
+2024-04-01 00:00:18,946 - INFO - CSR code list XML file saved successfully at 2024-04-01 00:00:18.945946.
+2024-04-02 00:00:14,107 - INFO - Script of csrcodelist started.
+2024-04-02 00:00:34,131 - ERROR - An error occurred: HTTPSConnectionPool(host='csr.seadatanet.org', port=443): Max retries exceeded with url: /isoCodelists/csrCodeList.xml (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f8561cdc760>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+2024-04-02 10:46:49,347 - INFO - Script of csrcodelist started.
+2024-04-02 10:46:50,816 - INFO - CSR code list XML file saved successfully at 2024-04-02 10:46:50.816662.
+2024-04-03 00:00:05,649 - INFO - Script of csrcodelist started.
+2024-04-03 00:00:10,432 - INFO - CSR code list XML file saved successfully at 2024-04-03 00:00:10.432131.
+2024-04-03 12:50:01,033 - INFO - Script of csrcodelist started.
+2024-04-03 12:50:02,610 - INFO - CSR code list XML file saved successfully at 2024-04-03 12:50:02.610274.
+2024-04-04 00:00:02,337 - INFO - Script of csrcodelist started.
+2024-04-04 00:00:03,728 - INFO - CSR code list XML file saved successfully at 2024-04-04 00:00:03.728101.
+2024-04-05 00:00:02,346 - INFO - Script of csrcodelist started.
+2024-04-05 00:00:03,909 - INFO - CSR code list XML file saved successfully at 2024-04-05 00:00:03.909867.
+2024-04-06 00:00:02,337 - INFO - Script of csrcodelist started.
+2024-04-06 00:00:03,662 - INFO - CSR code list XML file saved successfully at 2024-04-06 00:00:03.662816.
+2024-04-07 00:00:02,335 - INFO - Script of csrcodelist started.
+2024-04-07 00:00:03,513 - INFO - CSR code list XML file saved successfully at 2024-04-07 00:00:03.513156.
+2024-04-08 00:00:02,335 - INFO - Script of csrcodelist started.
+2024-04-08 00:00:07,361 - INFO - CSR code list XML file saved successfully at 2024-04-08 00:00:07.361581.
+2024-04-09 00:00:02,331 - INFO - Script of csrcodelist started.
+2024-04-09 00:00:03,608 - INFO - CSR code list XML file saved successfully at 2024-04-09 00:00:03.608252.
+2024-04-10 00:00:02,334 - INFO - Script of csrcodelist started.
+2024-04-10 00:00:03,531 - INFO - CSR code list XML file saved successfully at 2024-04-10 00:00:03.531299.
+2024-04-11 00:00:02,335 - INFO - Script of csrcodelist started.
+2024-04-11 00:00:07,438 - INFO - CSR code list XML file saved successfully at 2024-04-11 00:00:07.438236.
+2024-04-12 00:00:02,347 - INFO - Script of csrcodelist started.
+2024-04-12 00:00:03,598 - INFO - CSR code list XML file saved successfully at 2024-04-12 00:00:03.597935.
+2024-04-13 00:00:02,337 - INFO - Script of csrcodelist started.
+2024-04-13 00:00:03,545 - INFO - CSR code list XML file saved successfully at 2024-04-13 00:00:03.545741.
+2024-04-14 00:00:02,345 - INFO - Script of csrcodelist started.
+2024-04-14 00:00:03,542 - INFO - CSR code list XML file saved successfully at 2024-04-14 00:00:03.542130.
+2024-04-15 00:00:02,339 - INFO - Script of csrcodelist started.
+2024-04-15 00:00:07,672 - INFO - CSR code list XML file saved successfully at 2024-04-15 00:00:07.671989.
+2024-04-16 00:00:02,338 - INFO - Script of csrcodelist started.
+2024-04-16 00:00:03,612 - INFO - CSR code list XML file saved successfully at 2024-04-16 00:00:03.612098.
+2024-04-17 00:00:10,539 - INFO - Script of csrcodelist started.
+2024-04-17 00:00:11,998 - INFO - CSR code list XML file saved successfully at 2024-04-17 00:00:11.998010.
+2024-04-18 00:00:10,522 - INFO - Script of csrcodelist started.
+2024-04-18 00:00:11,671 - INFO - CSR code list XML file saved successfully at 2024-04-18 00:00:11.671116.
+2024-04-19 00:00:10,540 - INFO - Script of csrcodelist started.
+2024-04-19 00:00:11,867 - INFO - CSR code list XML file saved successfully at 2024-04-19 00:00:11.867211.
+2024-04-20 00:00:10,523 - INFO - Script of csrcodelist started.
+2024-04-20 00:00:15,571 - INFO - CSR code list XML file saved successfully at 2024-04-20 00:00:15.571624.
+2024-04-21 00:00:10,532 - INFO - Script of csrcodelist started.
+2024-04-21 00:00:11,967 - INFO - CSR code list XML file saved successfully at 2024-04-21 00:00:11.967694.
+2024-04-22 00:00:10,539 - INFO - Script of csrcodelist started.
+2024-04-22 00:00:12,229 - INFO - CSR code list XML file saved successfully at 2024-04-22 00:00:12.229888.
+2024-04-23 00:00:10,523 - INFO - Script of csrcodelist started.
+2024-04-23 00:00:11,747 - INFO - CSR code list XML file saved successfully at 2024-04-23 00:00:11.747341.
+2024-04-23 10:53:56,598 - INFO - Script of csrcodelist started.
+2024-04-23 10:54:01,601 - INFO - CSR code list XML file saved successfully at 2024-04-23 10:54:01.601479.
+2024-04-24 00:00:07,093 - INFO - Script of csrcodelist started.
+2024-04-24 00:00:08,587 - INFO - CSR code list XML file saved successfully at 2024-04-24 00:00:08.587494.
+2024-04-25 00:00:07,093 - INFO - Script of csrcodelist started.
+2024-04-25 00:00:08,474 - INFO - CSR code list XML file saved successfully at 2024-04-25 00:00:08.474572.
+2024-04-26 00:00:07,088 - INFO - Script of csrcodelist started.
+2024-04-26 00:00:08,289 - INFO - CSR code list XML file saved successfully at 2024-04-26 00:00:08.289642.
+2024-04-27 00:00:07,098 - INFO - Script of csrcodelist started.
+2024-04-27 00:00:08,355 - INFO - CSR code list XML file saved successfully at 2024-04-27 00:00:08.355583.
+2024-04-28 00:00:07,098 - INFO - Script of csrcodelist started.
+2024-04-28 00:00:08,364 - INFO - CSR code list XML file saved successfully at 2024-04-28 00:00:08.364347.
+2024-04-29 00:00:07,090 - INFO - Script of csrcodelist started.
+2024-04-29 00:00:08,350 - INFO - CSR code list XML file saved successfully at 2024-04-29 00:00:08.350172.
+2024-04-30 00:00:07,097 - INFO - Script of csrcodelist started.
+2024-04-30 00:00:08,546 - INFO - CSR code list XML file saved successfully at 2024-04-30 00:00:08.546359.
+2024-05-01 00:00:07,090 - INFO - Script of csrcodelist started.
+2024-05-01 00:00:08,356 - INFO - CSR code list XML file saved successfully at 2024-05-01 00:00:08.356336.
+2024-05-02 00:00:07,098 - INFO - Script of csrcodelist started.
+2024-05-02 00:00:12,107 - INFO - CSR code list XML file saved successfully at 2024-05-02 00:00:12.107577.
+2024-05-03 00:00:07,093 - INFO - Script of csrcodelist started.
+2024-05-03 00:00:08,406 - INFO - CSR code list XML file saved successfully at 2024-05-03 00:00:08.406622.
+2024-05-04 00:00:07,098 - INFO - Script of csrcodelist started.
+2024-05-04 00:00:08,275 - INFO - CSR code list XML file saved successfully at 2024-05-04 00:00:08.275669.
+2024-05-05 00:00:07,096 - INFO - Script of csrcodelist started.
+2024-05-05 00:00:08,250 - INFO - CSR code list XML file saved successfully at 2024-05-05 00:00:08.250224.
+2024-05-06 00:00:07,096 - INFO - Script of csrcodelist started.
+2024-05-06 00:00:12,386 - INFO - CSR code list XML file saved successfully at 2024-05-06 00:00:12.386633.
+2024-05-07 00:00:07,093 - INFO - Script of csrcodelist started.
+2024-05-07 00:00:09,505 - INFO - CSR code list XML file saved successfully at 2024-05-07 00:00:09.504932.
+2024-05-08 00:00:07,099 - INFO - Script of csrcodelist started.
+2024-05-08 00:00:08,501 - INFO - CSR code list XML file saved successfully at 2024-05-08 00:00:08.501924.
+2024-05-09 00:00:07,095 - INFO - Script of csrcodelist started.
+2024-05-09 00:00:08,263 - INFO - CSR code list XML file saved successfully at 2024-05-09 00:00:08.263721.
+2024-05-10 00:00:07,096 - INFO - Script of csrcodelist started.
+2024-05-10 00:00:08,324 - INFO - CSR code list XML file saved successfully at 2024-05-10 00:00:08.324448.
+2024-05-11 00:00:07,100 - INFO - Script of csrcodelist started.
+2024-05-11 00:00:08,613 - INFO - CSR code list XML file saved successfully at 2024-05-11 00:00:08.613815.
+2024-05-12 00:00:07,103 - INFO - Script of csrcodelist started.
+2024-05-12 00:00:08,555 - INFO - CSR code list XML file saved successfully at 2024-05-12 00:00:08.555442.
+2024-05-13 00:00:07,112 - INFO - Script of csrcodelist started.
+2024-05-13 00:00:08,326 - INFO - CSR code list XML file saved successfully at 2024-05-13 00:00:08.326348.
+2024-05-14 00:00:07,118 - INFO - Script of csrcodelist started.
+2024-05-14 00:00:08,478 - INFO - CSR code list XML file saved successfully at 2024-05-14 00:00:08.478106.
+2024-05-15 00:00:07,135 - INFO - Script of csrcodelist started.
+2024-05-15 00:00:12,312 - INFO - CSR code list XML file saved successfully at 2024-05-15 00:00:12.311890.
+2024-05-16 00:00:07,111 - INFO - Script of csrcodelist started.
+2024-05-16 00:00:08,443 - INFO - CSR code list XML file saved successfully at 2024-05-16 00:00:08.443906.
