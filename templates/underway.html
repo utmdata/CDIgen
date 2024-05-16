@@ -42,12 +42,12 @@
     }
     #div1, #div2 {
       width: 200px;
-      height: 150px;
+      height: 195px;
       
       margin: 10px;
       padding: 10px;
     }
-    #met, #ts, #sbe{
+    #met, #ts, #sbe, #grv{
         border: 2px solid black;
     	padding: 5px
     }
@@ -65,7 +65,7 @@
         top: 0;
         left: 0;
         background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
-        z-index: 9999; /* Ensure it's above everything else */
+        z-index: 9999; /* Ensure it's above everything else */ 
         display: none; /* Initially hidden */
     }
 
@@ -103,11 +103,14 @@
                 </div>
                 <div class="col-lg-6 text-center text-lg-right">
                     <div class="d-inline-flex align-items-center">
-                        <a class="text-primary px-3" href="https://twitter.com/datautm">
+                        <a class="text-primary pl-3" href="https://twitter.com/datautm">
                             <i class="fab fa-twitter"></i>
                         </a>
                         <a class="text-primary pl-3" href="https://www.youtube.com/watch?v=sRKKV17o3GI">
                             <i class="fab fa-youtube"></i>
+                        </a>
+                        <a class="text-primary pl-3" href="https://www.github.com/utmdata/">
+                            <i class="fab fa-github"></i>
                         </a>
                     </div>
                 </div>
@@ -153,7 +156,7 @@
                             <fieldset>
                                 <label for="vessel_input">
                                    Vessel *
-                                   <select id="vessel_input" name="vessel_input" class="m-t-xs" onclick="loadDoc();" required >
+                                   <select id="vessel_input" name="vessel_input" class="m-t-xs" onchange="loadDoc();" required >
                                         <option value="select" selected>select</option>
                                       <option value="sdg">Sarmiento de Gamboa</option>
                                       <option value="hes">Hespérides</option>
@@ -179,7 +182,7 @@
                             <fieldset>
                                <label for="cruise_name" >
                                Cruise Name *
-                               <input class="" type="text" id="cruise_name" name="cruise_name" placeholder="Enter the cruise name" onchange="validateForm()"  required  />
+                               <input class="" type="text" id="cruise_name" name="cruise_name" placeholder="Enter the cruise name" onchange="csrMatches()"  required  />
                                </label>
                             </fieldset>
                             <fieldset>
@@ -220,9 +223,10 @@
                             <div class="container text-center"  id = "container">               
                                 <div  id="div1" >                                
                                     <h5 class="form-check-label"  data-id="met" width="88" height="31" id = "met" align="center">MET</h5>                              
-                                    <h5 class="form-check-label"  data-id="ts" width="88" height="31" id = "ts" align="center">TS</h5>
-                                    <h5 class="form-check-label"  data-id="sbe" width="88" height="31"  id = "sbe" align="center" >SBE</h5>  
-                                     <!-- faltaria gravimetria i flurometre?? -->                                  
+                                    <h5 class="form-check-label"  data-id="ts" width="88" height="31" id = "ts" align="center">TSS</h5>
+                                    <h5 class="form-check-label"  data-id="sbe" width="88" height="31"  id = "sbe" align="center" >SBE</h5> 
+                                    <h5 class="form-check-label"  data-id="grv" width="88" height="31"  id = "grv" align="center" >GRV</h5>   
+                                     <!-- faltaria flurometre?? -->                                  
                                 </div>                               
                                 <div id="div2" ></div>
                             </div>
@@ -247,7 +251,7 @@
             document.getElementById("fetchButton").classList.add("loading");
 
             // Perform the fetch operation
-            fetch("/fetch_csr_code_list")
+            fetch("/cdigen/fetch_csr_code_list")
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -270,16 +274,32 @@
 
         // Function to handle form submission
         function handleSubmit(event) {
-            // Show the overlay with the loading spinner
+            // Validate the form
+            if (!validateForm()) {
+                // If validation fails, prevent the default form submission behavior
+                event.preventDefault();
+                return;
+            }
+            // If validation passes, the form will be submitted: Show the overlay with the loading spinner
             document.getElementById("overlay").style.display = "block";
         }
 
         // Attach the event listener to the form
         document.getElementById("survey-form").addEventListener("submit", handleSubmit);
 
-    </script>
-    <script>
         function validateForm() {
+            // Check if the content of div2 is empty or not
+            var divContent = document.getElementById("div2").textContent.trim();
+            if (divContent === "") {
+                alert("Please drag the CDI's that you want to generate into the green box.");
+                return false; // Prevent form submission
+            }
+            //IF all the conditions are true, allow form submission
+            return true;
+        }
+
+        function csrMatches() { 
+            // Check if CSR reference and Cruise Name are the same
             var cdSelectValue = document.getElementById("cdSelect").value;
             var cruiseNameValue = document.getElementById("cruise_name").value;
             
@@ -287,6 +307,9 @@
                 alert("CSR reference and Cruise Name are not the same.");
                 return false; // Prevent form submission
             }
+
+            //IF all the conditions are true, allow form submission
+            return true;
         }
     </script>
 
@@ -298,10 +321,6 @@
     <script src="static/lib/tempusdominus/js/moment.min.js"></script>
     <script src="static/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="static/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="static/mail/jqBootstrapValidation.min.js"></script>
-    <script src="static/mail/contact.js"></script>
 
     <!-- Template Javascript -->
     <script src="static/js/main.js"></script>

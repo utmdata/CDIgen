@@ -10,7 +10,7 @@ from datetime import datetime
 import requests, argparse
 from lxml import etree
 import copy
-#importem els scripts de cada cdi
+
 
 
 def crear_carpeta (nombre_carpeta):
@@ -22,8 +22,9 @@ def crear_carpeta (nombre_carpeta):
             # Si la carpeta ya existe, imprime un mensaje
             print(f"La carpeta '{nombre_carpeta}' ya existe.")
             
-def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code):
+def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code):
   
+
   
   if csr_code != "UNKNOWN":
     #agafem el xml i busquem en ell la campanya que estem fent. aqui s'agafa el identificador i i la descripció per posar al xml
@@ -45,7 +46,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
     id_csr = '2004 - Unknown(ZZ99)'
     description_csr = "20050002" 
 
-
   sparql_query = '''
       SELECT ?org ?name ?altName (CONCAT(?name, " (", ?altName, ")") AS ?orgName) ?notation ?street ?codepostal ?locality ?country ?web
 
@@ -60,11 +60,7 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
                 <http://www.w3.org/2006/vcard/ns#country-name> ?country ;
                 <http://www.w3.org/2000/01/rdf-schema#seeAlso> ?web ;
                 <http://www.w3.org/2004/02/skos/core#altName> ?altName.
-                
 
-          
-
-      
       FILTER (?org = <{0}>)
       }}
       '''.format(valor_org)
@@ -77,7 +73,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
 
   if response.status_code == 200:
       data = response.json()
-      print(data)
       results = data.get('results', {}).get('bindings', [])
   # org,org_name,notation,tel,alt_name,street,codepostal,locality, country, web, email
       for result in results:
@@ -109,7 +104,7 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
           print(f'Country: {country}')
           print(f'Web: {web}')
           print('-' * 30)
-
+       
   sparql_query_email = '''
     SELECT ?org ?name ?altName (CONCAT(?name, " (", ?altName, ")") AS ?orgName) ?email
 
@@ -149,11 +144,6 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
               print(f'Email: {email}')
     
 
-
-
-
-
-
   if vessel_input == "sdg":
     vessel_mode = "Sarmiento"
     vessel_reduit='sdg' 
@@ -163,7 +153,9 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
     vessel_reduit="hes"
     vessel = "Hespérides"
     
-
+  url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+ vessel_reduit + cruise_id[4:12]
+  r = requests.get(url_bbox)
+  input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
  
   dia= cruise_id[10:12]
   mes=cruise_id[8:10]
@@ -182,19 +174,7 @@ def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_i
   nombre_carpeta = cruise_id
 
   crear_carpeta (nombre_carpeta)
-  
-  underway_met =nombre_carpeta + "/" +cruise_id + "_met.xml"
-  underway_ts =nombre_carpeta + "/" +cruise_id + "_ts.xml"
-  underway_sbe = nombre_carpeta + "/" + cruise_id + "_sbe.xml"
 
-  #if path.exists(underway_general):
-    #remove(underway_general)
-  if path.exists(underway_met):
-    remove(underway_met)
-  if path.exists(underway_ts):
-    remove(underway_ts)
-  if path.exists(underway_sbe):
-    remove(underway_sbe)
 
   shutil.copy("model_underway.xml", underway_general)
   print (underway_general)

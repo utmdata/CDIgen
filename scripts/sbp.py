@@ -14,7 +14,7 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data):
+def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
@@ -70,10 +70,10 @@ def funcio_sbp (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
 
 #canviar parameters
     num_parametres = 2
-    for _ in range(num_parametres):
+    for _ in range(num_parametres-1):
         tree = etree.parse(input_file)
         root = tree.getroot()
-        element_to_copy = root.find(".//sdn:SDN_DeviceCategoryCode", namespaces=namespace)
+        element_to_copy = root.find(".//sdn:SDN_ParameterDiscoveryCode", namespaces=namespace)
         # Crear una copia del elemento y su elemento padre
         copied_element = element_to_copy.makeelement(element_to_copy.tag, element_to_copy.attrib, nsmap=namespace)
         copied_element.text = element_to_copy.text
