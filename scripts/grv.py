@@ -14,20 +14,18 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-def funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
+def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
       'gco': 'http://www.isotc211.org/2005/gco',
-      'sdn': 'http://www.seadatanet.org',
-      'gmx': 'http://www.isotc211.org/2005/gmx',
-      'xlink': 'http://www.w3.org/1999/xlink'
+      'sdn': 'http://www.seadatanet.org'
   }
 
 
     underway_general =cruise_id + "_underway.xml"
 
-    underway_sss =cruise_id + "/" + cruise_id + "_sss.xml"
+    underway_met =cruise_id + "/" + cruise_id + "_grv.xml"
     
     
     if vessel_input == "sdg":
@@ -40,72 +38,54 @@ def funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
         vessel = "Hespérides"
 
    
-    shutil.copy(underway_general, underway_sss)
-    input_file= underway_sss
-    output_file= underway_sss
+    shutil.copy(underway_general, underway_met)
+    input_file= underway_met
+    output_file= underway_met
 
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + "_sss"
+    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_grv"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_sss"
+    posList.text = cruise_id + "_grv"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + "_sss"
+    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_grv"
     tree.write(output_file)
 
     #afegir dataset name
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_NAME')]", namespaces=namespace)[0]
-    posList.text = cruise_name + " sidescan sonar data"
+    posList.text = cruise_name + " gravimeter data"
     tree.write(output_file)
 
     #afegir ABSTRACT
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = "Sidescan sonar data acquired on board the R/V "+ vessel + " with an EdgeTech 2400 Deep Tow during the "+cruise_name+" cruise."
+    posList.text = "Gravity data acquired on board the R/V "+ vessel + " with an Air-Sea Dynamic System II gravimeter during the "+cruise_name+" cruise."
     tree.write(output_file)
 
     #canviar paràmetres
+    
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
-    posList_1.text =  'Sediment acoustics'
-    posList_1.set ("codeListValue","SDAC")
-   
-    tree.write(output_file)
+    posList_1.text =  'Gravity'
+    posList_1.set ("codeListValue","GRAV")
 
+    tree.write(output_file)
 
     #canviar intruments ( de unknown al meteorological data)
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'sidescan sonars'
-    posList_1.set ("codeListValue","152")
+    posList_1.text =  'gravimeters'
+    posList_1.set ("codeListValue","158")
     tree.write(output_file)
-
-    #no canviem el sensor pq no existeix 
-    """#canviar sensor
-    tree = etree.parse(input_file)
+    
+    #canviar sensor. NO CANVIEM EL SENSOR. ELDEIXEM EN UNKNOWN
+    """tree = etree.parse(input_file)
     posList_1 = tree.xpath(".//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'Teledyne RDI Ocean Surveyor 75kHz vessel-mounted ADCP'
-    posList_1.set ("codeListValue","TOOL0362")
+    posList_1.text =  'Atlas Hydrographic Hydrosweep DS  multibeam echo sounder'
+    posList_1.set ("codeListValue","TOOL0911")
     tree.write(output_file)"""
 
-    #canviar llicencia
-    tree = etree.parse(input_file)
-    posList_1 = tree.xpath(".//gmx:Anchor[contains(text(), 'Creative Commons Attribution 4.0 International')]", namespaces=namespace)[0]
-    posList_1.text =  'by negotiation'
-    posList_1.set("{http://www.w3.org/1999/xlink}href","https://www.seadatanet.org/urnurl/SDN:L08::RS") 
-    tree.write(output_file,encoding='utf-8', xml_declaration=True)
-
-    #canviar data format
-    tree = etree.parse(input_file)
-    posList_1 = tree.xpath(".//sdn:SDN_FormatNameCode[contains(text(), 'Ocean Data View ASCII input')]", namespaces=namespace)[0]
-    posList_1.text =  'Climate and Forecast NetCDF'
-    posList_1.set ("codeListValue","CF")
-    tree.write(output_file)    #canviar versio del data format
-    tree = etree.parse(input_file)
-    posList_1 = tree.xpath(".//gco:CharacterString[contains(text(), '0.4')]", namespaces=namespace)[0]
-    posList_1.text =  '3.5'
-    tree.write(output_file)

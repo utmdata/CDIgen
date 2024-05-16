@@ -45,13 +45,13 @@ def funcio_met (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text = cruise_id + "_met"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_met"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + "_met"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text = cruise_id + "_met"
+    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + "_met"
     tree.write(output_file)
 
     #afegir dataset name
@@ -168,7 +168,7 @@ def funcio_met (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
             parent_element.getparent().append(copied_parent_element)
             tree.write(output_file, xml_declaration=True, encoding="utf-8",method="xml")
             
-        tree = etree.parsSe(input_file)
+        tree = etree.parse(input_file)
         posList_1 = tree.xpath("//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
         posList_1.text =  'Campbell Scientific CR1000 data logger'
         posList_1.set ("codeListValue","TOOL1541")
