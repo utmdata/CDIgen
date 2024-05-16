@@ -1,26 +1,28 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify ,send_file, Response, send_from_directory, send_file, request
+from flask import Flask, render_template, url_for, request, redirect, jsonify ,send_file, Response, send_from_directory, send_file
 from flask_cors import CORS
-
+from flask import session
+#Define static route to flask into the folder static
 app = Flask(__name__, static_url_path='/static')
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://datahub.utm.csic.es"}})
 import csv
 import cgi
 import pandas as pd
 import os
 from os import path, remove
 from datetime import datetime
-import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, general, ctd_script,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
+import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, scripts.generalweb, scripts.xbt ,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
+import scripts.ctd, scripts.dre , scripts.ctd_ros, scripts.xsv , scripts.svp, scripts.ctd_ros_ladcp, scripts.grv, scripts.tra, scripts.moc, scripts.globalweb, scripts.ctd_und
 import requests
 import shutil
 import logging
 from shutil import make_archive,copy
 import zipfile, tempfile
-import json
+import json, re
 
-
-#Ruta estàtica de Flask a static/tareas
+#Route from flask to serve static files
 # Define the directory to save the generated zip file
 ZIP_FOLDER = os.path.join(app.static_folder, 'tareas')
+ruta_csv = ""
 
 # Function to fetch and save the CSR code list XML file
 def fetch_and_save_csr_code_list():
@@ -48,7 +50,7 @@ def fetch_and_save_csr_code_list():
         print(f"An error occurred: {str(e)}")
 
 
-# Ara aprendrem a fer tota l'associació de diferents pàgines a HTML d'una forma eficient i sense haver d'afegir cada cop una funció per cada pàgina.
+#Routing various html pages:
 
 @app.route('/')
 def my_home():
@@ -61,7 +63,7 @@ def html_page(page_name):
     return render_template(page_name)
 
 
-# Ara podem accedir a aquestes dades amb el Flask attribute request.
+#Starting the metadata generation process for the underway variables:
 
 def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data,valor_org, csr_code):
         input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
@@ -72,6 +74,12 @@ def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_in
         else:
             print ("No met")
 
+        
+        if "grv" in data:
+            scripts.grv.funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
+        else:
+            print ("No grv")    
+
         if "ts" in data:
             scripts.ts_script.funcio_ts (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
         else:
@@ -81,44 +89,7 @@ def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_in
             scripts.sbe_script.funcio_sbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
         else: 
             print ("No sbe")
-        if "adcp" in data:
-            scripts.adcp.funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No adcp")
 
-        if "ffe" in data:
-            scripts.ffe.funcio_ffe (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No ffe")   
-
-        if "mag" in data:
-            scripts.mag.funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No mag")
-        if "mbe" in data:
-            scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No mbe")
-
-        if "mcs" in data:
-            scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No mcs") 
-
-        if "sss" in data:
-            scripts.sss.funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No sss")
-
-        if "srs" in data:
-            scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No srs")
-
-        if "sbp" in data:
-            scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
-        else: 
-            print ("No sbp")   
         
         underway_general =cruise_id + "_underway.xml"
 
@@ -129,7 +100,6 @@ tareas_cdi = []
 @app.route('/guardar_tareas', methods=['POST'])
 def guardar_tareas():
     global tareas_cdi
-    #print ("tareas posades antigues",tareas_cdi)
     nuevo_valor_tareas_cdi = request.json.get('tareas_cdi')
     tareas_cdi = nuevo_valor_tareas_cdi
     #print("tareas_cdi actualizado:", tareas_cdi)
@@ -139,7 +109,7 @@ valor_org =[] #crec que es innecesaria aquesta funcio: revisar he borrat la func
 
 @app.route('/download_file', methods=['POST', 'GET'])
 def download_file():
-    if request.method == "POST":
+    if request.method == "POST" or request.method == "GET":
         global tareas_cdi
         global valor_org
         cruise_id = request.values.get('cruise_id')
@@ -149,7 +119,7 @@ def download_file():
 
         url_org = request.values.get("organizacion")
         print( url_org)
-
+        
         cruise_name = request.values.get("cruise_name")
         date_inicial_input = request.values.get("date_inicial")
         print(date_inicial_input)
@@ -182,9 +152,10 @@ def download_file():
         data = tareas_cdi
         
         print(tareas_cdi)
-        if tareas_cdi == [] or None or "":
-            return render_template('error_variables.html')
-        elif valor_org == []:
+        #if tareas_cdi == [] or None or "":
+            #return render_template('error_variables.html')
+            #return "no variables"
+        if valor_org == []:
             return render_template ("error_org.html")
         else:
             grabar_underway(cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code)
@@ -204,82 +175,9 @@ def download_file():
 
         return render_template('service.html', cruise_id=cruise_id)
 
-"""def grabar_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data,valor_org, csr_code):
-        input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
-        general.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code)
-
-        if "met" in data:
-            ctd_script.funcio_ctd (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
-        else:
-            print ("No ctd")
-
-        cdi_general =cruise_id + "_general.xml"
-
-        if path.exists(cdi_general):
-            remove(cdi_general)"""
-
-
-@app.route('/download_step1', methods=['POST', 'GET'])
-def download_step1():
-    
-    if request.method == "POST":
-
-        cruise_id = request.values.get('cruise_id')
-        print (cruise_id)
-        csr_code = request.values.get("cdSelect")
-        print(csr_code)
-        url_org = request.values.get("organizacion")
-        print( url_org)
-        vessel_input = request.values.get("vessel_input")
-        cruise_name = request.values.get("cruise_name")
-
-        if vessel_input == "sdg":
-            vessel_reduit='sdg' 
-        elif vessel_input == "hes": 
-            vessel_reduit="hes"
-        url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
-        r = requests.get(url_bbox)
-        
-        valor_org= url_org
-        try : 
-            posicio_primer_espai= r.text[4:-2].index(" ")
-
-        except:
-            return render_template('error.html', url_bbox=url_bbox, cruise_id= cruise_id)
-        
-        select0 = request.values.get('select-0')
-        print("hola")
-        print (select0)
-        
-            
-        try:
-            select1 = request.values.get('select-1')
-            print("hola")
-            print (select1)
-        except:
-            print("no hi select1")
-                   
-        return render_template('service.html')  
-        #grabar_general(cruise_id, cruise_name,vessel_input, data, valor_org, csr_code)
-
-
-
-
-@app.route('/descargar/<cruise_id>')
-def descarga(cruise_id):
-    # Path to the ZIP file to be downloaded
-    ruta_zip = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
-    response=  send_file(ruta_zip, mimetype='application/zip', as_attachment=True)
-    #os.remove (ruta_zip)
-    return response
-
-@app.route('/fetch_csr_code_list', methods=['GET'])
-def fetch_csr_code_list():
-    fetch_and_save_csr_code_list()
-    return "CSR code list fetch updated successfully."
-
 
 def save_json_to_file(json_data, filename):
+    
     directory = 'static/csv'
     file_path = os.path.join(directory, filename)
     
@@ -290,36 +188,265 @@ def save_json_to_file(json_data, filename):
     else:
         # If the file does not exist, create a new file
         mode = 'x'
-    
+
     # Write JSON data to file
     with open(file_path, mode) as file:
         json.dump(json_data, file)
-    
-def save_json_to_csv(json_data, filename):
-    # Convertir el JSON en DataFrame de Pandas
-    df = pd.DataFrame(json_data)
-    print (df)
-    # Directorio y ruta del archivo CSV
-    directory = 'static/csv'
-    file_path = os.path.join(directory, filename[:-4] + '.csv')  # Eliminar extensión .json
-    
-    # Guardar DataFrame como archivo CSV
-    df.to_csv(file_path, index=False)
-    
-    return file_path
+
+
 
 @app.route('/upload_json', methods=['POST'])
 def upload_json():
-    if request.method == 'POST':
+    if request.method == 'POST': 
         json_data = request.get_json()  # Get JSON data from the request body
         filename = 'uploaded_data.json'
+        directory = 'static/csv'
+        
         save_json_to_file(json_data, filename)
-        save_json_to_csv(json_data, filename)
-        # Return a response indicating success
         logging.info('JSON data saved successfully')
-        return jsonify({'message': 'JSON data saved successfully'})
-    
+        data = json.loads(json_data)
+        name=datetime.now() 
+        print (name)
+        name= str(name)
+        name= name.replace(":", "").replace("-", "").replace(" ", "").replace(".", "")
+        print (name)
+        name_csv = name + ".csv"
+        logging.info(f'name_csv: {name_csv}')
+        print(name_csv)
+        file_path = os.path.join(directory, name + ".csv") 
+        # Creación del DataFrame
+        df = pd.DataFrame(data)
 
+        # Renombrar las columnas
+        df.columns = ['First_lat', 'First_long', 'End_lat', 'End_long', 'First_time', 'End_time', 'Instrument', 'Coments']
+        print (df)
+        
+        df.to_csv(file_path, header=True, index=False)
+
+        logging.info('CSV data saved successfully')
+        # Return a response indicating success
+        return jsonify({'message': 'JSON data saved successfully',"file_path" : file_path})
+
+def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final):
+        print("select de grabar_ind", selects)
+        print("ruta_csv inside grabar_individual:", ruta_csv)  # Add this print statement to check the value of ruta_csv
+
+
+        if "XBT" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" xbt")
+        else:
+            print("no hi ha select de XBT")
+
+        if "CTD" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.ctd.funcio_ctd (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" ctd")
+        else:
+            print("no hi ha select de CTD")
+
+        if "CTD_ROS" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.ctd_ros.funcio_ctd_ros (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" ctd_ros")
+        else:
+            print("no hi ha select de CTD_ROS")   
+
+        if "CTD_ROS_LADCP" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.ctd_ros_ladcp.funcio_ctd_ros_ladcp (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" ctd_ros_ladcp")
+        else:
+            print("no hi ha select de CTD_ROS_LADCP")  
+
+        if "CTD_UND" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.ctd_und.funcio_ctd_und (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" ctd_UND")
+        else:
+            print("no hi ha select de CTD_UND")  
+                     
+        if "DRE" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.dre.funcio_dre (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" dre")
+        else:
+            print("no hi ha select de DRE")
+        
+
+        if "SVP" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.svp.funcio_svp (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" svp")
+        else:
+            print("no hi ha select de SVP")
+        
+        if "XSV" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.xsv.funcio_xsv (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" xsv")
+        else:
+            print("no hi ha select de XSV")
+        
+        if "TRA" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.tra.funcio_tra (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" tra")
+        else:
+            print("no hi ha select de TRA")
+        
+        if "MOC" in selects:
+            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.moc.funcio_moc (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print(" moc")
+        else:
+            print("no hi ha select de MOC")
+
+        if "ADCP" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.adcp.funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No adcp")
+
+        if "FFE" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.ffe.funcio_ffe (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No ffe")   
+
+        if "MAG" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.mag.funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No mag")
+        if "MBE" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No mbe")
+
+        if "MCS" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No mcs") 
+
+        if "SSS" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.sss.funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No sss")
+
+        if "SRS" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No srs")
+
+        if "SBP" in selects:
+            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No sbp")
+        
+
+
+        cdi_general =cruise_id + "_general.xml"
+        if path.exists(cdi_general):
+            remove(cdi_general)  
+
+
+@app.route('/download_step1', methods=['POST', 'GET'])
+def download_step1():
+    filename = None  # Set a default value for the filename
+    ruta_csv = None
+    if request.method == 'POST':
+        # Retrieve name_csv from server logs
+        log_file = './record.log'
+        with open(log_file, 'r') as file:
+            log_content = file.read()
+            match = re.findall(r'name_csv:\s*(\d+\.csv)', log_content)
+            if match:
+                filename = match[-1] #Get the last ruta_csv value
+            else:
+                # Handle case where name_csv is not found in logs
+                return "Error: name_csv not found in logs"
+
+        if filename is not None:
+            try:
+                ruta_csv = f"http://datahub.utm.csic.es/cdigen/static/csv/{filename}"
+                print("ruta_csv:", ruta_csv)
+            except Exception as e:
+                print("Error constructing ruta_csv:", e)
+        else:
+            print("Filename is None. Unable to construct ruta_csv.")
+            # Handle case where filename is None
+
+        cruise_id = request.values.get('cruise_id')
+        print (cruise_id)
+        csr_code = request.values.get("cdSelect")
+        print(csr_code)
+        url_org = request.values.get("organizacion")
+        print( url_org)
+        vessel_input = request.values.get("vessel_input")
+        cruise_name = request.values.get("cruise_name")
+        valor_org= url_org
+        #contadorselects = request.values.get("lbResultado")
+        #print ("contador selects:", contadorselects)
+
+        if vessel_input == "sdg":
+            vessel_reduit='sdg' 
+        elif vessel_input == "hes": 
+            vessel_reduit="hes"
+
+        date_inicial_input = request.values.get("date_inicial")
+        print(date_inicial_input)
+        año, mes, dia = date_inicial_input.split("-")
+        date_inicial= "{}/{}/{} 00:00:00".format(dia, mes, año)
+        print (date_inicial)
+
+        date_final_input = request.values.get("date_final")
+        año, mes, dia = date_final_input.split("-")
+        date_final= "{}/{}/{} 00:00:00".format(dia, mes, año)
+        print (date_final)
+        contadorselects = 10 #el contadorselects hauria de ser el numero maxims de tipus de cdis que podem generar
+
+        selects = []
+        for i in range(contadorselects):
+            select_value = request.values.get('select-' + str(i))
+            selects.append(select_value)
+
+        print("Valores de selects:", selects)
+        grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code, selects, ruta_csv,date_inicial, date_final)
+
+        source_folder = os.path.abspath(cruise_id)
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        
+        if path.exists(zip_filename):
+            remove(zip_filename)
+    
+        # Compress the folder into a ZIP file
+        zip_filename = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+        print(zip_filename)
+        shutil.make_archive(zip_filename[:-4], 'zip', source_folder)
+
+        #Delete the original folder from portfo folder
+        shutil.rmtree(source_folder)
+
+        return render_template('service.html', cruise_id=cruise_id)
+
+@app.route('/descargar/<cruise_id>')
+def descarga(cruise_id):
+    # Path to the ZIP file to be downloaded
+    ruta_zip = os.path.join(ZIP_FOLDER, f'{cruise_id}.zip')
+    response=  send_file(ruta_zip, mimetype='application/zip', as_attachment=True)
+    return response
+
+@app.route('/fetch_csr_code_list', methods=['GET'])
+def fetch_csr_code_list():
+    fetch_and_save_csr_code_list()
+    return "CSR code list fetch updated successfully."
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 

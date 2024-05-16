@@ -168,7 +168,7 @@ def funcio_met (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
             parent_element.getparent().append(copied_parent_element)
             tree.write(output_file, xml_declaration=True, encoding="utf-8",method="xml")
             
-        tree = etree.parsSe(input_file)
+        tree = etree.parse(input_file)
         posList_1 = tree.xpath("//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
         posList_1.text =  'Campbell Scientific CR1000 data logger'
         posList_1.set ("codeListValue","TOOL1541")
