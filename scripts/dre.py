@@ -94,7 +94,12 @@ def funcio_dre (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     posList_2.set ("codeListValue","55")
     tree.write(output_file)
 
-
+    #canviar sensor segons el vaixell
+    '''tree = etree.parse(input_file)
+    posList_1 = tree.xpath("//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'Lockheed Martin Sippican T-5 XBT probe'
+    posList_1.set ("codeListValue","TOOL0262")
+    tree.write(output_file)'''
 
     cdi_global=cruise_id + "/" + cruise_id + "_dre.xml"
     shutil.copy (cdi_individual,cdi_global)
@@ -308,13 +313,13 @@ def funcio_dre (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + cdi_model
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
+    posList.text = "urn:SDN:CDI:LOCAL:" +cruise_id + cdi_model
     tree.write(cdi_global)
     
     #afegir dataset name
@@ -326,7 +331,7 @@ def funcio_dre (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     #afegir ABSTRACT
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = "Data from " + str(total_lines) +" samples acquired on board the R/V " + vessel +" during the " + cruise_name +" cruise."
+    posList.text = "Data from samples acquired on board the R/V " + vessel +" during the " + cruise_name +" cruise."
     tree.write(cdi_global)
     print(total_lines)
 

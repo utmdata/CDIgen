@@ -45,13 +45,13 @@ def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_grv"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_grv"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + "_grv"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_grv"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_grv"
     tree.write(output_file)
 
     #afegir dataset name
@@ -81,11 +81,4 @@ def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     posList_1.text =  'gravimeters'
     posList_1.set ("codeListValue","158")
     tree.write(output_file)
-    
-    #canviar sensor. NO CANVIEM EL SENSOR. ELDEIXEM EN UNKNOWN
-    """tree = etree.parse(input_file)
-    posList_1 = tree.xpath(".//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'Atlas Hydrographic Hydrosweep DS  multibeam echo sounder'
-    posList_1.set ("codeListValue","TOOL0911")
-    tree.write(output_file)"""
 
