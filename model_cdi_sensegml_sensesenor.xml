@@ -68,7 +68,7 @@
       </gmd:CI_ResponsibleParty>
    </gmd:contact>
    <gmd:dateStamp>
-      <gco:Date>2024-03-14</gco:Date>
+      <gco:Date>2024-05-17</gco:Date>
    </gmd:dateStamp>
    <gmd:metadataStandardName>
       <gco:CharacterString>ISO 19115/SeaDataNet profile</gco:CharacterString>
@@ -81,7 +81,7 @@
          <gmd:geometricObjects>
             <gmd:MD_GeometricObjects>
                <gmd:geometricObjectType>
-                  <gmd:MD_GeometricObjectTypeCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#MD_GeometricObjectTypeCode"  codeListValue="curve"  codeSpace="ISOTC211/19115" >curve</gmd:MD_GeometricObjectTypeCode>
+                  <gmd:MD_GeometricObjectTypeCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#MD_GeometricObjectTypeCode"  codeListValue="point"  codeSpace="ISOTC211/19115" >point</gmd:MD_GeometricObjectTypeCode>
                </gmd:geometricObjectType>
             </gmd:MD_GeometricObjects>
          </gmd:geometricObjects>
@@ -155,7 +155,7 @@
                   <gmd:date>
                      <gmd:CI_Date>
                         <gmd:date>
-                           <gco:Date>2024-03-14</gco:Date>
+                           <gco:Date>2024-05-17</gco:Date>
                         </gmd:date>
                         <gmd:dateType>
                            <gmd:CI_DateTypeCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#CI_DateTypeCode"  codeListValue="revision"  codeSpace="ISOTC211/19115" >revision</gmd:CI_DateTypeCode>
@@ -195,6 +195,56 @@
                                     </gmd:electronicMailAddress>
                                  </gmd:CI_Address>
                               </gmd:address>
+                           </gmd:CI_Contact>
+                        </gmd:contactInfo>
+                        <gmd:role>
+                           <gmd:CI_RoleCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#CI_RoleCode"  codeListValue="originator"  codeSpace="ISOTC211/19115" >originator</gmd:CI_RoleCode>
+                        </gmd:role>
+                     </gmd:CI_ResponsibleParty>
+                  </gmd:citedResponsibleParty>
+                  <gmd:citedResponsibleParty>
+                     <gmd:CI_ResponsibleParty>
+                        <gmd:organisationName>
+                           <sdn:SDN_EDMOCode codeList="https://edmo.seadatanet.org/isocodelists/edmo-edmerp-codelists.xml#SDN_EDMOCode"  codeSpace="SeaDataNet"  codeListValue="2489" >CSIC, Marine Technology Unit (CSIC-UTM)</sdn:SDN_EDMOCode>
+                        </gmd:organisationName>
+                        <gmd:contactInfo>
+                           <gmd:CI_Contact>
+                              <gmd:phone>
+                                 <gmd:CI_Telephone>
+                                    <gmd:voice>
+                                       <gco:CharacterString>+34 932 309500</gco:CharacterString>
+                                    </gmd:voice>
+                                    <gmd:facsimile>
+                                       <gco:CharacterString>+34 932 309555</gco:CharacterString>
+                                    </gmd:facsimile>
+                                 </gmd:CI_Telephone>
+                              </gmd:phone>
+                              <gmd:address>
+                                 <gmd:CI_Address>
+                                    <gmd:deliveryPoint>
+                                       <gco:CharacterString>Paseo Maritimo de la Barceloneta, 37-49 </gco:CharacterString>
+                                    </gmd:deliveryPoint>
+                                    <gmd:city>
+                                       <gco:CharacterString>Barcelona</gco:CharacterString>
+                                    </gmd:city>
+                                    <gmd:postalCode>
+                                       <gco:CharacterString>08003</gco:CharacterString>
+                                    </gmd:postalCode>
+                                    <gmd:country>
+                                       <sdn:SDN_CountryCode codeSpace="SeaDataNet"  codeListValue="ES"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_CountryCode" >Spain</sdn:SDN_CountryCode>
+                                    </gmd:country>
+                                    <gmd:electronicMailAddress>
+                                       <gco:CharacterString>info@utm.csic.es</gco:CharacterString>
+                                    </gmd:electronicMailAddress>
+                                 </gmd:CI_Address>
+                              </gmd:address>
+                              <gmd:onlineResource>
+                                 <gmd:CI_OnlineResource>
+                                    <gmd:linkage>
+                                       <gmd:URL>http://www.utm.csic.es/</gmd:URL>
+                                    </gmd:linkage>
+                                 </gmd:CI_OnlineResource>
+                              </gmd:onlineResource>
                            </gmd:CI_Contact>
                         </gmd:contactInfo>
                         <gmd:role>
@@ -317,46 +367,6 @@
             <gmd:descriptiveKeywords>
                <gmd:MD_Keywords>
                   <gmd:keyword>
-                     <sdn:SDN_SeaVoxDeviceCatalogueCode codeSpace="SeaDataNet"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_SeaVoxDeviceCatalogueCode"  codeListValue="TOOLZZZ" >unknown</sdn:SDN_SeaVoxDeviceCatalogueCode>
-                  </gmd:keyword>
-                  <gmd:type>
-                     <gmd:MD_KeywordTypeCode codeSpace="SeaDataNet"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#MD_KeywordTypeCode"  codeListValue="sensor_model" >sensor_model</gmd:MD_KeywordTypeCode>
-                  </gmd:type>
-                  <gmd:thesaurusName>
-                     <gmd:CI_Citation>
-                        <gmd:title>
-                           <gco:CharacterString>SeaVoX Device Catalogue</gco:CharacterString>
-                        </gmd:title>
-                        <gmd:alternateTitle>
-                           <gco:CharacterString>L22</gco:CharacterString>
-                        </gmd:alternateTitle>
-                        <gmd:date>
-                           <gmd:CI_Date>
-                              <gmd:date>
-                                 <gco:Date>2022-05-18</gco:Date>
-                              </gmd:date>
-                              <gmd:dateType>
-                                 <gmd:CI_DateTypeCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#CI_DateTypeCode"  codeListValue="revision"  codeSpace="ISOTC211/19115" >revision</gmd:CI_DateTypeCode>
-                              </gmd:dateType>
-                           </gmd:CI_Date>
-                        </gmd:date>
-                        <gmd:edition>
-                           <gco:CharacterString>561</gco:CharacterString>
-                        </gmd:edition>
-                        <gmd:identifier>
-                           <gmd:MD_Identifier>
-                              <gmd:code>
-                                 <gco:CharacterString>https://www.seadatanet.org/urnurl/SDN:L22</gco:CharacterString>
-                              </gmd:code>
-                           </gmd:MD_Identifier>
-                        </gmd:identifier>
-                     </gmd:CI_Citation>
-                  </gmd:thesaurusName>
-               </gmd:MD_Keywords>
-            </gmd:descriptiveKeywords>
-            <gmd:descriptiveKeywords>
-               <gmd:MD_Keywords>
-                  <gmd:keyword>
                      <sdn:SDN_DeviceCategoryCode codeSpace="SeaDataNet"  codeListValue="999"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_DeviceCategoryCode" >unknown</sdn:SDN_DeviceCategoryCode>
                   </gmd:keyword>
                   <gmd:type>
@@ -447,7 +457,7 @@
                      <gmd:MD_RestrictionCode codeListValue="otherRestrictions"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#MD_RestrictionCode" >otherRestrictions</gmd:MD_RestrictionCode>
                   </gmd:accessConstraints>
                   <gmd:otherConstraints>
-                     <gmx:Anchor xlink:href="https://www.seadatanet.org/urnurl/SDN:L08::CB" >Creative Commons Attribution 4.0 International</gmx:Anchor>
+                     <gmx:Anchor xlink:href="https://www.seadatanet.org/urnurl/SDN:L08::RS" >by negotiation</gmx:Anchor>
                   </gmd:otherConstraints>
                </gmd:MD_LegalConstraints>
             </gmd:resourceConstraints>
@@ -508,37 +518,22 @@
                            <gco:Decimal>80.00</gco:Decimal>
                         </gmd:westBoundLongitude>
                         <gmd:eastBoundLongitude>
-                           <gco:Decimal>90.00</gco:Decimal>
+                           <gco:Decimal>10.00</gco:Decimal>
                         </gmd:eastBoundLongitude>
                         <gmd:southBoundLatitude>
-                           <gco:Decimal>10.00</gco:Decimal>
+                           <gco:Decimal>90.00</gco:Decimal>
                         </gmd:southBoundLatitude>
                         <gmd:northBoundLatitude>
                            <gco:Decimal>20.00</gco:Decimal>
                         </gmd:northBoundLatitude>
                      </gmd:EX_GeographicBoundingBox>
                   </gmd:geographicElement>
-                  <gmd:geographicElement>
-                     <gmd:EX_BoundingPolygon>
-                        <gmd:polygon>
-                           <gml:MultiCurve gml:id="mc01" >
-                              <gml:curveMember>
-                                 <gml:LineString gml:id="ls001" >
-                                    <gml:description>curve n°1 from multicurve</gml:description>
-                                    <gml:name codeSpace="https://www.seadatanet.org/urnurl/" >_1</gml:name>
-                                    <gml:posList>-1 -1 -1 -1</gml:posList>
-                                 </gml:LineString>
-                              </gml:curveMember>
-                           </gml:MultiCurve>
-                        </gmd:polygon>
-                     </gmd:EX_BoundingPolygon>
-                  </gmd:geographicElement>
                   <gmd:temporalElement>
                      <gmd:EX_TemporalExtent>
                         <gmd:extent>
                            <gml:TimePeriod gml:id="mik3.8.2" >
-                              <gml:beginPosition>2023-01-01T00:00:00</gml:beginPosition>
-                              <gml:endPosition>2023-01-02T00:00:00</gml:endPosition>
+                              <gml:beginPosition>2022-03-15T13:12:00</gml:beginPosition>
+                              <gml:endPosition>2022-03-15T13:12:00</gml:endPosition>
                            </gml:TimePeriod>
                         </gmd:extent>
                      </gmd:EX_TemporalExtent>
