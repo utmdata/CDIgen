@@ -93,11 +93,11 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
 
     #canviar sensor segons el vaixell
-    """tree = etree.parse(input_file)
+    tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
     posList_1.text =  'Sea-Bird SBE 19 SEACAT CTD'
     posList_1.set ("codeListValue","TOOL0042")
-    tree.write(output_file)"""
+    tree.write(output_file)
 
     cdi_global=cruise_id + "/" + cruise_id + "_moc.xml"
     shutil.copy (cdi_individual,cdi_global)
@@ -318,13 +318,13 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
   #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + cdi_model
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + cdi_model
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
     tree.write(cdi_global)
 
     #afegir dataset name

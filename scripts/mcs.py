@@ -47,13 +47,13 @@ def funcio_mcs (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_mcs"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_mcs"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + "_mcs"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_mcs"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_mcs"
     tree.write(output_file)
 
     #afegir dataset name

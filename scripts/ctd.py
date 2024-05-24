@@ -378,13 +378,13 @@ def funcio_ctd (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
   #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + cdi_model
+    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + cdi_model
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
     tree.write(cdi_global)
 
     #afegir dataset name

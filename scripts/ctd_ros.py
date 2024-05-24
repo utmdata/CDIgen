@@ -23,7 +23,7 @@ def eliminar_columnes(csv_name):
 
 def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final):
     cdi_model = "_ctd_ros"
-    
+    text = "CTD and rossette" 
     fila=0
     lista_id=[]
     lista_name=[]
@@ -384,7 +384,7 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
     posList.text = cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
     tree.write(cdi_global)
 
     #afegir dataset name

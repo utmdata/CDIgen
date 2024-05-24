@@ -14,7 +14,7 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
+def funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
@@ -27,7 +27,7 @@ def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
 
     underway_general =cruise_id + "_underway.xml"
 
-    underway_auv =cruise_id + "/" + cruise_id + "_auv-MODIFICAR_ABSTRACT_PARAMETRES.xml"
+    cdi_mag =cruise_id + "/" + cruise_id + "_auv_modificar_abstract_parametres.xml"
     
     
     if vessel_input == "sdg":
@@ -40,20 +40,20 @@ def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
         vessel = "Hespérides"
 
    
-    shutil.copy(underway_general, underway_auv)
-    input_file= underway_auv
-    output_file= underway_auv
+    shutil.copy(underway_general, cdi_mag)
+    input_file= cdi_mag
+    output_file= cdi_mag
 
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_auv"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_auv"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + "_auv"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_auv"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_auv"
     tree.write(output_file)
 
     #afegir dataset name
@@ -65,11 +65,11 @@ def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     #afegir ABSTRACT
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = "AUV data from the INSERT AUV dives during the " +cruise_name+" cruise on board the R/V " + vessel + "."
+    posList.text = "AUV data from the INSERT AUV dives during the " +  cruise_name + " cruise "+ "on board the R/V "+ vessel + "." 
     tree.write(output_file)
 
-        #canviar paràmetres
-    num_parametres = 18
+ #canviar paràmetres
+    num_parametres = 16
     for _ in range(num_parametres-1):
         tree = etree.parse(input_file)
         root = tree.getroot()
@@ -110,27 +110,17 @@ def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     posList= tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList.text =  'Visible waveband radiance and irradiance measurements in the water column'
     posList.set ("codeListValue","VSRW")
+
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Horizontal velocity of the water column (currents)'
     posList_1.set ("codeListValue","RFVL")
-
     posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_2.text =  'Vertical velocity of the water column (currents)'
     posList_2.set ("codeListValue","LRZA")
 
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
-    posList_1.text =  'Magnetics'
-    posList_1.set ("codeListValue","MMAN")
-
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
-    posList_1.text =  'Bathymetry and Elevation'
-    posList_1.set ("codeListValue","MBAN")
-    posList_2 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
-    posList_2.text =  'Sediment acoustics'
-    posList_2.set ("codeListValue","SDAC")
-    posList_3 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
-    posList_3.text=  'Sound velocity and travel time in the water column'
-    posList_3.set ("codeListValue","SVEL")
+    posList_1.text =  'Sediment acoustics'
+    posList_1.set ("codeListValue","SDAC")
 
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Sedimentary structure'
@@ -140,12 +130,18 @@ def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     posList_2.set ("codeListValue","SVEL")
 
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
-    posList_1.text =  'Sediment acoustics'
-    posList_1.set ("codeListValue","SDAC")
+    posList_1.text =  'Bathymetry and Elevation'
+    posList_1.set ("codeListValue","MBAN")
 
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Seabed photography'
     posList_1.set ("codeListValue","SBPH")
+
+    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+    posList_1.text =  'Magnetics'
+    posList_1.set ("codeListValue","MMAN")
+   
+
 
     tree.write(output_file)
     #canviar instruments
@@ -203,42 +199,35 @@ def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     posList_1.set ("codeListValue","115")
 
     posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'magnetometers'
-    posList_1.set ("codeListValue","159")
+    posList_1.text =  'sidescan sonars'
+    posList_1.set ("codeListValue","152")
+
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'Pinger sub-bottom profilers'
+    posList_1.set ("codeListValue","394")
+
 
     posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
     posList_1.text =  'multi-beam echosounders'
     posList_1.set ("codeListValue","157")
 
     posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'Pinger sub-bottom profilers'
-    posList_1.set ("codeListValue","394")
-
-    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'sidescan sonars'
-    posList_1.set ("codeListValue","152")
-
-    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
     posList_1.text =  'cameras'
     posList_1.set ("codeListValue","311")
 
+    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'magnetometers'
+    posList_1.set ("codeListValue","159")
+
     tree.write(output_file)
 
-
-    """#canviar sensor segons el vaixell
-    tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'Sea-Bird SBE 911plus CTD'
-    posList_1.set ("codeListValue","TOOL0058")
-    tree.write(output_file)"""
     
-    #canviar platform class
+    """ #canviar sensor
     tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_PlatformCategoryCode[contains(text(), 'research vessel')]", namespaces=namespace)[0]
-    posList_1.text =  'autonomous underwater vehicle'
-    posList_1.set ("codeListValue","25")
-    tree.write(output_file)
-
+    posList_1 = tree.xpath(".//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+    posList_1.text =  'Marine Magnetics SeaSPY Marine magnetometer'
+    posList_1.set ("codeListValue","TOOL0474")
+    tree.write(output_file)"""
 
     #canviar llicencia
     tree = etree.parse(input_file)

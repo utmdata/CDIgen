@@ -1,7 +1,7 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify ,send_file, Response, send_from_directory, send_file, request
+from flask import Flask, render_template, url_for, request, redirect, jsonify ,send_file, Response, send_from_directory, send_file
 from flask_cors import CORS
 from flask import session
-
+#Define static route to flask into the folder static
 app = Flask(__name__, static_url_path='/static')
 CORS(app, resources={r"/*": {"origins": "http://datahub.utm.csic.es"}})
 import csv
@@ -11,9 +11,7 @@ import os
 from os import path, remove
 from datetime import datetime
 import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, scripts.generalweb, scripts.xbt ,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
-import scripts.ctd, scripts.dre , scripts.ctd_ros, scripts.xsv , scripts.svp, scripts.ctd_ros_ladcp, scripts.grv, scripts.tra, scripts.moc, scripts.globalweb, scripts.ctd_und, scripts.auv, scripts.rov, scripts.obs
-
-
+import scripts.ctd, scripts.dre , scripts.ctd_ros, scripts.xsv , scripts.svp, scripts.ctd_ros_ladcp, scripts.grv, scripts.tra, scripts.moc, scripts.globalweb, scripts.ctd_und
 import requests
 import shutil
 import logging
@@ -21,7 +19,7 @@ from shutil import make_archive,copy
 import zipfile, tempfile
 import json, re
 
-#Ruta estàtica de Flask a static/tareas
+#Route from flask to serve static files
 # Define the directory to save the generated zip file
 ZIP_FOLDER = os.path.join(app.static_folder, 'tareas')
 ruta_csv = ""
@@ -52,7 +50,7 @@ def fetch_and_save_csr_code_list():
         print(f"An error occurred: {str(e)}")
 
 
-# Ara aprendrem a fer tota l'associació de diferents pàgines a HTML d'una forma eficient i sense haver d'afegir cada cop una funció per cada pàgina.
+#Routing various html pages:
 
 @app.route('/')
 def my_home():
@@ -65,7 +63,7 @@ def html_page(page_name):
     return render_template(page_name)
 
 
-# Ara podem accedir a aquestes dades amb el Flask attribute request.
+#Starting the metadata generation process for the underway variables:
 
 def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data,valor_org, csr_code):
         input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
@@ -91,7 +89,6 @@ def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_in
             scripts.sbe_script.funcio_sbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input,data)
         else: 
             print ("No sbe")
-
 
         
         underway_general =cruise_id + "_underway.xml"
@@ -234,6 +231,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
         print("select de grabar_ind", selects)
         print("ruta_csv inside grabar_individual:", ruta_csv)  # Add this print statement to check the value of ruta_csv
 
+
         if "XBT" in selects:
             scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
             scripts.xbt.funcio_xbt (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
@@ -304,12 +302,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             print(" moc")
         else:
             print("no hi ha select de MOC")
-        if "OBS" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
-            scripts.obs.funcio_obs (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
-            print(" obs")
-        else:
-            print("no hi ha select de OBS")
+
         if "ADCP" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.adcp.funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
@@ -357,16 +350,6 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
         else: 
             print ("No sbp")
         
-        if "AUV" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
-            scripts.auv.funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-        else: 
-            print ("No auv")
-        if "ROV" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
-            scripts.rov.funcio_rov (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-        else: 
-            print ("No rov")
 
 
         cdi_general =cruise_id + "_general.xml"
