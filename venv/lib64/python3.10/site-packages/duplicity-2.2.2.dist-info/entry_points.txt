@@ -1,0 +1,2 @@
+[console_scripts]
+duplicity = duplicity.__main__:dup_run
