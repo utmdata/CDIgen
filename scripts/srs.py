@@ -47,13 +47,13 @@ def funcio_srs (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_srs"
+    posList.text = "urn:SDN:CDI:LOCAL:" +cruise_id + "_srs"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
-    posList.text ="urn:SDN:CDI:LOCAL:" +  cruise_id + "_srs"
+    posList.text = cruise_id + "_srs"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + "_srs"
+    posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_srs"
     tree.write(output_file)
 
     #afegir dataset name
@@ -105,7 +105,7 @@ def funcio_srs (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     posList_3.set ("codeListValue","ARAG")
     tree.write(output_file)
 
-    #no canviem el sensor pq no existeix
+    #no canviem el sensor pq no existeix la Kongsberg EK 60 biological echosounder
     """#canviar sensor
     tree = etree.parse(input_file)
     posList_1 = tree.xpath(".//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
