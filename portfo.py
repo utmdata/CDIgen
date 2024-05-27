@@ -58,7 +58,7 @@ def my_home():
 
 
 @app.route(
-    '/<string:page_name>')  # Fent això enlloc d'haver de copiar tants fx per pàgines que tinguem agafarà el page_name i el mostrarà!
+    '/<string:page_name>')
 def html_page(page_name):
     return render_template(page_name)
 
@@ -105,7 +105,7 @@ def guardar_tareas():
     #print("tareas_cdi actualizado:", tareas_cdi)
     return jsonify({"success": True})
 
-valor_org =[] #crec que es innecesaria aquesta funcio: revisar he borrat la funcio obtenervalor de org
+valor_org =[] #Not sure if necessary
 
 @app.route('/download_file', methods=['POST', 'GET'])
 def download_file():
@@ -217,7 +217,7 @@ def upload_json():
         # Creación del DataFrame
         df = pd.DataFrame(data)
 
-        # Renombrar las columnas
+        #Rename the columns
         df.columns = ['First_lat', 'First_long', 'End_lat', 'End_long', 'First_time', 'End_time', 'Instrument', 'Coments']
         print (df)
         
@@ -410,7 +410,7 @@ def download_step1():
         año, mes, dia = date_final_input.split("-")
         date_final= "{}/{}/{} 00:00:00".format(dia, mes, año)
         print (date_final)
-        contadorselects = 10 #el contadorselects hauria de ser el numero maxims de tipus de cdis que podem generar
+        contadorselects = 10 #Maximum type of CDIs capable of generate
 
         selects = []
         for i in range(contadorselects):
