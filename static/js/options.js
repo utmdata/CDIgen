@@ -20,7 +20,7 @@ const lista_cdi = Sortable.create(div2, {
             console.log(orden.join(","));
             localStorage.setItem("tareas_cdi", orden.join(","));
             
-            // Enviar datos al servidor cuando se actualiza localStorage
+            // Enviar datos al servidor cuando se actualiza localStorage http://datahub.utm.csic.es/cdigen/guardar_tareas
             fetch('http://161.111.137.92:8001/guardar_tareas', {
                 method: 'POST',
                 headers: {

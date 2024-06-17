@@ -293,8 +293,8 @@
                                      **/
                                     function procesarCSV(data, select) {
                                         const todasFilas = data.split(/\r?\n|\r/);
-                                        valoresUnicos.clear(); // Limpiamos los valores únicos antes de procesar el nuevo archivo
-                                        for (let fila = 1; fila < todasFilas.length; fila++) {
+                                        valoresUnicos.clear(); // Limpiamos los valores únicos antes de procesar el nuevo archivo let fila = 1; fila < todasFilas.length; fila++) {
+                                        for (let fila = 0; fila < todasFilas.length; fila++) { 
                                             const celdasFila = todasFilas[fila].split(',');
                                             if (celdasFila.length >= 7) { // Asegurar que hay al menos 7 columnas (columna G)
                                                 valoresUnicos.add(celdasFila[6]); // Asumiendo que la columna G es la séptima columna (índice 6)

@@ -68,7 +68,7 @@
       </gmd:CI_ResponsibleParty>
    </gmd:contact>
    <gmd:dateStamp>
-      <gco:Date>2024-03-14</gco:Date>
+      <gco:Date>2024-05-14</gco:Date>
    </gmd:dateStamp>
    <gmd:metadataStandardName>
       <gco:CharacterString>ISO 19115/SeaDataNet profile</gco:CharacterString>
@@ -155,7 +155,7 @@
                   <gmd:date>
                      <gmd:CI_Date>
                         <gmd:date>
-                           <gco:Date>2024-03-14</gco:Date>
+                           <gco:Date>2024-05-14</gco:Date>
                         </gmd:date>
                         <gmd:dateType>
                            <gmd:CI_DateTypeCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#CI_DateTypeCode"  codeListValue="revision"  codeSpace="ISOTC211/19115" >revision</gmd:CI_DateTypeCode>
@@ -195,6 +195,56 @@
                                     </gmd:electronicMailAddress>
                                  </gmd:CI_Address>
                               </gmd:address>
+                           </gmd:CI_Contact>
+                        </gmd:contactInfo>
+                        <gmd:role>
+                           <gmd:CI_RoleCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#CI_RoleCode"  codeListValue="originator"  codeSpace="ISOTC211/19115" >originator</gmd:CI_RoleCode>
+                        </gmd:role>
+                     </gmd:CI_ResponsibleParty>
+                  </gmd:citedResponsibleParty>
+                  <gmd:citedResponsibleParty>
+                     <gmd:CI_ResponsibleParty>
+                        <gmd:organisationName>
+                           <sdn:SDN_EDMOCode codeList="https://edmo.seadatanet.org/isocodelists/edmo-edmerp-codelists.xml#SDN_EDMOCode"  codeSpace="SeaDataNet"  codeListValue="2489" >CSIC, Marine Technology Unit (CSIC-UTM)</sdn:SDN_EDMOCode>
+                        </gmd:organisationName>
+                        <gmd:contactInfo>
+                           <gmd:CI_Contact>
+                              <gmd:phone>
+                                 <gmd:CI_Telephone>
+                                    <gmd:voice>
+                                       <gco:CharacterString>+34 932 309500</gco:CharacterString>
+                                    </gmd:voice>
+                                    <gmd:facsimile>
+                                       <gco:CharacterString>+34 932 309555</gco:CharacterString>
+                                    </gmd:facsimile>
+                                 </gmd:CI_Telephone>
+                              </gmd:phone>
+                              <gmd:address>
+                                 <gmd:CI_Address>
+                                    <gmd:deliveryPoint>
+                                       <gco:CharacterString>Paseo Maritimo de la Barceloneta, 37-49 </gco:CharacterString>
+                                    </gmd:deliveryPoint>
+                                    <gmd:city>
+                                       <gco:CharacterString>Barcelona</gco:CharacterString>
+                                    </gmd:city>
+                                    <gmd:postalCode>
+                                       <gco:CharacterString>08003</gco:CharacterString>
+                                    </gmd:postalCode>
+                                    <gmd:country>
+                                       <sdn:SDN_CountryCode codeSpace="SeaDataNet"  codeListValue="ES"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_CountryCode" >Spain</sdn:SDN_CountryCode>
+                                    </gmd:country>
+                                    <gmd:electronicMailAddress>
+                                       <gco:CharacterString>info@utm.csic.es</gco:CharacterString>
+                                    </gmd:electronicMailAddress>
+                                 </gmd:CI_Address>
+                              </gmd:address>
+                              <gmd:onlineResource>
+                                 <gmd:CI_OnlineResource>
+                                    <gmd:linkage>
+                                       <gmd:URL>http://www.utm.csic.es/</gmd:URL>
+                                    </gmd:linkage>
+                                 </gmd:CI_OnlineResource>
+                              </gmd:onlineResource>
                            </gmd:CI_Contact>
                         </gmd:contactInfo>
                         <gmd:role>
