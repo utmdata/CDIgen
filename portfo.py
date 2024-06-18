@@ -11,7 +11,7 @@ import os
 from os import path, remove
 from datetime import datetime
 import scripts.underwayweb,scripts.met_script, scripts.ts_script, scripts.sbe_script, scripts.generalweb, scripts.xbt ,scripts.adcp, scripts.ffe ,scripts.mbe, scripts.mcs, scripts.mag, scripts.sss, scripts.srs, scripts.sbp
-import scripts.ctd, scripts.dre , scripts.ctd_ros, scripts.xsv , scripts.svp, scripts.ctd_ros_ladcp, scripts.grv, scripts.tra, scripts.moc, scripts.globalweb, scripts.ctd_und
+import scripts.ctd, scripts.dre , scripts.ctd_ros, scripts.xsv , scripts.svp, scripts.ctd_ros_ladcp, scripts.grv, scripts.tra, scripts.moc, scripts.globalweb, scripts.ctd_und, scripts.obs, scripts.rov, scripts.auv
 import requests
 import shutil
 import logging
@@ -50,11 +50,13 @@ def fetch_and_save_csr_code_list():
         print(f"An error occurred: {str(e)}")
 
 
+
 #Routing various html pages:
 
 @app.route('/')
 def my_home():
     return render_template('index.html')
+
 
 
 @app.route(
@@ -222,6 +224,56 @@ def upload_json():
         print (df)
         
         df.to_csv(file_path, header=True, index=False)
+        
+        def convert_date_format(date_str):
+            if isinstance(date_str, str):
+                # patrons de dates
+                patterns = [
+                    (r'\d{2}/\d{2}/\d{4} \d{1}:\d{2}:\d{2}', '%d/%m/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S'),
+                    (r'\d{2}/\d{2}/\d{4} \d{1}:\d{2}', '%d/%m/%Y %H:%M', '%Y-%m-%d %H:%M:%S'),
+                    (r'\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}', '%d/%m/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S'),
+                    (r'\d{2}/\d{2}/\d{4} \d{2}:\d{2}', '%d/%m/%Y %H:%M', '%Y-%m-%d %H:%M:%S'),
+                    (r'\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}', '%d-%m-%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S')
+                ]
+                
+                for pattern, input_format, output_format in patterns:
+                    if re.match(pattern, date_str):
+                        date_obj = datetime.strptime(date_str, input_format)
+                        return date_obj.strftime(output_format)
+                        
+                return date_str
+            return date_str
+
+        def process_csv(input_file, output_file):
+            # llegir el csv a baix es pot posar el nom
+            df = pd.read_csv(input_file, header=None)
+            
+            
+            date_columns = []
+            for col in df.columns:
+                if df[col].dtype == object:  #  revisar columnes 
+                    # verificar si hi ha algun patro
+                    if df[col].apply(lambda x: isinstance(x, str) and (
+                        re.match(r'\d{2}/\d{2}/\d{4} \d{1}:\d{2}:\d{2}', x) or
+                        re.match(r'\d{2}/\d{2}/\d{4} \d{1}:\d{2}', x) or
+                        re.match(r'\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}', x) or
+                        re.match(r'\d{2}/\d{2}/\d{4} \d{2}:\d{2}', x) or
+                        re.match(r'\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}',x)
+                    )).any():
+                        date_columns.append(col)
+            
+            # Aplicar la conversió format
+            for col in date_columns:
+                df[col] = df[col].map(convert_date_format)
+            
+            df.to_csv(output_file, index=False, header=False)
+
+        # Especificar noms
+        input_file = file_path
+        output_file = file_path
+
+        # Cridar funcions
+        process_csv(input_file, output_file)
 
         logging.info('CSV data saved successfully')
         # Return a response indicating success
@@ -261,20 +313,19 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             print("no hi ha select de CTD_ROS_LADCP")  
 
         if "CTD_UND" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
             scripts.ctd_und.funcio_ctd_und (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" ctd_UND")
         else:
             print("no hi ha select de CTD_UND")  
                      
         if "DRE" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
             scripts.dre.funcio_dre (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" dre")
         else:
             print("no hi ha select de DRE")
         
-
         if "SVP" in selects:
             scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
             scripts.svp.funcio_svp (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
@@ -290,7 +341,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             print("no hi ha select de XSV")
         
         if "TRA" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
             scripts.tra.funcio_tra (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
             print(" tra")
         else:
@@ -303,6 +354,19 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
         else:
             print("no hi ha select de MOC")
 
+        if "OBS" in selects:
+            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.obs.funcio_obs (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+            print("obs")
+        else:
+            print("no hi ha select de OBS")
+
+        if "ROV" in selects:
+            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name,  vessel_input, valor_org, csr_code,ruta_csv,selects,date_inicial, date_final)
+            scripts.rov.funcio_rov (cruise_id, cruise_name, vessel_input,ruta_csv,date_inicial, date_final)
+        else: 
+            print ("No rov")    
+
         if "ADCP" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.adcp.funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
@@ -310,7 +374,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             print ("No adcp")
 
         if "FFE" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.ffe.funcio_ffe (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No ffe")   
@@ -320,6 +384,7 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             scripts.mag.funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No mag")
+
         if "MBE" in selects:
             scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
@@ -327,30 +392,36 @@ def grabar_individual (cruise_id, cruise_name, vessel_input,valor_org, csr_code,
             print ("No mbe")
 
         if "MCS" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No mcs") 
 
         if "SSS" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.sss.funcio_sss (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No sss")
 
         if "SRS" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No srs")
 
         if "SBP" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
             scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
         else: 
             print ("No sbp")
-        
 
+
+
+        if "AUV" in selects:
+            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, date_inicial, date_final, vessel_input, valor_org, csr_code)
+            scripts.auv.funcio_auv(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+        else: 
+            print ("No auv")          
 
         cdi_general =cruise_id + "_general.xml"
         if path.exists(cdi_general):
