@@ -1,13 +1,15 @@
+
 // Variable para almacenar todas las organizaciones
 let todasLasOrganizaciones = [];
 
 // Función para cargar las organizaciones desde el enlace SPARQL
 function cargarOrganizaciones() {
   // URL que devuelve todas las organizaciones en formato JSON
-  const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20%3FaltName%20(CONCAT(%3Fname%2C%20%22%20(%22%2C%20%3FaltName%2C%20%22)%22)%20AS%20%3ForgName)%20%3Fnotation%20%3Fstreet%20%3Fcodepostal%20%3Flocality%20%3Fcountry%20%3Fweb%0D%0A%0D%0AWHERE%20%7B%0D%0A%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23postal-code%3E%20%3Fcodepostal%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23locality%3E%20%3Flocality%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23country-name%3E%20%3Fcountry%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23seeAlso%3E%20%3Fweb%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName.%0D%0A%20%20%20%20%20%20%20%20%20%20%20%0D%0A%0D%0A%20%20%20%20%0D%0A%0D%0A%7D&accept=*%2F*'
-  //'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20(CONCAT(%3Fname%2C%20%22%20(%22%2C%20%3FaltName%2C%20%22)%22)%20AS%20%3ForgName)%20%3Fnotation%20%3Ftel%20%3FaltName%20%3Fstreet%20%3Fcodepostal%20%3Flocality%20%3Femail%20%3Fcountry%20%3Fweb%0D%0AWHERE%20%7B%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23tel%3E%20%3Ftel%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23postal-code%3E%20%3Fcodepostal%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23locality%3E%20%3Flocality%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23email%3E%20%3Femail%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23country-name%3E%20%3Fcountry%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23seeAlso%3E%20%3Fweb%20.%0D%0A%7D%0D%0AORDER%20BY%20%3Fname&accept=*%2F*';
+  //const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20%3FaltName%20(CONCAT(%3Fname%2C%20%22%20(%22%2C%20%3FaltName%2C%20%22)%22)%20AS%20%3ForgName)%20%3Fnotation%20%3Fstreet%20%3Fcodepostal%20%3Flocality%20%3Fcountry%20%3Fweb%0D%0A%0D%0AWHERE%20%7B%0D%0A%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23postal-code%3E%20%3Fcodepostal%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23locality%3E%20%3Flocality%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23country-name%3E%20%3Fcountry%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23seeAlso%3E%20%3Fweb%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName.%0D%0A%20%20%20%20%20%20%20%20%20%20%20%0D%0A%0D%0A%20%20%20%20%0D%0A%0D%0A%7D&accept=*%2F*';
+  const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20%3FaltName%20(CONCAT(%3Fname%2C%20%22%20(%22%2C%20%3FaltName%2C%20%22)%22)%20AS%20%3ForgName)%20%3Fnotation%20%3Fstreet%0D%0A%0D%0AWHERE%20%7B%0D%0A%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName.%0D%0A%20%20%20%20%20%20%20%20%20%20%20%0D%0A%0D%0A%20%20%20%20%0D%0A%0D%0A%7D&accept=*%2F*';
 
-  // Realizar la solicitud AJAX directamente al enlace 
+  
+  // Realizar la solicitud AJAX directamente al enlace
   fetch(jsonDataURL)
     .then(response => response.json())
     .then(data => {
@@ -31,7 +33,7 @@ function llenarListaDesplegable(organizaciones) {
 
   // Agregar las organizaciones a la lista desplegable
   organizaciones.forEach(organizacion => {
-    const orgName = organizacion.orgName.value; // Se utiliza la propiedad altName según la definición en el SPARQL
+    const orgName = organizacion.orgName.value; // Se utiliza la propiedad orgName según la definición en el SPARQL
     const orgURI = organizacion.org.value;
 
     const optionElement = document.createElement('option');
@@ -60,10 +62,8 @@ function realizarBusqueda() {
 // Función para cargar los resultados directamente desde el enlace
 function cargarResultadosDesdeEnlace(organizacionURI) {
   // URL que devuelve los resultados en formato JSON
-  const jsonDataURL ='https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*'
-  //'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20%3FaltName%0D%0A%0D%0AWHERE%20%7B%0D%0A%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%0D%0A%0D%0A%7D&accept=*%2F*'
-
-  //'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*';
+  //const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*';
+  const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*';
 
   // Realizar la solicitud AJAX directamente al enlace
   fetch(jsonDataURL)
@@ -92,7 +92,7 @@ function mostrarResultados(resultados) {
 
 
     const resultadoElemento = document.createElement('p');
-    resultadoElemento.textContent = `${orgURI}`;
+    resultadoElemento.textContent = `${orgURI}`;//Organization ${orgName},
 
     resultadosDiv.appendChild(resultadoElemento);
   });
@@ -108,13 +108,11 @@ function cargarResultadosSeleccionados() {
     cargarResultadosDesdeEnlace(organizacionSeleccionada);
   }
 }
-
 function loadDoc() {
   console.log("loadDoc() initated"); // Log a message to console indicating loadDoc() function is called
   document.getElementById("overlay").style.display = "block";
-  
   //fetch response
-  fetch("http://datahub.utm.csic.es/cdigen/static/csrCodeList.xml")
+  fetch("https://datahub.utm.csic.es/cdigen/static/csrCodeList.xml")
       .then(response => {
       if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -143,7 +141,7 @@ function loadDoc() {
       document.getElementById("overlay").style.display = "none";
       });
 }
-// funcio  per carregar 
+// funcio  per carregar
 function myFunction(xml) {
   var select = document.getElementById("cdSelect");
   var codeDefinitions = xml.querySelectorAll("CodeDefinition");
@@ -205,7 +203,7 @@ function filtrevessel(xml) {
           option.value = cruisename;
           option.text = cruisename;
           select.add(option);
-        } 
+        }
         else if (selectedVessel === "hes" && platformCode === "29HE") {
           var option = document.createElement("option");
           option.value = cruisename;
@@ -218,14 +216,8 @@ function filtrevessel(xml) {
     console.error("No CodeDefinitions found in the XML");
   }
 }
-
-
-
-
-
 // Llamar a la función para cargar las organizaciones cuando la página se carga
 window.onload = function () {
   cargarOrganizaciones()  
 };
   //loadDoc();
-

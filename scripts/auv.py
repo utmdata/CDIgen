@@ -14,7 +14,7 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-def funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
+def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
@@ -221,6 +221,12 @@ def funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
 
     tree.write(output_file)
 
+    #canviar platform code
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//sdn:SDN_PlatformCategoryCode[contains(text(), 'research vessel')]", namespaces=namespace)[0]
+    posList.text = "autonomus underwater vehicle" 
+    posList.set ("codeListValue","25")
+    tree.write(output_file)
     
     """ #canviar sensor
     tree = etree.parse(input_file)

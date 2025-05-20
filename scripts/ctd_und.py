@@ -16,8 +16,8 @@ import copy
 
 def eliminar_columnes(csv_name):
   arxiu = pd.read_csv(csv_name)
-  arxiu = arxiu.reindex(columns=["cruise_id","latitude", "longitude","Instrument", "instrument","vessel", "id", "met_cat"])
-  arxiu = arxiu.rename (columns={'latitude': 'lat', 'longitude': 'lon', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'codiid'})
+  arxiu = arxiu.reindex(columns=["cruise_id","longitude", "latitude","Instrument", "instrument","vessel", "id", "met_cat"])
+  arxiu = arxiu.rename (columns={'longitude': 'lon', 'latitude': 'lat', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'cdiid'})
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
@@ -142,12 +142,12 @@ def funcio_ctd_und (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
     tree.write(output_file)
 
 
-    #canviar sensor segons el vaixell
+    """#canviar sensor segons el vaixell
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_SeaVoxDeviceCatalogueCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
     posList_1.text =  'Sea-Bird SBE 911plus CTD'
     posList_1.set ("codeListValue","TOOL0058")
-    tree.write(output_file)
+    tree.write(output_file)"""
 
     cdi_global=cruise_id + "/" + cruise_id + cdi_model +".xml"
     shutil.copy (cdi_individual,cdi_global)
@@ -211,6 +211,12 @@ def funcio_ctd_und (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
       lista_met_cat.append(id)
     samples['met_cat'] = lista_met_cat
 
+
+    lista_instrument=[]
+    for i in range(0,total_lines):          
+      instrument= 'CTD'
+      lista_instrument.append(instrument)
+    samples['instrument'] = lista_instrument
 
 #<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:29SG20230719_ctd_ros_ladcp"  target="_blank">View in metadata catalog</a>
     for i in range(0,total_lines):    
@@ -284,9 +290,9 @@ def funcio_ctd_und (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
 
     for i in range(0,total_lines):
       fecha=str(samples.loc [i,"fecha"])
-      dia = fecha.split("-")[0]
+      any = fecha.split("-")[0]
       mes= fecha.split("-")[1]
-      any= fecha.split("-")[2]
+      dia= fecha.split("-")[2]
       fila=fila+1
       lista_dia.append(dia)
       lista_mes.append(mes)
@@ -356,10 +362,10 @@ def funcio_ctd_und (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
 
     posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
     posList_w.text=w
-    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-    posList_s.text= s
-    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
+    posList_e = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
     posList_e.text= e
+    posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
+    posList_s.text= s
     posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
     posList_n.text=n
 

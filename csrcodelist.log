@@ -412,3 +412,391 @@
 2024-12-12 08:08:45,481 - INFO - CSR code list XML file saved successfully at 2024-12-12 08:08:45.481861.
 2024-12-13 00:00:10,151 - INFO - Script of csrcodelist started.
 2024-12-13 00:00:11,566 - INFO - CSR code list XML file saved successfully at 2024-12-13 00:00:11.566313.
+2024-12-14 00:00:21,140 - INFO - Script of csrcodelist started.
+2024-12-14 00:00:25,634 - INFO - CSR code list XML file saved successfully at 2024-12-14 00:00:25.634150.
+2024-12-15 00:00:20,938 - INFO - Script of csrcodelist started.
+2024-12-15 00:00:23,433 - INFO - CSR code list XML file saved successfully at 2024-12-15 00:00:23.433512.
+2024-12-16 00:00:20,771 - INFO - Script of csrcodelist started.
+2024-12-16 00:00:20,785 - ERROR - An error occurred: HTTPSConnectionPool(host='csr.seadatanet.org', port=443): Max retries exceeded with url: /isoCodelists/csrCodeList.xml (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fc253a88f70>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+2024-12-17 00:00:20,732 - INFO - Script of csrcodelist started.
+2024-12-17 00:00:22,308 - INFO - CSR code list XML file saved successfully at 2024-12-17 00:00:22.308269.
+2024-12-18 00:00:21,047 - INFO - Script of csrcodelist started.
+2024-12-18 00:00:22,605 - INFO - CSR code list XML file saved successfully at 2024-12-18 00:00:22.604927.
+2025-01-03 10:52:27,654 - INFO - Script of csrcodelist started.
+2025-01-03 10:52:32,375 - INFO - CSR code list XML file saved successfully at 2025-01-03 10:52:32.374930.
+2025-01-04 00:00:01,051 - INFO - Script of csrcodelist started.
+2025-01-04 00:00:02,851 - INFO - CSR code list XML file saved successfully at 2025-01-04 00:00:02.851415.
+2025-01-05 00:00:01,361 - INFO - Script of csrcodelist started.
+2025-01-05 00:00:06,220 - INFO - CSR code list XML file saved successfully at 2025-01-05 00:00:06.220419.
+2025-01-06 00:00:00,985 - INFO - Script of csrcodelist started.
+2025-01-06 00:00:02,482 - INFO - CSR code list XML file saved successfully at 2025-01-06 00:00:02.482842.
+2025-01-07 00:00:01,222 - INFO - Script of csrcodelist started.
+2025-01-07 00:00:05,740 - INFO - CSR code list XML file saved successfully at 2025-01-07 00:00:05.740008.
+2025-01-08 00:00:01,607 - INFO - Script of csrcodelist started.
+2025-01-08 00:00:03,241 - INFO - CSR code list XML file saved successfully at 2025-01-08 00:00:03.241560.
+2025-01-09 00:00:01,378 - INFO - Script of csrcodelist started.
+2025-01-09 00:00:02,906 - INFO - CSR code list XML file saved successfully at 2025-01-09 00:00:02.906655.
+2025-01-10 00:00:01,298 - INFO - Script of csrcodelist started.
+2025-01-10 00:00:05,678 - INFO - CSR code list XML file saved successfully at 2025-01-10 00:00:05.678730.
+2025-01-11 00:00:01,369 - INFO - Script of csrcodelist started.
+2025-01-11 00:00:02,777 - INFO - CSR code list XML file saved successfully at 2025-01-11 00:00:02.777705.
+2025-01-12 00:00:01,239 - INFO - Script of csrcodelist started.
+2025-01-12 00:00:02,694 - INFO - CSR code list XML file saved successfully at 2025-01-12 00:00:02.694544.
+2025-01-13 00:00:01,420 - INFO - Script of csrcodelist started.
+2025-01-13 00:00:02,863 - INFO - CSR code list XML file saved successfully at 2025-01-13 00:00:02.863894.
+2025-01-14 00:00:01,187 - INFO - Script of csrcodelist started.
+2025-01-14 00:00:05,741 - INFO - CSR code list XML file saved successfully at 2025-01-14 00:00:05.741159.
+2025-01-15 00:00:01,269 - INFO - Script of csrcodelist started.
+2025-01-15 00:00:02,625 - INFO - CSR code list XML file saved successfully at 2025-01-15 00:00:02.625660.
+2025-01-16 00:00:01,336 - INFO - Script of csrcodelist started.
+2025-01-16 00:00:02,844 - INFO - CSR code list XML file saved successfully at 2025-01-16 00:00:02.844643.
+2025-01-17 00:00:01,292 - INFO - Script of csrcodelist started.
+2025-01-17 00:00:02,749 - INFO - CSR code list XML file saved successfully at 2025-01-17 00:00:02.749753.
+2025-01-18 00:00:01,436 - INFO - Script of csrcodelist started.
+2025-01-18 00:00:03,216 - INFO - CSR code list XML file saved successfully at 2025-01-18 00:00:03.216523.
+2025-01-19 00:00:00,950 - INFO - Script of csrcodelist started.
+2025-01-19 00:00:04,967 - INFO - CSR code list XML file saved successfully at 2025-01-19 00:00:04.967505.
+2025-01-20 00:00:01,056 - INFO - Script of csrcodelist started.
+2025-01-20 00:00:05,345 - INFO - CSR code list XML file saved successfully at 2025-01-20 00:00:05.345902.
+2025-01-21 00:00:01,196 - INFO - Script of csrcodelist started.
+2025-01-21 00:00:02,558 - INFO - CSR code list XML file saved successfully at 2025-01-21 00:00:02.558061.
+2025-01-22 00:00:02,592 - INFO - Script of csrcodelist started.
+2025-01-22 00:00:04,162 - INFO - CSR code list XML file saved successfully at 2025-01-22 00:00:04.161034.
+2025-01-23 00:00:01,512 - INFO - Script of csrcodelist started.
+2025-01-23 00:00:03,022 - INFO - CSR code list XML file saved successfully at 2025-01-23 00:00:03.021942.
+2025-01-24 00:00:01,663 - INFO - Script of csrcodelist started.
+2025-01-24 00:00:16,701 - ERROR - An error occurred: HTTPSConnectionPool(host='csr.seadatanet.org', port=443): Max retries exceeded with url: /isoCodelists/csrCodeList.xml (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb66bcd4f70>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+2025-01-25 00:00:01,279 - INFO - Script of csrcodelist started.
+2025-01-25 00:00:03,006 - INFO - CSR code list XML file saved successfully at 2025-01-25 00:00:02.864068.
+2025-01-26 00:00:01,467 - INFO - Script of csrcodelist started.
+2025-01-26 00:00:06,082 - INFO - CSR code list XML file saved successfully at 2025-01-26 00:00:06.076712.
+2025-01-27 00:00:01,161 - INFO - Script of csrcodelist started.
+2025-01-27 00:00:05,201 - INFO - CSR code list XML file saved successfully at 2025-01-27 00:00:05.187851.
+2025-01-28 00:00:01,428 - INFO - Script of csrcodelist started.
+2025-01-28 00:00:03,106 - INFO - CSR code list XML file saved successfully at 2025-01-28 00:00:03.106131.
+2025-01-29 00:00:01,188 - INFO - Script of csrcodelist started.
+2025-01-29 00:00:03,055 - INFO - CSR code list XML file saved successfully at 2025-01-29 00:00:03.054954.
+2025-01-30 00:00:01,555 - INFO - Script of csrcodelist started.
+2025-01-30 00:00:03,333 - INFO - CSR code list XML file saved successfully at 2025-01-30 00:00:03.333593.
+2025-01-31 00:00:01,519 - INFO - Script of csrcodelist started.
+2025-01-31 00:00:03,831 - INFO - CSR code list XML file saved successfully at 2025-01-31 00:00:03.831923.
+2025-02-01 00:00:01,411 - INFO - Script of csrcodelist started.
+2025-02-01 00:00:03,254 - INFO - CSR code list XML file saved successfully at 2025-02-01 00:00:03.254088.
+2025-02-02 00:00:01,205 - INFO - Script of csrcodelist started.
+2025-02-02 00:00:02,674 - INFO - CSR code list XML file saved successfully at 2025-02-02 00:00:02.674421.
+2025-02-03 00:00:01,181 - INFO - Script of csrcodelist started.
+2025-02-03 00:00:02,874 - INFO - CSR code list XML file saved successfully at 2025-02-03 00:00:02.874729.
+2025-02-04 00:00:01,315 - INFO - Script of csrcodelist started.
+2025-02-04 00:00:02,909 - INFO - CSR code list XML file saved successfully at 2025-02-04 00:00:02.909437.
+2025-02-05 00:00:01,459 - INFO - Script of csrcodelist started.
+2025-02-05 00:00:02,930 - INFO - CSR code list XML file saved successfully at 2025-02-05 00:00:02.929950.
+2025-02-06 00:00:01,182 - INFO - Script of csrcodelist started.
+2025-02-06 00:00:02,643 - INFO - CSR code list XML file saved successfully at 2025-02-06 00:00:02.643608.
+2025-02-07 00:00:01,508 - INFO - Script of csrcodelist started.
+2025-02-07 00:00:03,459 - INFO - CSR code list XML file saved successfully at 2025-02-07 00:00:03.459687.
+2025-02-08 00:00:01,339 - INFO - Script of csrcodelist started.
+2025-02-08 00:00:02,709 - INFO - CSR code list XML file saved successfully at 2025-02-08 00:00:02.709626.
+2025-02-09 00:00:01,642 - INFO - Script of csrcodelist started.
+2025-02-09 00:00:07,154 - INFO - CSR code list XML file saved successfully at 2025-02-09 00:00:07.154069.
+2025-02-10 00:00:01,489 - INFO - Script of csrcodelist started.
+2025-02-10 00:00:02,991 - INFO - CSR code list XML file saved successfully at 2025-02-10 00:00:02.990975.
+2025-02-11 00:00:01,580 - INFO - Script of csrcodelist started.
+2025-02-11 00:00:03,317 - INFO - CSR code list XML file saved successfully at 2025-02-11 00:00:03.316960.
+2025-02-12 00:00:00,932 - INFO - Script of csrcodelist started.
+2025-02-12 00:00:05,661 - INFO - CSR code list XML file saved successfully at 2025-02-12 00:00:05.661264.
+2025-02-13 00:00:00,997 - INFO - Script of csrcodelist started.
+2025-02-13 00:00:05,529 - INFO - CSR code list XML file saved successfully at 2025-02-13 00:00:05.529737.
+2025-02-14 00:00:00,974 - INFO - Script of csrcodelist started.
+2025-02-14 00:00:02,404 - INFO - CSR code list XML file saved successfully at 2025-02-14 00:00:02.404337.
+2025-02-15 00:00:00,907 - INFO - Script of csrcodelist started.
+2025-02-15 00:00:02,583 - INFO - CSR code list XML file saved successfully at 2025-02-15 00:00:02.583896.
+2025-02-16 00:00:00,965 - INFO - Script of csrcodelist started.
+2025-02-16 00:00:02,347 - INFO - CSR code list XML file saved successfully at 2025-02-16 00:00:02.347475.
+2025-02-17 00:00:00,910 - INFO - Script of csrcodelist started.
+2025-02-17 00:00:02,351 - INFO - CSR code list XML file saved successfully at 2025-02-17 00:00:02.351033.
+2025-02-18 00:00:17,890 - INFO - Script of csrcodelist started.
+2025-02-18 00:00:19,949 - INFO - CSR code list XML file saved successfully at 2025-02-18 00:00:19.949885.
+2025-02-19 00:00:01,056 - INFO - Script of csrcodelist started.
+2025-02-19 00:00:02,526 - INFO - CSR code list XML file saved successfully at 2025-02-19 00:00:02.526596.
+2025-02-20 00:00:00,972 - INFO - Script of csrcodelist started.
+2025-02-20 00:00:05,822 - INFO - CSR code list XML file saved successfully at 2025-02-20 00:00:05.822062.
+2025-02-20 08:51:18,969 - INFO - Script of csrcodelist started.
+2025-02-20 08:51:20,610 - INFO - CSR code list XML file saved successfully at 2025-02-20 08:51:20.609861.
+2025-02-21 00:00:21,535 - INFO - Script of csrcodelist started.
+2025-02-21 00:00:22,817 - INFO - CSR code list XML file saved successfully at 2025-02-21 00:00:22.817295.
+2025-02-22 00:00:21,527 - INFO - Script of csrcodelist started.
+2025-02-22 00:00:23,222 - INFO - CSR code list XML file saved successfully at 2025-02-22 00:00:23.222525.
+2025-02-23 00:00:21,531 - INFO - Script of csrcodelist started.
+2025-02-23 00:00:23,575 - INFO - CSR code list XML file saved successfully at 2025-02-23 00:00:23.575479.
+2025-02-24 00:00:21,521 - INFO - Script of csrcodelist started.
+2025-02-24 00:00:23,097 - INFO - CSR code list XML file saved successfully at 2025-02-24 00:00:23.097118.
+2025-02-25 00:00:21,522 - INFO - Script of csrcodelist started.
+2025-02-25 00:00:26,270 - INFO - CSR code list XML file saved successfully at 2025-02-25 00:00:26.270467.
+2025-02-26 00:00:21,531 - INFO - Script of csrcodelist started.
+2025-02-26 00:00:23,304 - INFO - CSR code list XML file saved successfully at 2025-02-26 00:00:23.304356.
+2025-02-27 00:00:21,522 - INFO - Script of csrcodelist started.
+2025-02-27 00:00:27,646 - INFO - CSR code list XML file saved successfully at 2025-02-27 00:00:27.646270.
+2025-02-28 00:00:21,538 - INFO - Script of csrcodelist started.
+2025-02-28 00:00:26,756 - INFO - CSR code list XML file saved successfully at 2025-02-28 00:00:26.756511.
+2025-02-28 08:31:54,009 - INFO - Script of csrcodelist started.
+2025-02-28 08:31:55,475 - INFO - CSR code list XML file saved successfully at 2025-02-28 08:31:55.474826.
+2025-02-28 12:12:21,686 - INFO - Script of csrcodelist started.
+2025-02-28 12:12:26,216 - INFO - CSR code list XML file saved successfully at 2025-02-28 12:12:26.216529.
+2025-03-01 00:00:31,009 - INFO - Script of csrcodelist started.
+2025-03-01 00:00:33,013 - INFO - CSR code list XML file saved successfully at 2025-03-01 00:00:33.013177.
+2025-03-02 00:00:31,061 - INFO - Script of csrcodelist started.
+2025-03-02 00:00:33,347 - INFO - CSR code list XML file saved successfully at 2025-03-02 00:00:33.347642.
+2025-03-03 00:00:31,019 - INFO - Script of csrcodelist started.
+2025-03-03 00:00:32,812 - INFO - CSR code list XML file saved successfully at 2025-03-03 00:00:32.811985.
+2025-03-04 00:00:31,026 - INFO - Script of csrcodelist started.
+2025-03-04 00:00:32,886 - INFO - CSR code list XML file saved successfully at 2025-03-04 00:00:32.886286.
+2025-03-04 13:22:16,661 - INFO - Script of csrcodelist started.
+2025-03-04 13:22:18,248 - INFO - CSR code list XML file saved successfully at 2025-03-04 13:22:18.248263.
+2025-03-05 00:00:00,944 - INFO - Script of csrcodelist started.
+2025-03-05 00:00:02,581 - INFO - CSR code list XML file saved successfully at 2025-03-05 00:00:02.580952.
+2025-03-06 00:00:00,913 - INFO - Script of csrcodelist started.
+2025-03-06 00:00:03,287 - INFO - CSR code list XML file saved successfully at 2025-03-06 00:00:03.286925.
+2025-03-07 00:00:00,920 - INFO - Script of csrcodelist started.
+2025-03-07 00:00:02,652 - INFO - CSR code list XML file saved successfully at 2025-03-07 00:00:02.651951.
+2025-03-08 00:00:00,897 - INFO - Script of csrcodelist started.
+2025-03-08 00:00:02,767 - INFO - CSR code list XML file saved successfully at 2025-03-08 00:00:02.767505.
+2025-03-09 00:00:00,928 - INFO - Script of csrcodelist started.
+2025-03-09 00:00:02,446 - INFO - CSR code list XML file saved successfully at 2025-03-09 00:00:02.446531.
+2025-03-10 00:00:00,952 - INFO - Script of csrcodelist started.
+2025-03-10 00:00:02,672 - INFO - CSR code list XML file saved successfully at 2025-03-10 00:00:02.672138.
+2025-03-11 00:00:00,924 - INFO - Script of csrcodelist started.
+2025-03-11 00:00:02,612 - INFO - CSR code list XML file saved successfully at 2025-03-11 00:00:02.612074.
+2025-03-12 00:00:00,923 - INFO - Script of csrcodelist started.
+2025-03-12 00:00:02,545 - INFO - CSR code list XML file saved successfully at 2025-03-12 00:00:02.545782.
+2025-03-13 00:00:00,908 - INFO - Script of csrcodelist started.
+2025-03-13 00:00:02,708 - INFO - CSR code list XML file saved successfully at 2025-03-13 00:00:02.708707.
+2025-03-14 00:00:00,906 - INFO - Script of csrcodelist started.
+2025-03-14 00:00:02,452 - INFO - CSR code list XML file saved successfully at 2025-03-14 00:00:02.452656.
+2025-03-15 00:00:00,923 - INFO - Script of csrcodelist started.
+2025-03-15 00:00:02,456 - INFO - CSR code list XML file saved successfully at 2025-03-15 00:00:02.456614.
+2025-03-16 00:00:00,923 - INFO - Script of csrcodelist started.
+2025-03-16 00:00:02,668 - INFO - CSR code list XML file saved successfully at 2025-03-16 00:00:02.668811.
+2025-03-17 00:00:00,921 - INFO - Script of csrcodelist started.
+2025-03-17 00:00:02,776 - INFO - CSR code list XML file saved successfully at 2025-03-17 00:00:02.776052.
+2025-03-18 00:00:00,936 - INFO - Script of csrcodelist started.
+2025-03-18 00:00:05,561 - INFO - CSR code list XML file saved successfully at 2025-03-18 00:00:05.561317.
+2025-03-18 11:47:52,441 - INFO - Script of csrcodelist started.
+2025-03-18 11:47:57,188 - INFO - CSR code list XML file saved successfully at 2025-03-18 11:47:57.188856.
+2025-03-19 00:00:29,801 - INFO - Script of csrcodelist started.
+2025-03-19 00:00:31,928 - INFO - CSR code list XML file saved successfully at 2025-03-19 00:00:31.928883.
+2025-03-20 00:00:29,794 - INFO - Script of csrcodelist started.
+2025-03-20 00:00:34,743 - INFO - CSR code list XML file saved successfully at 2025-03-20 00:00:34.743046.
+2025-03-21 00:00:06,088 - INFO - Script of csrcodelist started.
+2025-03-21 00:00:08,336 - INFO - CSR code list XML file saved successfully at 2025-03-21 00:00:08.336491.
+2025-03-22 00:00:06,109 - INFO - Script of csrcodelist started.
+2025-03-22 00:00:07,764 - INFO - CSR code list XML file saved successfully at 2025-03-22 00:00:07.764272.
+2025-03-23 00:00:06,091 - INFO - Script of csrcodelist started.
+2025-03-23 00:00:07,742 - INFO - CSR code list XML file saved successfully at 2025-03-23 00:00:07.742417.
+2025-03-24 00:00:06,116 - INFO - Script of csrcodelist started.
+2025-03-24 00:00:08,228 - INFO - CSR code list XML file saved successfully at 2025-03-24 00:00:08.228206.
+2025-03-25 00:00:06,105 - INFO - Script of csrcodelist started.
+2025-03-25 00:00:07,488 - INFO - CSR code list XML file saved successfully at 2025-03-25 00:00:07.488162.
+2025-03-26 00:00:06,090 - INFO - Script of csrcodelist started.
+2025-03-26 00:00:07,702 - INFO - CSR code list XML file saved successfully at 2025-03-26 00:00:07.702814.
+2025-03-27 00:00:06,094 - INFO - Script of csrcodelist started.
+2025-03-27 00:00:07,908 - INFO - CSR code list XML file saved successfully at 2025-03-27 00:00:07.908619.
+2025-03-28 00:00:06,100 - INFO - Script of csrcodelist started.
+2025-03-28 00:00:08,239 - INFO - CSR code list XML file saved successfully at 2025-03-28 00:00:08.239576.
+2025-03-29 00:00:06,089 - INFO - Script of csrcodelist started.
+2025-03-29 00:00:08,329 - INFO - CSR code list XML file saved successfully at 2025-03-29 00:00:08.329344.
+2025-03-30 00:00:06,086 - INFO - Script of csrcodelist started.
+2025-03-30 00:00:07,808 - INFO - CSR code list XML file saved successfully at 2025-03-30 00:00:07.808437.
+2025-03-31 00:00:06,118 - INFO - Script of csrcodelist started.
+2025-03-31 00:00:07,794 - INFO - CSR code list XML file saved successfully at 2025-03-31 00:00:07.794727.
+2025-04-01 00:00:29,805 - INFO - Script of csrcodelist started.
+2025-04-01 00:00:31,453 - INFO - CSR code list XML file saved successfully at 2025-04-01 00:00:31.453122.
+2025-04-02 00:00:17,262 - INFO - Script of csrcodelist started.
+2025-04-02 00:00:22,550 - INFO - CSR code list XML file saved successfully at 2025-04-02 00:00:22.550437.
+2025-04-03 00:00:00,287 - INFO - Script of csrcodelist started.
+2025-04-03 00:00:02,108 - INFO - CSR code list XML file saved successfully at 2025-04-03 00:00:02.108490.
+2025-04-04 00:00:00,551 - INFO - Script of csrcodelist started.
+2025-04-04 00:00:02,155 - INFO - CSR code list XML file saved successfully at 2025-04-04 00:00:02.154974.
+2025-04-05 00:00:00,553 - INFO - Script of csrcodelist started.
+2025-04-05 00:00:02,137 - INFO - CSR code list XML file saved successfully at 2025-04-05 00:00:02.137138.
+2025-04-06 00:00:00,553 - INFO - Script of csrcodelist started.
+2025-04-06 00:00:01,915 - INFO - CSR code list XML file saved successfully at 2025-04-06 00:00:01.915734.
+2025-04-07 00:00:00,550 - INFO - Script of csrcodelist started.
+2025-04-07 00:00:02,213 - INFO - CSR code list XML file saved successfully at 2025-04-07 00:00:02.213123.
+2025-04-08 00:00:00,294 - INFO - Script of csrcodelist started.
+2025-04-08 00:00:01,857 - INFO - CSR code list XML file saved successfully at 2025-04-08 00:00:01.857301.
+2025-04-09 00:00:00,543 - INFO - Script of csrcodelist started.
+2025-04-09 00:00:02,286 - INFO - CSR code list XML file saved successfully at 2025-04-09 00:00:02.286714.
+2025-04-10 00:00:00,562 - INFO - Script of csrcodelist started.
+2025-04-10 00:00:02,245 - INFO - CSR code list XML file saved successfully at 2025-04-10 00:00:02.245718.
+2025-04-11 00:00:00,556 - INFO - Script of csrcodelist started.
+2025-04-11 00:00:02,212 - INFO - CSR code list XML file saved successfully at 2025-04-11 00:00:02.212644.
+2025-04-11 06:43:05,335 - INFO - Script of csrcodelist started.
+2025-04-11 06:43:10,698 - INFO - CSR code list XML file saved successfully at 2025-04-11 06:43:10.698339.
+2025-04-12 00:00:08,746 - INFO - Script of csrcodelist started.
+2025-04-12 00:00:10,278 - INFO - CSR code list XML file saved successfully at 2025-04-12 00:00:10.278387.
+2025-04-13 00:00:08,762 - INFO - Script of csrcodelist started.
+2025-04-13 00:00:13,863 - INFO - CSR code list XML file saved successfully at 2025-04-13 00:00:13.863874.
+2025-04-14 00:00:08,753 - INFO - Script of csrcodelist started.
+2025-04-14 00:00:13,811 - INFO - CSR code list XML file saved successfully at 2025-04-14 00:00:13.811636.
+2025-04-15 00:00:08,754 - INFO - Script of csrcodelist started.
+2025-04-15 00:00:14,113 - INFO - CSR code list XML file saved successfully at 2025-04-15 00:00:14.113374.
+2025-04-15 06:49:39,625 - INFO - Script of csrcodelist started.
+2025-04-15 06:49:44,820 - INFO - CSR code list XML file saved successfully at 2025-04-15 06:49:44.820717.
+2025-04-16 00:00:09,179 - INFO - Script of csrcodelist started.
+2025-04-16 00:00:13,812 - INFO - CSR code list XML file saved successfully at 2025-04-16 00:00:13.812169.
+2025-04-17 00:00:09,179 - INFO - Script of csrcodelist started.
+2025-04-17 00:00:10,576 - INFO - CSR code list XML file saved successfully at 2025-04-17 00:00:10.576109.
+2025-04-18 00:00:09,176 - INFO - Script of csrcodelist started.
+2025-04-18 00:00:10,566 - INFO - CSR code list XML file saved successfully at 2025-04-18 00:00:10.565933.
+2025-04-19 00:00:09,196 - INFO - Script of csrcodelist started.
+2025-04-19 00:00:10,633 - INFO - CSR code list XML file saved successfully at 2025-04-19 00:00:10.633373.
+2025-04-20 00:00:09,176 - INFO - Script of csrcodelist started.
+2025-04-20 00:00:10,633 - INFO - CSR code list XML file saved successfully at 2025-04-20 00:00:10.633392.
+2025-04-21 00:00:09,174 - INFO - Script of csrcodelist started.
+2025-04-21 00:00:13,647 - INFO - CSR code list XML file saved successfully at 2025-04-21 00:00:13.647116.
+2025-04-22 00:00:09,166 - INFO - Script of csrcodelist started.
+2025-04-22 00:00:10,549 - INFO - CSR code list XML file saved successfully at 2025-04-22 00:00:10.549790.
+2025-04-22 11:45:26,359 - INFO - CSR code list XML file saved successfully at 2025-04-22 11:45:26.359485.
+2025-04-22 11:45:46,305 - INFO - Parsed bounding box coordinates: W=-5.1110967, S=36.0845367, E=-3.2279975, N=36.7407303
+2025-04-22 11:51:14,865 - INFO - Script to fetch SPARQL results started.
+2025-04-22 11:51:15,310 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-22 11:51:30,934 - INFO - Parsed bounding box coordinates: W=-5.1110967, S=36.0845367, E=-3.2279975, N=36.7407303
+2025-04-22 12:02:54,446 - INFO - Script to fetch SPARQL results started.
+2025-04-22 12:02:54,705 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-22 12:03:36,515 - INFO - Parsed bounding box coordinates: W=-5.1110967, S=36.0845367, E=-3.2279975, N=36.7407303
+2025-04-22 12:29:22,637 - INFO - JSON data saved successfully
+2025-04-22 12:29:22,638 - INFO - name_csv: 20250422122922638488.csv
+2025-04-22 12:29:22,644 - ERROR - Column count mismatch. Expected 8, got 6
+2025-04-22 12:29:33,055 - ERROR - No name_csv found in logs
+2025-04-22 12:30:13,815 - INFO - CSR code list XML file saved successfully at 2025-04-22 12:30:13.815811.
+2025-04-22 12:30:16,272 - INFO - CSR code list XML file saved successfully at 2025-04-22 12:30:16.272773.
+2025-04-22 12:30:24,708 - INFO - Script to fetch SPARQL results started.
+2025-04-22 12:30:25,008 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-22 12:30:26,486 - INFO - JSON data saved successfully
+2025-04-22 12:30:26,486 - INFO - name_csv: 20250422123026486679.csv
+2025-04-22 12:30:26,492 - ERROR - Column count mismatch. Expected 8, got 6
+2025-04-22 12:30:42,623 - INFO - Parsed bounding box coordinates: W=-18.1282252, S=27.2446552, E=-8.7381695, N=42.2397763
+2025-04-22 12:30:43,092 - ERROR - No name_csv found in logs
+2025-04-22 12:33:18,579 - INFO - JSON data saved successfully
+2025-04-22 12:33:18,580 - INFO - name_csv: 20250422123318579967.csv
+2025-04-22 12:33:18,584 - ERROR - Column count mismatch. Expected 8, got 6
+2025-04-22 12:33:37,909 - ERROR - No name_csv found in logs
+2025-04-22 12:36:17,649 - INFO - JSON data saved successfully
+2025-04-22 12:36:17,650 - INFO - name_csv: 20250422123617650701.csv
+2025-04-22 12:36:17,686 - INFO - CSV data saved successfully
+2025-04-22 12:36:37,510 - ERROR - No name_csv found in logs
+2025-04-22 12:40:38,776 - INFO - Script to fetch SPARQL results started.
+2025-04-22 12:40:39,042 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-22 12:40:39,043 - INFO - Script of csrcodelist started.
+2025-04-22 12:40:40,572 - INFO - CSR code list XML file saved successfully at 2025-04-22 12:40:40.572635.
+2025-04-22 12:41:47,460 - INFO - Script to fetch SPARQL results started.
+2025-04-22 12:41:47,709 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-22 12:41:47,710 - INFO - Script of csrcodelist started.
+2025-04-22 12:41:52,119 - INFO - CSR code list XML file saved successfully at 2025-04-22 12:41:52.119635.
+2025-04-22 12:42:12,263 - INFO - Script to fetch SPARQL results started.
+2025-04-22 12:42:12,540 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-22 12:42:12,541 - INFO - Script of csrcodelist started.
+2025-04-22 12:42:14,908 - INFO - CSR code list XML file saved successfully at 2025-04-22 12:42:14.908328.
+2025-04-22 12:42:33,987 - INFO - Script to fetch SPARQL results started.
+2025-04-22 12:42:34,246 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-22 12:42:43,260 - INFO - Parsed bounding box coordinates: W=-5.1110967, S=36.0845367, E=-3.2279975, N=36.7407303
+2025-04-22 12:47:43,241 - INFO - CSR code list XML file saved successfully at 2025-04-22 12:47:43.241403.
+2025-04-22 12:47:51,572 - INFO - Script to fetch SPARQL results started.
+2025-04-22 12:47:51,711 - INFO - Parsed bounding box coordinates: W=-5.1110967, S=36.0845367, E=-3.2279975, N=36.7407303
+2025-04-22 12:47:51,852 - ERROR - Failed to fetch SPARQL results. Status code: 404
+2025-04-23 05:10:58,609 - INFO - JSON data saved successfully
+2025-04-23 05:10:58,610 - INFO - name_csv: 20250423051058610607.csv
+2025-04-23 05:10:58,616 - ERROR - Column count mismatch. Expected 8, got 6
+2025-04-23 05:11:13,891 - ERROR - No name_csv found in logs
+2025-04-23 07:02:03,023 - INFO - Parsed bounding box coordinates: W=-18.1282252, S=27.2446552, E=-8.7381695, N=42.2397763
+2025-04-23 07:02:35,927 - INFO - JSON data saved successfully
+2025-04-23 07:02:35,928 - INFO - name_csv: 20250423070235928089.csv
+2025-04-23 07:02:35,959 - INFO - CSV data saved successfully
+2025-04-23 07:02:43,009 - ERROR - No name_csv found in logs
+2025-04-23 07:09:07,685 - INFO - JSON data saved successfully
+2025-04-23 07:09:07,687 - INFO - name_csv: 20250423070907687186.csv
+2025-04-23 07:09:07,723 - INFO - CSV data saved successfully
+2025-04-23 07:09:11,269 - ERROR - Error reading log file: [Errno 2] No such file or directory: './record.log'
+2025-04-23 07:11:26,740 - INFO - JSON data saved successfully
+2025-04-23 07:11:26,762 - INFO - name_csv: 20250423071126761943.csv
+2025-04-23 07:11:26,911 - INFO - CSV data saved successfully
+2025-04-23 07:11:32,938 - ERROR - Error reading log file: [Errno 2] No such file or directory: './record.log'
+2025-04-23 07:13:37,559 - INFO - Starting the Flask application...
+2025-04-23 07:14:36,159 - INFO - CSR code list XML file saved successfully at 2025-04-23 07:14:36.158742.
+2025-04-23 07:14:56,930 - INFO - JSON data saved successfully
+2025-04-23 07:14:56,931 - INFO - name_csv: 20250423071456931359.csv
+2025-04-23 07:14:56,972 - INFO - CSV data saved successfully
+2025-04-23 07:15:00,943 - ERROR - Error reading log file: [Errno 2] No such file or directory: './record.log'
+2025-04-23 07:16:36,941 - INFO - Starting the Flask application...
+2025-04-23 07:23:57,411 - INFO - JSON data saved successfully
+2025-04-23 07:23:57,411 - INFO - name_csv: 20250423072357411884.csv
+2025-04-23 07:23:57,444 - INFO - CSV data saved successfully
+2025-04-23 07:24:00,590 - ERROR - No name_csv found in logs
+2025-04-23 07:24:11,921 - INFO - CSR code list XML file saved successfully at 2025-04-23 07:24:11.921017.
+2025-04-23 07:26:00,030 - INFO - Starting the Flask application...
+2025-04-23 07:28:03,299 - INFO - Starting the Flask application...
+2025-04-23 07:31:14,028 - INFO - JSON data saved successfully
+2025-04-23 07:31:14,029 - INFO - name_csv: 20250423073114029675.csv
+2025-04-23 07:31:14,214 - INFO - CSV data saved successfully
+2025-04-23 07:31:27,984 - ERROR - Error reading log file: [Errno 2] No such file or directory: './record.log'
+2025-04-23 07:32:09,663 - INFO - Starting the Flask application...
+2025-04-23 07:57:35,868 - INFO - JSON data saved successfully
+2025-04-23 07:57:35,869 - INFO - name_csv: 20250423075735869002.csv
+2025-04-23 07:57:35,903 - INFO - CSV data saved successfully
+2025-04-23 07:57:43,288 - ERROR - Error reading log file: [Errno 2] No such file or directory: './record.log'
+2025-04-23 08:07:52,156 - INFO - Starting the Flask application...
+2025-04-23 08:09:15,324 - INFO - Starting the Flask application...
+2025-04-23 08:09:15,324 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:09:55,261 - INFO - JSON data saved successfully
+2025-04-23 08:09:55,262 - INFO - name_csv: 20250423080955262354.csv
+2025-04-23 08:09:55,296 - INFO - CSV data saved successfully
+2025-04-23 08:09:59,298 - ERROR - Error reading log file: [Errno 2] No such file or directory: './record.log'
+2025-04-23 08:11:42,535 - INFO - Starting the Flask application...
+2025-04-23 08:11:42,535 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:20:35,362 - INFO - JSON data saved successfully
+2025-04-23 08:20:35,363 - INFO - name_csv: 20250423082035363570.csv
+2025-04-23 08:20:35,399 - INFO - CSV data saved successfully
+2025-04-23 08:20:38,712 - ERROR - No name_csv found in logs
+2025-04-23 08:30:22,486 - INFO - Starting the Flask application...
+2025-04-23 08:30:22,487 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:30:49,401 - INFO - JSON data saved successfully
+2025-04-23 08:30:49,402 - INFO - name_csv: 20250423083049402278.csv
+2025-04-23 08:30:49,436 - INFO - CSV data saved successfully
+2025-04-23 08:30:49,436 - INFO - name_csv: 20250423083049402278.csv
+2025-04-23 08:31:02,648 - ERROR - No name_csv found in logs
+2025-04-23 08:32:42,271 - INFO - Starting the Flask application...
+2025-04-23 08:32:42,271 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:35:36,513 - INFO - Starting the Flask application...
+2025-04-23 08:35:36,513 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:36:01,779 - INFO - JSON data saved successfully
+2025-04-23 08:36:01,780 - INFO - name_csv: 20250423083601779924.csv
+2025-04-23 08:36:01,816 - INFO - CSV data saved successfully
+2025-04-23 08:36:01,816 - INFO - name_csv: 20250423083601779924.csv
+2025-04-23 08:36:37,782 - ERROR - No name_csv found in logs
+2025-04-23 08:45:12,531 - INFO - Starting the Flask application...
+2025-04-23 08:45:12,533 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:50:08,933 - INFO - Logging setup completed
+2025-04-23 08:50:08,933 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:51:58,136 - INFO - Logging setup completed
+2025-04-23 08:51:58,137 - INFO - Log file path: /home/utm/portfo/record.log
+2025-04-23 08:52:55,103 - INFO - JSON data saved successfully
+2025-04-23 08:52:55,104 - INFO - name_csv: 20250423085255104631.csv
+2025-04-23 08:52:55,254 - INFO - CSV data saved successfully
+2025-04-23 08:52:55,254 - INFO - name_csv: 20250423085255104631.csv
+2025-04-23 08:52:59,348 - INFO - Found filename in logs: 20250423085255104631.csv
+2025-04-23 08:52:59,349 - INFO - Constructed ruta_csv: https://datahub.utm.csic.es/cdigen/static/csv/20250423085255104631.csv
+2025-04-23 08:52:59,350 - INFO - Processing with selects: ['AUV']
+2025-04-23 08:52:59,351 - INFO - Starting grabar_individual with selects: ['AUV']
+2025-04-23 08:52:59,351 - INFO - ruta_csv: https://datahub.utm.csic.es/cdigen/static/csv/20250423085255104631.csv
+2025-04-23 08:52:59,351 - INFO - Processing AUV
+2025-04-23 08:52:59,365 - DEBUG - Starting new HTTPS connection (1): 161.111.137.92:8001
+2025-04-23 08:52:59,444 - DEBUG - https://161.111.137.92:8001 "GET /static/csrCodeList.xml HTTP/1.1" 200 67702126
+2025-04-23 08:53:00,553 - DEBUG - Starting new HTTPS connection (1): datahub.utm.csic.es:443
+2025-04-23 08:53:00,741 - DEBUG - https://datahub.utm.csic.es:443 "GET /ws/getBBox/?id=hes20240612 HTTP/1.1" 200 1
+2025-04-23 08:53:00,748 - DEBUG - Starting new HTTPS connection (1): datahub.utm.csic.es:443
+2025-04-23 08:53:00,924 - DEBUG - https://datahub.utm.csic.es:443 "GET /ws/getTrack/GML/?id=hes20240612&n=999 HTTP/1.1" 200 3
+2025-04-23 08:53:00,941 - DEBUG - Starting new HTTPS connection (1): datahub.utm.csic.es:443
+2025-04-23 08:53:01,040 - DEBUG - https://datahub.utm.csic.es:443 "GET /ws/getBBox/?id=hes20240612 HTTP/1.1" 200 1
+2025-04-23 08:53:01,043 - ERROR - Error processing AUV: substring not found
+2025-04-23 08:53:01,044 - ERROR - Error in grabar_individual: substring not found
+2025-04-23 08:53:01,044 - ERROR - Error in download_step1: substring not found

@@ -346,3 +346,154 @@
 2024-12-08 00:00:09,571 - INFO - Weekly maintenance completed.
 2024-12-12 08:08:43,137 - INFO - Starting weekly maintenance...
 2024-12-12 08:08:43,276 - INFO - Weekly maintenance completed.
+2024-12-15 00:00:20,748 - INFO - Starting weekly maintenance...
+2024-12-15 00:00:20,812 - INFO - Weekly maintenance completed.
+2025-01-03 10:52:26,956 - INFO - Starting weekly maintenance...
+2025-01-03 10:52:27,006 - INFO - Weekly maintenance completed.
+2025-01-05 00:00:00,969 - INFO - Starting weekly maintenance...
+2025-01-05 00:00:01,012 - INFO - Weekly maintenance completed.
+2025-01-12 00:00:01,040 - INFO - Starting weekly maintenance...
+2025-01-12 00:00:01,060 - INFO - Deleted file: /home/utm/portfo/static/tareas/29he20241120.zip
+2025-01-12 00:00:01,060 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240917.zip
+2025-01-12 00:00:01,060 - INFO - Deleted file: /home/utm/portfo/static/tareas/29HE20241120.zip
+2025-01-12 00:00:01,060 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-01-12 00:00:01,060 - INFO - Deleted file: /home/utm/portfo/static/csv/20250108064258116331.csv
+2025-01-12 00:00:01,060 - INFO - Weekly maintenance completed.
+2025-01-19 00:00:00,866 - INFO - Starting weekly maintenance...
+2025-01-19 00:00:00,893 - INFO - Weekly maintenance completed.
+2025-01-26 00:00:01,017 - INFO - Starting weekly maintenance...
+2025-01-26 00:00:01,047 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240628.zip
+2025-01-26 00:00:01,050 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240816.zip
+2025-01-26 00:00:01,069 - INFO - Deleted file: /home/utm/portfo/static/csv/20250121095506071571.csv
+2025-01-26 00:00:01,069 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-01-26 00:00:01,069 - INFO - Deleted file: /home/utm/portfo/static/csv/20250121101022344528.csv
+2025-01-26 00:00:01,069 - INFO - Deleted file: /home/utm/portfo/static/csv/20250121090123658859.csv
+2025-01-26 00:00:01,070 - INFO - Deleted file: /home/utm/portfo/static/csv/20250121085446427991.csv
+2025-01-26 00:00:01,070 - INFO - Weekly maintenance completed.
+2025-02-02 00:00:00,922 - INFO - Starting weekly maintenance...
+2025-02-02 00:00:00,959 - INFO - Weekly maintenance completed.
+2025-02-09 00:00:01,121 - INFO - Starting weekly maintenance...
+2025-02-09 00:00:01,141 - INFO - Deleted file: /home/utm/portfo/static/csv/20250204084155120604.csv
+2025-02-09 00:00:01,141 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-02-09 00:00:01,141 - INFO - Weekly maintenance completed.
+2025-02-16 00:00:00,850 - INFO - Starting weekly maintenance...
+2025-02-16 00:00:00,875 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240115.zip
+2025-02-16 00:00:00,886 - INFO - Weekly maintenance completed.
+2025-02-20 08:51:18,461 - INFO - Starting weekly maintenance...
+2025-02-20 08:51:18,510 - INFO - Weekly maintenance completed.
+2025-02-23 00:00:21,463 - INFO - Starting weekly maintenance...
+2025-02-23 00:00:21,463 - INFO - Weekly maintenance completed.
+2025-02-28 08:31:53,542 - INFO - Starting weekly maintenance...
+2025-02-28 08:31:53,587 - INFO - Weekly maintenance completed.
+2025-02-28 12:12:21,096 - INFO - Starting weekly maintenance...
+2025-02-28 12:12:21,145 - INFO - Weekly maintenance completed.
+2025-03-02 00:00:30,944 - INFO - Starting weekly maintenance...
+2025-03-02 00:00:30,945 - INFO - Weekly maintenance completed.
+2025-03-04 13:22:15,985 - INFO - Starting weekly maintenance...
+2025-03-04 13:22:16,093 - INFO - Weekly maintenance completed.
+2025-03-09 00:00:00,839 - INFO - Starting weekly maintenance...
+2025-03-09 00:00:00,839 - INFO - Weekly maintenance completed.
+2025-03-16 00:00:00,836 - INFO - Starting weekly maintenance...
+2025-03-16 00:00:00,836 - INFO - Weekly maintenance completed.
+2025-03-18 11:47:51,964 - INFO - Starting weekly maintenance...
+2025-03-18 11:47:52,052 - INFO - Weekly maintenance completed.
+2025-03-23 00:00:06,008 - INFO - Starting weekly maintenance...
+2025-03-23 00:00:06,008 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240306.zip
+2025-03-23 00:00:06,009 - INFO - Deleted file: /home/utm/portfo/static/tareas/29HE20250223.zip
+2025-03-23 00:00:06,009 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-03-23 00:00:06,009 - INFO - Weekly maintenance completed.
+2025-03-30 00:00:06,012 - INFO - Starting weekly maintenance...
+2025-03-30 00:00:06,012 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240306.zip
+2025-03-30 00:00:06,012 - INFO - Deleted file: /home/utm/portfo/static/tareas/29HE20250223.zip
+2025-03-30 00:00:06,012 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240628.zip
+2025-03-30 00:00:06,012 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20250113.zip
+2025-03-30 00:00:06,012 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327073827054439.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327075537076985.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327084859995330.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327073318135897.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327072117333310.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327071508701274.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250324124915316376.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327074330747323.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327072135444166.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250324115934689540.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250324125304303041.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250324085045724363.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250324125341435877.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250324124422339342.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327075640651549.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327071712156995.csv
+2025-03-30 00:00:06,013 - INFO - Deleted file: /home/utm/portfo/static/csv/20250327074152376962.csv
+2025-03-30 00:00:06,013 - INFO - Weekly maintenance completed.
+2025-04-06 00:00:00,468 - INFO - Starting weekly maintenance...
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240306.zip
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/tareas/29HE20250223.zip
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240628.zip
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20250113.zip
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/tareas/29HE20230103.zip
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/csv/20250331193701361408.csv
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/csv/20250401062529633499.csv
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-04-06 00:00:00,468 - INFO - Deleted file: /home/utm/portfo/static/csv/20250403090726874775.csv
+2025-04-06 00:00:00,468 - INFO - Weekly maintenance completed.
+2025-04-11 06:43:04,596 - INFO - Starting weekly maintenance...
+2025-04-11 06:43:04,688 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-04-11 06:43:04,688 - INFO - Deleted file: /home/utm/portfo/static/csv/20250410072732603746.csv
+2025-04-11 06:43:04,688 - INFO - Weekly maintenance completed.
+2025-04-13 00:00:08,679 - INFO - Starting weekly maintenance...
+2025-04-13 00:00:08,679 - INFO - Weekly maintenance completed.
+2025-04-15 06:49:39,105 - INFO - Starting weekly maintenance...
+2025-04-15 06:49:39,169 - INFO - Weekly maintenance completed.
+2025-04-20 00:00:09,099 - INFO - Starting weekly maintenance...
+2025-04-20 00:00:09,099 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20240306.zip
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/tareas/29SG20150818.zip
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/tareas/29HE20230103.zip
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/csv/sparql.json
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/csv/20250417122207403904.csv
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/csv/uploaded_data.json
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/csv/20250415073134890837.csv
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/csv/20250417124106592877.csv
+2025-04-20 00:00:09,100 - INFO - Deleted file: /home/utm/portfo/static/csv/20250417070158394321.csv
+2025-04-20 00:00:09,100 - INFO - Weekly maintenance completed.
+2025-04-23 07:09:49,930 - INFO - Starting weekly maintenance...
+2025-04-23 07:09:49,987 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240306.zip
+2025-04-23 07:09:49,987 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20250209.zip
+2025-04-23 07:09:49,987 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29HE20240312.zip
+2025-04-23 07:09:49,988 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240628.zip
+2025-04-23 07:09:49,988 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29HE20230103.zip
+2025-04-23 07:09:50,001 - INFO - Weekly maintenance completed.
+2025-04-23 07:27:57,602 - INFO - Starting weekly maintenance...
+2025-04-23 07:27:57,702 - INFO - Weekly maintenance completed.
+2025-04-23 08:45:04,848 - INFO - Starting weekly maintenance...
+2025-04-23 08:45:04,920 - INFO - Weekly maintenance completed.
+2025-04-27 00:00:06,585 - INFO - Starting weekly maintenance...
+2025-04-27 00:00:06,585 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240306.zip
+2025-04-27 00:00:06,585 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240115.zip
+2025-04-27 00:00:06,585 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29HE20240312.zip
+2025-04-27 00:00:06,585 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29HE20241226.zip
+2025-04-27 00:00:06,585 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20241230.zip
+2025-04-27 00:00:06,585 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240628.zip
+2025-04-27 00:00:06,585 - INFO - Weekly maintenance completed.
+2025-04-28 11:07:56,673 - INFO - Starting weekly maintenance...
+2025-04-28 11:07:56,725 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240115.zip
+2025-04-28 11:07:56,725 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240330.zip
+2025-04-28 11:07:56,750 - INFO - Weekly maintenance completed.
+2025-04-29 07:18:42,333 - INFO - Starting weekly maintenance...
+2025-04-29 07:18:42,433 - INFO - Weekly maintenance completed.
+2025-05-04 00:00:14,358 - INFO - Starting weekly maintenance...
+2025-05-04 00:00:14,359 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29HE20250113.zip
+2025-05-04 00:00:14,359 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240115.zip
+2025-05-04 00:00:14,359 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20250318.zip
+2025-05-04 00:00:14,359 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20250209.zip
+2025-05-04 00:00:14,359 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240330.zip
+2025-05-04 00:00:14,359 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20250318 .zip
+2025-05-04 00:00:14,359 - INFO - Weekly maintenance completed.
+2025-05-11 00:00:37,216 - INFO - Starting weekly maintenance...
+2025-05-11 00:00:37,216 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29SG20240115.zip
+2025-05-11 00:00:37,217 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29HE20240312.zip
+2025-05-11 00:00:37,217 - INFO - Weekly maintenance completed.
+2025-05-18 00:00:14,360 - INFO - Starting weekly maintenance...
+2025-05-18 00:00:14,361 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29HE20250113.zip
+2025-05-18 00:00:14,361 - INFO - Deleted .zip or .csv file: /home/utm/portfo/static/tareas/29he20250113.zip
+2025-05-18 00:00:14,362 - INFO - Weekly maintenance completed.
