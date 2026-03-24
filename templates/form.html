@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Archivos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Generador de Archivos CSV</h2>
+        <form method="POST" action="/">
+            <!-- Fechas de inicio y fin -->
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="dia_inicial">Día de inicio</label>
+                    <input type="text" class="form-control" name="dia_inicial" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="mes_inicial">Mes de inicio</label>
+                    <input type="text" class="form-control" name="mes_inicial" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="any_inicial">Año de inicio</label>
+                    <input type="text" class="form-control" name="any_inicial" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="dia_final">Día final</label>
+                    <input type="text" class="form-control" name="dia_final" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="mes_final">Mes final</label>
+                    <input type="text" class="form-control" name="mes_final" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="any_final">Año final</label>
+                    <input type="text" class="form-control" name="any_final" required>
+                </div>
+            </div>
+
+            <!-- Selección del barco -->
+            <div class="form-group mt-3">
+                <label for="vessel_input">Selecciona un barco</label>
+                <select name="vessel_input" class="form-control" required>
+                    <option value="1">Sarmiento de Gamboa</option>
+                    <option value="2">Hespérides</option>
+                    <option value="3">García del Cid</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">Generar Archivos</button>
+        </form>
+    </div>
+</body>
+</html>

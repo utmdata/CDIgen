@@ -9,9 +9,11 @@ from os import path
 from datetime import datetime
 import requests, argparse
 from lxml import etree
-import copy
+import copy, json
+from flask import send_file
+import logging
+from logging.handlers import RotatingFileHandler 
 #importem els scripts de cada cdi
-
 
 def crear_carpeta (nombre_carpeta):
     try:
@@ -22,332 +24,270 @@ def crear_carpeta (nombre_carpeta):
             # Si la carpeta ya existe, imprime un mensaje
             print(f"La carpeta '{nombre_carpeta}' ya existe.")
             
-def underway_general (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code):
-  
-  
-  if csr_code != "UNKNOWN":
-    #agafem el xml i busquem en ell la campanya que estem fent. aqui s'agafa el identificador i i la descripció per posar al xml
-    xml_file = "http://161.111.137.92:8001/static/csrCodeList.xml"
-    tree = etree.parse(xml_file)
-    root = tree.getroot()
 
-    # Buscar los elementos cruisename
-    for cruisename in root.findall(".//{http://www.opengis.net/gml}cruisename"):
-        if cruisename.text == csr_code:
-            description_csr = cruisename.getparent().find("{http://www.opengis.net/gml}description").text
-            id_csr = cruisename.getparent().find("{http://www.opengis.net/gml}identifier").text
-            
-            
-    print (id_csr)
-    print(description_csr)
-  
-  else: 
-    id_csr = '2004 - Unknown(ZZ99)'
-    description_csr = "20050002" 
-
-
-  sparql_query = '''
-      SELECT ?org ?name ?altName (CONCAT(?name, " (", ?altName, ")") AS ?orgName) ?notation ?street ?codepostal ?locality ?country ?web
-
-      WHERE {{
-
-          ?org a <http://www.w3.org/ns/org#Organization> ;
-                  <http://www.w3.org/ns/org#name> ?name ;
-                <http://www.w3.org/2004/02/skos/core#notation> ?notation ;
-                <http://www.w3.org/2006/vcard/ns#street-address> ?street ;
-                <http://www.w3.org/2006/vcard/ns#postal-code> ?codepostal ;
-                <http://www.w3.org/2006/vcard/ns#locality> ?locality ;
-                <http://www.w3.org/2006/vcard/ns#country-name> ?country ;
-                <http://www.w3.org/2000/01/rdf-schema#seeAlso> ?web ;
-                <http://www.w3.org/2004/02/skos/core#altName> ?altName.
-                
-
-          
-
-      
-      FILTER (?org = <{0}>)
-      }}
-      '''.format(valor_org)
-
-  sparql_endpoint = 'https://edmo.seadatanet.org/sparql/sparql'
-  query_params = {'query': sparql_query, 'accept': 'application/json'}
-
-  response = requests.get(sparql_endpoint, params=query_params)
-  print(response)
-
-  if response.status_code == 200:
-      data = response.json()
-      print(data)
-      results = data.get('results', {}).get('bindings', [])
-  # org,org_name,notation,tel,alt_name,street,codepostal,locality, country, web, email
-      for result in results:
-          org = result.get('org', {}).get('value', 'N/A')
-          org_name = result.get('orgName', {}).get('value', 'N/A')
-          notation = result.get('notation', {}).get('value', 'N/A')
-          tel = result.get('tel', {}).get('value', 'N/A')
-          alt_name = result.get('altName', {}).get('value', 'N/A')
-          street = result.get('street', {}).get('value', 'N/A')
-          codepostal = result.get('codepostal', {}).get('value', 'N/A')
-          locality = result.get('locality', {}).get('value', 'N/A')
-          #email = result.get('email', {}).get('value', 'N/A')
-          country = result.get('country', {}).get('value', 'N/A')
-          web = result.get('web', {}).get('value', 'N/A')
-          
-          # Modify the email address before printing
-          #email = result.get('email', {}).get('value', 'N/A')
-          #email = email.replace('mailto:', '').replace('%40', '@')
-
-          print(f'Organization URI: {org}')
-          print(f'Organization Name: {org_name}')
-          print(f'Notation: {notation}')
-          print(f'Telephone: {tel}')
-          print(f'Alternative Name: {alt_name}')
-          print(f'Street: {street}')
-          print(f'Postal Code: {codepostal}')
-          print(f'Locality: {locality}')
-          #print(f'Email: {email}')
-          print(f'Country: {country}')
-          print(f'Web: {web}')
-          print('-' * 30)
-
-  sparql_query_email = '''
-    SELECT ?org ?name ?altName (CONCAT(?name, " (", ?altName, ")") AS ?orgName) ?email
-
-    WHERE {{
-
-        ?org a <http://www.w3.org/ns/org#Organization> ;
-                <http://www.w3.org/2006/vcard/ns#email> ?email.
-            
-    FILTER (?org = <{0}>)
-    }}
-    '''.format(valor_org)
-
-  sparql_endpoint = 'https://edmo.seadatanet.org/sparql/sparql'
-  query_params_email = {'query': sparql_query_email, 'accept': 'application/json'}
-
-  response = requests.get(sparql_endpoint, params=query_params_email)
-  print(response)
-
-  if response.status_code == 200:
-      data = response.json()
-      print("data:",data)
-      results = data.get('results', {}).get('bindings', [])
-      #results = "{'head': {'vars': ['org', 'name', 'altName', 'orgName', 'email']}, 'results': {'bindings': []}}"
-      resultat = "{'head': {'vars': ['org', 'name', 'altName', 'orgName', 'email']}, 'results': {'bindings': []}}"
-      data = str (data)
-      if data == resultat: 
-          print("no hi ha email")
-          email = "sdn-userdesk@seadatanet.org"
-
-      elif data != resultat:
-              # org,org_name,notation,tel,alt_name,street,codepostal,locality, country, web, email
-          for result in results:
-              email = result.get('email', {}).get('value', 'N/A')
-              # Modify the email address before printing
-              email = result.get('email', {}).get('value', 'N/A')
-              email = email.replace('mailto:', '').replace('%40', '@')
-              print(f'Email: {email}')
+def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code):
+    # Handle CSR code
     
+    if csr_code != "UNKNOWN":
+        # Download and parse the XML file
+        xml_url = "http://datahub.utm.csic.es/cdigen/static/csrCodeList.xml"
+        response = requests.get(xml_url, verify=False)  # verify=False for self-signed certificates
+        if response.status_code != 200:
+            raise Exception(f"Failed to download CSR code list: {response.status_code}")
+            
+        root = etree.fromstring(response.content)
 
-
-
-
-
-
-  if vessel_input == "sdg":
-    vessel_mode = "Sarmiento"
-    vessel_reduit='sdg' 
-    vessel = "Sarmiento de Gamboa"
-  elif vessel_input == "hes":
-    vessel_mode ="Hesperides"
-    vessel_reduit="hes"
-    vessel = "Hespérides"
+        # Search for the cruisename element
+        for cruisename in root.findall(".//{http://www.opengis.net/gml}cruisename"):
+            if cruisename.text == csr_code:
+                description_csr = cruisename.getparent().find("{http://www.opengis.net/gml}description").text
+                id_csr = cruisename.getparent().find("{http://www.opengis.net/gml}identifier").text
+                break
+        else:
+            raise Exception(f"CSR code {csr_code} not found in the XML file.")
+    else:
     
+        id_csr = '2004 - Unknown(ZZ99)'
+        description_csr = "20050002"
 
- 
-  dia= cruise_id[10:12]
-  mes=cruise_id[8:10]
-  any=cruise_id[4:8]
-  short_date = any +"-"+ mes +"-"+ dia
+    print(f"CSR ID: {id_csr}")
+    print(f"CSR Description: {description_csr}")
 
-  fila=0
+    # Load metadata from JSON
+    json_path = os.path.join("static", "csv", "sparql.json")
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-  if path.exists("model_underway.txt"):
-    remove("model_underway.txt")
-  
+    results = data.get("results", {}).get("bindings", [])
+    matched = next((res for res in results if res.get("org", {}).get("value") == valor_org), None)
 
+    if not matched:
+        raise Exception(f"Organization with URI {valor_org} not found in the JSON file.")
+    
+    # Extract the required fields
+    org = matched.get("org", {}).get("value", "N/A")
+    org_name = matched.get("orgName", {}).get("value", "N/A")
+    notation = matched.get("notation", {}).get("value", "N/A")
+    tel = matched.get("tel", {}).get("value", "N/A")
+    alt_name = matched.get("altName", {}).get("value", "N/A")
+    street = matched.get("street", {}).get("value", "N/A")
+    codepostal = matched.get("codepostal", {}).get("value", "N/A")
+    locality = matched.get("locality", {}).get("value", "N/A")
+    country = matched.get("country", {}).get("value", "N/A")
+    web = matched.get("web", {}).get("value", "N/A")
+    email = matched.get("email", {}).get("value", "sdn-userdesk@seadatanet.org").replace("mailto:", "").replace("%40", "@")
 
-  underway_general =cruise_id + "_underway.xml"
-  
-  nombre_carpeta = cruise_id
+    print(f"Organization URI: {org}")
+    print(f"Organization Name: {org_name}")
+    print(f"Notation: {notation}")
+    print(f"Telephone: {tel}")
+    print(f"Alternative Name: {alt_name}")
+    print(f"Street: {street}")
+    print(f"Postal Code: {codepostal}")
+    print(f"Locality: {locality}")
+    print(f"Country: {country}")
+    print(f"Web: {web}")
+    print(f"Email: {email}")
 
-  crear_carpeta (nombre_carpeta)
-  
-  underway_met =nombre_carpeta + "/" +cruise_id + "_met.xml"
-  underway_ts =nombre_carpeta + "/" +cruise_id + "_ts.xml"
-  underway_sbe = nombre_carpeta + "/" + cruise_id + "_sbe.xml"
+    if vessel_input == "sdg":
+        vessel_mode = "Sarmiento"
+        vessel_reduit='sdg' 
+        vessel = "Sarmiento de Gamboa"
+    elif vessel_input == "hes":
+        vessel_mode ="Hesperides"
+        vessel_reduit="hes"
+        vessel = "Hespérides"
+    elif vessel_input == "odb":
+        vessel_mode = "Odon de Buen"
+        vessel_reduit = "odb"
+        vessel = "Odon de Buen"
+        
+    dia= cruise_id[10:12]
+    mes=cruise_id[8:10]
+    any=cruise_id[4:8]
+    short_date = any +"-"+ mes +"-"+ dia
 
-  #if path.exists(underway_general):
-    #remove(underway_general)
-  if path.exists(underway_met):
-    remove(underway_met)
-  if path.exists(underway_ts):
-    remove(underway_ts)
-  if path.exists(underway_sbe):
-    remove(underway_sbe)
+    fila=0
 
-  shutil.copy("model_underway.xml", underway_general)
-  print (underway_general)
+    if path.exists("model_underway.txt"):
+        remove("model_underway.txt")
 
-  #Posem la url perque trobi el gml i l'enganxi en el xml
-  input_file= underway_general
-  input_url='http://datahub.utm.csic.es/ws/getTrack/GML/?id='+ vessel_input+ cruise_id[4:12]+'&n=999'
-  output_file= underway_general
+    # Create the directory for the cruise
+    nombre_carpeta = cruise_id
+    crear_carpeta(nombre_carpeta)
 
+    # Define the input and output XML file paths
+    underway_general = cruise_id + "_underway.xml"
+    underway_met = os.path.join(nombre_carpeta, f"{cruise_id}_met.xml")
+    underway_ts = os.path.join(nombre_carpeta, f"{cruise_id}_ts.xml")
+    underway_sbe = os.path.join(nombre_carpeta, f"{cruise_id}_sbe.xml")
 
-  #Definim el namespace perquè el trobi en el XML
-  namespace = {
-      'gmd': 'http://www.isotc211.org/2005/gmd',
-      'gml': 'http://www.opengis.net/gml',
-      'gco': 'http://www.isotc211.org/2005/gco',
-      'sdn': 'http://www.seadatanet.org',
-      'gmx': 'http://www.isotc211.org/2005/gmx'
-  }
+    # Remove existing files if they exist
+    if path.exists(underway_met):
+        remove(underway_met)
+    if path.exists(underway_ts):
+        remove(underway_ts)
+    if path.exists(underway_sbe):
+        remove(underway_sbe)
 
+    # Copy the template file to the new directory
+    if not os.path.exists("model_underway.xml"):
+        raise Exception("Template file 'model_underway.xml' does not exist.")
+    shutil.copy("model_underway.xml", underway_general)
+    print(underway_general)
+    
+    # Set input and output file paths
+    input_file = underway_general
+    input_url = f"http://datahub.utm.csic.es/ws/getTrack/GML/?id={vessel_input}{cruise_id[4:12]}&n=999"
+    output_file = underway_general
+    
+    # Define the namespace
+    namespace = {
+        'gmd': 'http://www.isotc211.org/2005/gmd',
+        'gml': 'http://www.opengis.net/gml',
+        'gco': 'http://www.isotc211.org/2005/gco',
+        'sdn': 'http://www.seadatanet.org',
+        'gmx': 'http://www.isotc211.org/2005/gmx'
+    }
 
-  #afegim GML
-  url = input_url
+    # Parse the XML and update the fields
+    tree = etree.parse(input_file)
 
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gml:posList[contains(text(), '-1 -1 -1 -1')]", namespaces=namespace)[0]
-  posList.text = requests.get(url).text.strip()
-  tree.write(output_file)
-  #print('Your GMLs coordinates were successfully added to your new XML document.')"""
+    # Add GML
+    input_url = f"http://datahub.utm.csic.es/ws/getTrack/GML/?id={vessel_input}{cruise_id[4:12]}&n=999"
+    posList = tree.xpath("//gml:posList[contains(text(), '-1 -1 -1 -1')]", namespaces=namespace)[0]
+    posList.text = requests.get(input_url).text.strip()
+    tree.write(output_file)
+    
+    # Add Bounding Box
+    url_bbox = f"http://datahub.utm.csic.es/ws/getBBox/?id={vessel_input}{cruise_id[4:12]}"
+    r = requests.get(url_bbox)
+    coord = r.text[4:-2]
+    posicio_primer_espai = coord.index(" ")
+    posicio_coma = coord.index(",")
+    w = coord[0:posicio_primer_espai]
+    s = coord[posicio_primer_espai:posicio_coma].strip()
+    coord_2 = coord[posicio_coma + 1:]
+    posicio_segon_espai = coord_2.index(" ")
+    e = coord_2[0:posicio_segon_espai].strip()
+    n = coord_2[posicio_segon_espai:].strip()
 
-  #afegim BOUNDING BOX
-  url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
-  print (url_bbox)
-  tree = etree.parse(input_file)
-  r = requests.get(url_bbox)
-  coord= r.text[4:-2] #nomes coordenades 4separades per espais i comes
-  posicio_primer_espai= r.text[4:-2].index(" ")
-  posicio_coma= r.text[4:-2].index(",")
-  w= coord[0:posicio_primer_espai]
-  s= coord[posicio_primer_espai:posicio_coma].strip()
-  coord_2=coord[posicio_coma:]
-  coord_2= coord_2[1:]
-  posicio_segon_espai= coord_2.index(" ")
-  e= coord_2[0:posicio_segon_espai].strip()
-  n= coord_2[posicio_segon_espai:].strip()
+    posList_w = tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
+    posList_w.text = w
+    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
+    posList_s.text = s
+    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
+    posList_e.text = e
+    posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
+    posList_n.text = n
+    tree.write(output_file)
 
-  posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-  posList_w.text=w
-  posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-  posList_s.text= s
-  posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-  posList_e.text= e
-  posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
-  posList_n.text=n
+    #Afegir SHORT ID
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'SHORT_ID')]", namespaces=namespace)[0]
+    posList.text = cruise_id
+    tree.write(output_file)
 
-  tree.write(output_file)
+    #afegim cruise name
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'CSR_CRUISE_NAME')]", namespaces=namespace)[0]
+    posList.text = cruise_name
+    tree.write(output_file)
 
-  #afegim short id
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'SHORT_ID')]", namespaces=namespace)[0]
-  posList.text = cruise_id
-  tree.write(output_file)
+    #afegim short date
+    data=any +"-" + mes + "-"+ dia
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:Date[contains(text(), '2023-05-04')]", namespaces=namespace)[0]
+    posList.text = data
+    tree.write(output_file)
+    
+    #afegim data inicial
+    hora_inicial = date_inicial[11:]
+    begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gml:beginPosition[contains(text(), '2023-01-01T00:00:00')]", namespaces=namespace)[0]
+    posList.text = begin_position
+    tree.write(output_file)
+    
+    #afegim data final
+    hora_final = date_final[11:]
+    data_final = date_final[:10]
+    dia_final= data_final[0:2]
+    mes_final=data_final[3:5]
+    any_final=data_final[6:10]
 
-  #afegim csr id
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'CSR_CRUISE_NAME')]", namespaces=namespace)[0]
-  posList.text = cruise_name
-  tree.write(output_file)
+    final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gml:endPosition[contains(text(), '2023-01-02T00:00:00')]", namespaces=namespace)[0]
+    posList.text = final_position
+    tree.write(output_file)
 
-  #afegim short date
-  data=any +"-" + mes + "-"+ dia
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:Date[contains(text(), '2023-05-04')]", namespaces=namespace)[0]
-  posList.text = data
-  tree.write(output_file)
+    #afegim org_name
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
+    posList.text = org_name
+    posList.set ("codeListValue",notation)
+    tree.write(output_file)
+    
+    #afegim street
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
+    posList.text = street
+    tree.write(output_file)
 
-  #afegim data inicial
-  hora_inicial = date_inicial[11:]
-  begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
+    #afegim city
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
+    posList.text = locality
+    tree.write(output_file)
+    
+    #afegim country
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//sdn:SDN_CountryCode[contains(text(), 'org_country')]", namespaces=namespace)[0]
+    posList.text = country
+    tree.write(output_file)
 
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gml:beginPosition[contains(text(), '2023-01-01T00:00:00')]", namespaces=namespace)[0]
-  posList.text = begin_position
-  tree.write(output_file)
+    #afegim email
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
+    posList.text = email
+    tree.write(output_file)
 
-  #afegim data final
-  hora_final = date_final[11:]
-  data_final = date_final[:10]
-  dia_final= data_final[0:2]
-  mes_final=data_final[3:5]
-  any_final=data_final[6:10]
+    #DUPLIQUEM ELS PARAMETRES DE LA ORGANITZACIÓ PERQUE ESTAN DOS COPS: 
+    #afegim org_name
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
+    posList.text = org_name
+    posList.set ("codeListValue",notation)
+    tree.write(output_file)
+    
+    #afegim street
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
+    posList.text = street
+    tree.write(output_file)
 
-  final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gml:endPosition[contains(text(), '2023-01-02T00:00:00')]", namespaces=namespace)[0]
-  posList.text = final_position
-  tree.write(output_file)
+    #afegim city
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
+    posList.text = locality
+    tree.write(output_file)
+    
+    #afegim country
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//sdn:SDN_CountryCode[contains(text(), 'org_country')]", namespaces=namespace)[0]
+    posList.text = country
+    tree.write(output_file)
 
-  #afegim org_name
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-  posList.text = org_name
-  posList.set ("codeListValue",notation)
-  tree.write(output_file)
-  
-  #afegim org_name
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-  posList.text = org_name
-  posList.set ("codeListValue",notation)
-  tree.write(output_file)
+    #afegim email
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
+    posList.text = email
+    tree.write(output_file)
 
- 
-  #afegim street
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-  posList.text = street
-  tree.write(output_file)
-  #afegim street
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-  posList.text = street
-  tree.write(output_file)
-  #afegim city
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-  posList.text = country
-  tree.write(output_file)
+    #afegim csrcodelist
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)[0]
+    posList.text = description_csr
 
-  #afegim city
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-  posList.text = country
-  tree.write(output_file)
-
-
-  #afegim email
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
-  posList.text = email
-  tree.write(output_file)
-  #afegim email
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
-  posList.text = email
-  tree.write(output_file)
-
-
-
-  #afegim csrcodelist
-  tree = etree.parse(input_file)
-  posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)[0]
-  posList.text = description_csr
-  posList.set ("codeListValue",id_csr)
-  tree.write(output_file)
-
-
+    posList.set ("codeListValue",id_csr)
+    tree.write(output_file)

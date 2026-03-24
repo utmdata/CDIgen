@@ -22,7 +22,7 @@ def funcio_sbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
       'gco': 'http://www.isotc211.org/2005/gco',
       'sdn': 'http://www.seadatanet.org'
   }
-  
+
     underway_general =cruise_id + "_underway.xml"
     underway_sbe = cruise_id + "/" + cruise_id + "_sbe.xml"
     
@@ -34,6 +34,18 @@ def funcio_sbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
         vessel_mode ="Hesperides"
         vessel_reduit="hes"
         vessel = "Hespérides"
+    elif vessel_input == "odb":
+        vessel = "Odón de Buen"
+        vessel_mode = "Odón"
+        vessel_reduit = "odb"
+        vessel_mayus = "ODON DE BUEN"
+        vessel_code = "29OD"
+    elif vessel_input == "gdc":
+        vessel = "García del Cid"
+        vessel_mode = "García"
+        vessel_reduit = "gdc"
+        vessel_mayus = "GARCÍA DEL CID"
+        vessel_code = "29GD"
 
     shutil.copy(underway_general, underway_sbe)
     input_file= underway_sbe
@@ -76,7 +88,6 @@ def funcio_sbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     posList_1.text =  'single-beam echosounder'
     posList_1.set ("codeListValue","156")
     tree.write(output_file)
-
 
     #canviar sensor segons el vaixell
     tree = etree.parse(input_file)

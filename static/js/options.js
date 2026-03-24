@@ -20,8 +20,8 @@ const lista_cdi = Sortable.create(div2, {
             console.log(orden.join(","));
             localStorage.setItem("tareas_cdi", orden.join(","));
             
-            // Enviar datos al servidor cuando se actualiza localStorage
-            fetch('http://161.111.137.92:8001/guardar_tareas', {
+            // Enviar datos al servidor cuando se actualiza localStorage (use relative path to preserve app prefix)
+            fetch('guardar_tareas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

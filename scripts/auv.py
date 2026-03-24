@@ -14,7 +14,7 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-def funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
+def funcio_auv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
@@ -27,7 +27,7 @@ def funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
 
     underway_general =cruise_id + "_underway.xml"
 
-    cdi_mag =cruise_id + "/" + cruise_id + "_auv_modificar_abstract_parametres.xml"
+    cdi_mag =cruise_id + "/" + cruise_id + "_auv.xml"
     
     
     if vessel_input == "sdg":
@@ -38,6 +38,18 @@ def funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
         vessel_mode ="Hesperides"
         vessel_reduit="hes"
         vessel = "Hespérides"
+    elif vessel_input == "odb":
+        vessel = "Odón de Buen"
+        vessel_mode = "Odón"
+        vessel_reduit = "odb"
+        vessel_mayus = "ODON DE BUEN"
+        vessel_code = "29OD"
+    elif vessel_input == "gdc":
+        vessel = "García del Cid"
+        vessel_mode = "García"
+        vessel_reduit = "gdc"
+        vessel_mayus = "GARCÍA DEL CID"
+        vessel_code = "29GD"
 
    
     shutil.copy(underway_general, cdi_mag)
@@ -221,6 +233,12 @@ def funcio_mag (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
 
     tree.write(output_file)
 
+    #canviar platform code
+    tree = etree.parse(input_file)
+    posList = tree.xpath("//sdn:SDN_PlatformCategoryCode[contains(text(), 'research vessel')]", namespaces=namespace)[0]
+    posList.text = "autonomus underwater vehicle" 
+    posList.set ("codeListValue","25")
+    tree.write(output_file)
     
     """ #canviar sensor
     tree = etree.parse(input_file)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- this file has been created using MIKADO version 3.8.2 -->
+<!-- this file has been created using CDIgen by UTM-CSIC -->
 <?xml-model href="https://schemas.seadatanet.org/Standards-Software/Metadata-formats/SDN_CDI_ISO19139_13.0.0.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"  xmlns:gmi="http://www.isotc211.org/2005/gmi"  xmlns:srv="http://www.isotc211.org/2005/srv"  xmlns:gco="http://www.isotc211.org/2005/gco"  xmlns:gts="http://www.isotc211.org/2005/gts"  xmlns:gmx="http://www.isotc211.org/2005/gmx"  xmlns:xlink="http://www.w3.org/1999/xlink"  xmlns:sdn="http://www.seadatanet.org"  xmlns:gml="http://www.opengis.net/gml"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.seadatanet.org https://schemas.seadatanet.org/Standards-Software/Metadata-formats/SDN_CDI_ISO19139_13.0.0.xsd http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd" >
    <gmd:fileIdentifier>
@@ -68,7 +68,7 @@
       </gmd:CI_ResponsibleParty>
    </gmd:contact>
    <gmd:dateStamp>
-      <gco:Date>2024-03-14</gco:Date>
+      <gco:Date>2024-05-14</gco:Date>
    </gmd:dateStamp>
    <gmd:metadataStandardName>
       <gco:CharacterString>ISO 19115/SeaDataNet profile</gco:CharacterString>
@@ -155,7 +155,7 @@
                   <gmd:date>
                      <gmd:CI_Date>
                         <gmd:date>
-                           <gco:Date>2024-03-14</gco:Date>
+                           <gco:Date>2024-05-14</gco:Date>
                         </gmd:date>
                         <gmd:dateType>
                            <gmd:CI_DateTypeCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#CI_DateTypeCode"  codeListValue="revision"  codeSpace="ISOTC211/19115" >revision</gmd:CI_DateTypeCode>
@@ -188,13 +188,63 @@
                                        <gco:CharacterString />
                                     </gmd:postalCode>
                                     <gmd:country>
-                                       <sdn:SDN_CountryCode codeSpace="SeaDataNet"  codeListValue="99"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_CountryCode" >Unknown</sdn:SDN_CountryCode>
+                                       <sdn:SDN_CountryCode codeSpace="SeaDataNet"  codeListValue="99"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_CountryCode" >org_country</sdn:SDN_CountryCode>
                                     </gmd:country>
                                     <gmd:electronicMailAddress>
                                        <gco:CharacterString>org_mail</gco:CharacterString>
                                     </gmd:electronicMailAddress>
                                  </gmd:CI_Address>
                               </gmd:address>
+                           </gmd:CI_Contact>
+                        </gmd:contactInfo>
+                        <gmd:role>
+                           <gmd:CI_RoleCode codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/gmxCodeLists.xml#CI_RoleCode"  codeListValue="originator"  codeSpace="ISOTC211/19115" >originator</gmd:CI_RoleCode>
+                        </gmd:role>
+                     </gmd:CI_ResponsibleParty>
+                  </gmd:citedResponsibleParty>
+                  <gmd:citedResponsibleParty>
+                     <gmd:CI_ResponsibleParty>
+                        <gmd:organisationName>
+                           <sdn:SDN_EDMOCode codeList="https://edmo.seadatanet.org/isocodelists/edmo-edmerp-codelists.xml#SDN_EDMOCode"  codeSpace="SeaDataNet"  codeListValue="2489" >CSIC, Marine Technology Unit (CSIC-UTM)</sdn:SDN_EDMOCode>
+                        </gmd:organisationName>
+                        <gmd:contactInfo>
+                           <gmd:CI_Contact>
+                              <gmd:phone>
+                                 <gmd:CI_Telephone>
+                                    <gmd:voice>
+                                       <gco:CharacterString>+34 932 309500</gco:CharacterString>
+                                    </gmd:voice>
+                                    <gmd:facsimile>
+                                       <gco:CharacterString>+34 932 309555</gco:CharacterString>
+                                    </gmd:facsimile>
+                                 </gmd:CI_Telephone>
+                              </gmd:phone>
+                              <gmd:address>
+                                 <gmd:CI_Address>
+                                    <gmd:deliveryPoint>
+                                       <gco:CharacterString>Paseo Maritimo de la Barceloneta, 37-49 </gco:CharacterString>
+                                    </gmd:deliveryPoint>
+                                    <gmd:city>
+                                       <gco:CharacterString>Barcelona</gco:CharacterString>
+                                    </gmd:city>
+                                    <gmd:postalCode>
+                                       <gco:CharacterString>08003</gco:CharacterString>
+                                    </gmd:postalCode>
+                                    <gmd:country>
+                                       <sdn:SDN_CountryCode codeSpace="SeaDataNet"  codeListValue="ES"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_CountryCode" >Spain</sdn:SDN_CountryCode>
+                                    </gmd:country>
+                                    <gmd:electronicMailAddress>
+                                       <gco:CharacterString>info@utm.csic.es</gco:CharacterString>
+                                    </gmd:electronicMailAddress>
+                                 </gmd:CI_Address>
+                              </gmd:address>
+                              <gmd:onlineResource>
+                                 <gmd:CI_OnlineResource>
+                                    <gmd:linkage>
+                                       <gmd:URL>http://www.utm.csic.es/</gmd:URL>
+                                    </gmd:linkage>
+                                 </gmd:CI_OnlineResource>
+                              </gmd:onlineResource>
                            </gmd:CI_Contact>
                         </gmd:contactInfo>
                         <gmd:role>
@@ -223,7 +273,7 @@
                                  <gco:CharacterString>org_city</gco:CharacterString>
                               </gmd:city>
                               <gmd:country>
-                                 <sdn:SDN_CountryCode codeSpace="SeaDataNet"  codeListValue="99"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_CountryCode" >Unknown</sdn:SDN_CountryCode>
+                                 <sdn:SDN_CountryCode codeSpace="SeaDataNet"  codeListValue="99"  codeList="https://vocab.nerc.ac.uk/isoCodelists/sdnCodelists/cdicsrCodeList.xml#SDN_CountryCode" >org_country</sdn:SDN_CountryCode>
                               </gmd:country>
                               <gmd:electronicMailAddress>
                                  <gco:CharacterString>org_mail</gco:CharacterString>

@@ -111,6 +111,49 @@
     button:hover {
         background-color: #257487; /* Darker blue color on hover */
     }
+
+    #contenedor-lista,
+    #contenedor-disponibles {
+        margin-top: 10px;
+    }
+
+    .item-valor {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        background: #f0f0f0;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .item-valor span {
+        flex: 1;
+    }
+
+    .item-valor button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .item-disponible {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        background: #fccaca;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .item-disponible span {
+        flex: 1;
+    }
+
+    .item-disponible button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
 </style>
 
 <script>
@@ -175,7 +218,7 @@
                 <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
                     <div class="navbar-nav ml-auto py-0">
                         <a onclick="window.location.href = 'index.html';" class="nav-item nav-link">Home</a>
-                        <a href="http://data.utm.csic.es/portal/" class="nav-item nav-link">About us</a>
+                        <a href="https://data.utm.csic.es/portal/" class="nav-item nav-link">About us</a>
                     </div>
                 </div>
             </nav>
@@ -203,6 +246,7 @@
                                         <option value="select" selected>select</option>
                                         <option value="sdg">Sarmiento de Gamboa</option>
                                         <option value="hes">Hespérides</option>
+                                        <option value="odb">Odon de Buen</option>
                                     </select>
                                 </label>
                             </fieldset>
@@ -254,133 +298,135 @@
                                  </label>
                              </fieldset>
                             <fieldset>
-                                <div id="contenedor-selects">
-                                    <div>
-                                        <p>Select the samples and station file</p>
-                                        
-                                        <div>
-                                            
-                                            <input type="file" id="miInput" class="archivo" accept=".csv" style="display: none;" onchange="displayFileName()">
-                                            <button onclick="document.getElementById('miInput').click()">Choose File</button>
-                                            <span id="fileName" style="margin-left: 5px;"></span>
-                                            <label hidden id="lbResultado" name="lbResultado" value="lbResultado">1</label> 
-                                        </div>
-                                        
-                                        <h4></h4>
-                                        <br>
-                                        <select class="valores-unicos" id="select-0" name="select-0">
-                                        </select>
-                                        
+                                <p>Select the samples and station file (CSV)</p>
+                                <input type="file" class="archivo" id="miInput" accept=".csv"><br><br>
 
-                                        <button class="custom-btn agregar-fila" title="Add more CDIs">
-                                            <img src="static/img/add.png" style="width: 20px; height: 20px;">
-                                        </button>
-                                       
-                                    </div>
-                                    
-                                </div>
-                                
-                                <hr />
+                                <p>Selected instruments:</p>
+                                <div id="contenedor-lista"></div>
+                                <p>Available instruments:</p>
+                                <div id="contenedor-disponibles"></div>
+
+                                <!-- Hidden input with selected instruments -->
+                                <input type="hidden" id="instrumentos_seleccionados" name="selects">
+                                <label hidden id="lbResultado"></label>
+
+                                <br>
                                 <script>
-                                    let valoresUnicos = new Set(); // Almacenará los valores únicos del CSV
-                                    let csvContent = ""; // Almacenará el contenido del CSV
-                                    let contadorSelects = 1; // Contador para identificar los select
-                                    let maximoValoresUnicos = 0; // Almacenará el máximo de valores únicos encontrados en el CSV
+                                    let valoresUnicos = new Set();
+                                    let valoresSeleccionados = new Set();
+                                    let valoresEliminados = new Set();
+                                    let csvContent = "";
 
-
-                                    /**
-                                     * Importar y operar con .csv
-                                     **/
-                                    function procesarCSV(data, select) {
+                                    function procesarCSV(data) {
                                         const todasFilas = data.split(/\r?\n|\r/);
-                                        valoresUnicos.clear(); // Limpiamos los valores únicos antes de procesar el nuevo archivo
-                                        for (let fila = 1; fila < todasFilas.length; fila++) {
-                                            const celdasFila = todasFilas[fila].split(',');
-                                            if (celdasFila.length >= 7) { // Asegurar que hay al menos 7 columnas (columna G)
-                                                valoresUnicos.add(celdasFila[6]); // Asumiendo que la columna G es la séptima columna (índice 6)
+                                        valoresUnicos.clear();
+
+                                        let instrumentIndex;
+                                        for (const fila of todasFilas) {
+                                            if (!fila || !fila.trim()) continue; // Skip empty rows
+                                            
+                                            const celdas = fila.includes(',') ? fila.split(',') : fila.split(';');
+
+                                            if (celdas.length >= 8) instrumentIndex = 6;
+                                            else if (celdas.length >= 6) instrumentIndex = 4;
+                                            else if (celdas.length >= 5) instrumentIndex = 3;
+
+                                            if (
+                                                instrumentIndex !== undefined &&
+                                                celdas[instrumentIndex] !== undefined &&
+                                                celdas[instrumentIndex].trim()
+                                            ) {
+                                                const valor = celdas[instrumentIndex].trim();
+                                                if (valor && valor !== '') {
+                                                    valoresUnicos.add(valor);
+                                                    console.log("Instruments:", valor);
+                                                }
                                             }
                                         }
-                                        maximoValoresUnicos = valoresUnicos.size; // Actualizamos el máximo de valores únicos encontrados.
 
-
-                                        select.innerHTML = ""; // Limpiamos el select antes de agregar nuevas opciones
-                                        valoresUnicos.forEach(valor => {
-                                            const option = document.createElement('option');
-                                            option.textContent = valor;
-                                            select.appendChild(option);
-                                        });
+                                        console.log("Unic instruments:", Array.from(valoresUnicos));
+                                        if (valoresUnicos.size === 0) {
+                                            alert('No instruments found in the CSV file. Please check the file format.');
+                                            return;
+                                        }
+                                        valoresSeleccionados = new Set(valoresUnicos);
+                                        mostrarListas();
                                     }
 
-                                    function agregarFila() {
-                                        if (contadorSelects <= maximoValoresUnicos - 1) { // Restar uno al máximo de valores únicos
-                                            const contenedor = document.getElementById('contenedor-selects');
-                                            const nuevaFila = document.createElement('div');
-                                            nuevaFila.innerHTML = `
-                                        <div>
-                                            <select class="valores-unicos" id="select-${contadorSelects}" name="select-${contadorSelects}">
-                                            </select>
-                                            
-                                            <button class="custom-btn eliminar-fila" title="Remove CDIs">
-                                                 <img src="static/img/minus.png" style="width: 16px; height: 16px;">
-                                            </button>
-                                        </div>
-                                    `;
-                                            contenedor.appendChild(nuevaFila);
-                                            const nuevoSelect = nuevaFila.querySelector('.valores-unicos');
-                                            procesarCSV(csvContent, nuevoSelect); // Usamos el contenido del CSV global
-                                            var selects = document.getElementsByTagName('select');
-                                            const nuevoBoton = nuevaFila.querySelector('.eliminar-fila');
-                                            nuevoBoton.addEventListener('click', function () {
-                                                contenedor.removeChild(nuevaFila); // Eliminar la fila al hacer clic en el botón "-"
-                                                contadorSelects--; // Decrementar el contador de selects al eliminar una fila
-                                                
-                                                
-                                                // Contar la cantidad de elementos 'select'
-                                                var cantidadSelects = selects.length;
-                                                var cantidadSelectsLabel = document.getElementById('cantidadSelectsLabel');
-                                                //cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
-                                                maximoValoresUnicos = valoresUnicos.size - 1; // Actualizar el máximo de valores únicos al eliminar una fila
-                                                document.getElementById('lbResultado').innerHTML = ((cantidadSelects - 3) / 2);
+                                    function actualizarCampoOculto() {
+                                        const hiddenInput = document.getElementById("instrumentos_seleccionados");
+                                        hiddenInput.value = Array.from(valoresSeleccionados).join(',');
+                                        console.log("Campo oculto actualizado con:", hiddenInput.value);
+                                    }
 
+                                    function mostrarListas() {
+                                        const contenedor = document.getElementById('contenedor-lista');
+                                        contenedor.innerHTML = "";
 
+                                        const contenedorDisponibles = document.getElementById('contenedor-disponibles');
+                                        contenedorDisponibles.innerHTML = "";
 
-                                                // Mostrar la cantidad de elementos 'select'
-                                                console.log("Cantidad de selects: " + ((cantidadSelects - 3) / 2)); //he posat un tres pq li resti els tres selects que no son del samples and stations
+                                        valoresSeleccionados.forEach(valor => {
+                                            const item = document.createElement('div');
+                                            item.className = "item-valor";
+                                            item.innerHTML = `
+                                                <span>${valor}</span>
+                                                <button class="eliminar-valor" type="button" title="Delete">
+                                                    <img src="static/img/minus.png" style="width: 16px; height: 16px;">
+                                                </button>
+                                            `;
+
+                                            item.querySelector('.eliminar-valor').addEventListener('click', (e) => {
+                                                e.preventDefault();
+                                                valoresSeleccionados.delete(valor);
+                                                valoresEliminados.add(valor);
+                                                mostrarListas();
                                             });
 
-                                            contadorSelects++; // Incrementar el contador de selects
-                                            // Contar la cantidad de elementos 'select'
-                                            var cantidadSelects = selects.length;
+                                            contenedor.appendChild(item);
+                                        });
 
-                                            var cantidadSelectsLabel = document.getElementById('cantidadSelectsLabel');
-                                            //cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
+                                        valoresEliminados.forEach(valor => {
+                                            const item = document.createElement('div');
+                                            item.className = "item-disponible";
+                                            item.innerHTML = `
+                                                <span>${valor}</span>
+                                                <button class="recuperar-valor" type="button" title="Restore">
+                                                    <img src="static/img/add.png" style="width: 16px; height: 16px;">
+                                                </button>
+                                            `;
 
-                                            document.getElementById('lbResultado').innerHTML = ((cantidadSelects - 3) / 2);
-                                            // Mostrar la cantidad de elementos 'select'
-                                            console.log("Cantidad de selects: " + ((cantidadSelects - 3) / 2)); //he posat un tres pq li resti els tres selects que no son del samples and stations
-                                        } else {
-                                            alert('The maximum number of unique values has been reached. Cannot add another line.');
-                                        }
+                                            item.querySelector('.recuperar-valor').addEventListener('click', (e) => {
+                                                e.preventDefault();
+                                                valoresEliminados.delete(valor);
+                                                valoresSeleccionados.add(valor);
+                                                mostrarListas();
+                                            });
 
+                                            contenedorDisponibles.appendChild(item);
+                                        });
+
+                                        actualizarCampoOculto();
                                     }
 
-                                    const primerBoton = document.querySelector('.agregar-fila');
-                                    primerBoton.addEventListener('click', agregarFila);
-
                                     function CSVToJSON(csv) {
-                                        const lines = csv.split('\n');
+                                        const lines = csv.split('\n').filter(line => line.trim() !== '');
                                         const result = [];
-                                        const headers = lines[0].split(',');
 
-                                        for (let i = 1; i < lines.length; i++) {
-                                            const obj = {};
+                                        const startIndex = 0;
+
+                                        for (let i = startIndex; i < lines.length; i++) {
                                             const currentLine = lines[i].split(',');
 
-                                            for (let j = 0; j < headers.length; j++) {
-                                                obj[headers[j]] = currentLine[j];
-                                            }
+                                            if (currentLine.length >= 5 && currentLine.some(cell => cell.trim() !== '')) {
+                                                const obj = {};
 
-                                            result.push(obj);
+                                                for (let j = 0; j < currentLine.length; j++) {
+                                                    obj[`col_${j}`] = currentLine[j].trim();
+                                                }
+
+                                                result.push(obj);
+                                            }
                                         }
 
                                         return JSON.stringify(result);
@@ -394,12 +440,11 @@
                                         reader.onload = function (e) {
                                             csvContent = e.target.result;
                                             const jsonData = CSVToJSON(csvContent);
-                                            const primerSelect = document.querySelector('.valores-unicos');
-                                            procesarCSV(csvContent, primerSelect); // Procesamos el CSV y llenamos el primer select
-                                            console.log(jsonData); // This is where you have your JSON data
+                                            procesarCSV(csvContent);
+                                            console.log(jsonData);
 
-                                            // Send the JSON data to the server
-                                            fetch('/cdigen/upload_json', {
+                                            // Send the JSON data to the server (relative path)
+                                            fetch('upload_json', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -409,29 +454,19 @@
                                                 .then(response => {
                                                     if (response.ok) {
                                                         console.log('JSON data uploaded successfully');
+                                                        document.getElementById('csvFileSelected').value = 'true';
                                                     } else {
                                                         console.error('Failed to upload JSON data');
+                                                        document.getElementById('csvFileSelected').value = 'false';
                                                     }
                                                 })
                                                 .catch(error => {
                                                     console.error('Error uploading JSON data:', error);
+                                                    document.getElementById('csvFileSelected').value = 'false';
                                                 });
                                         };
                                         reader.readAsText(file);
                                     });
-
-                                    function displayFileName() {
-                                        const fileInput = document.getElementById('miInput');
-                                        const fileNameSpan = document.getElementById('fileName');
-
-                                        if (fileInput.files.length > 0) {
-                                            const fileName = fileInput.files[0].name;
-                                            fileNameSpan.textContent = fileName;
-                                        } else {
-                                            fileNameSpan.textContent = '';
-                                        }
-                                    }
-
                                 </script>
 
                             </fieldset>
@@ -471,8 +506,8 @@
                 // Add loading class to the button to change cursor
                 document.getElementById("fetchButton").classList.add("loading");
 
-                // Perform the fetch operation
-                fetch("/cdigen/fetch_csr_code_list")
+                // Perform the fetch operation (use relative path so app prefix is preserved)
+                fetch("fetch_csr_code_list")
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -495,6 +530,28 @@
 
             // Function to handle form submission
             function handleSubmit(event) {
+                // Check if CSV file has been selected and processed
+                const selectedInstruments = document.getElementById('instrumentos_seleccionados').value.trim();
+                const csvFileInput = document.getElementById('miInput');
+                
+                console.log("Form submission check:");
+                console.log("CSV file selected:", csvFileInput && csvFileInput.files && csvFileInput.files.length > 0);
+                console.log("Selected instruments:", selectedInstruments);
+                console.log("instrumentos_seleccionados field value:", document.getElementById('instrumentos_seleccionados').value);
+                
+                if (!csvFileInput || !csvFileInput.files || csvFileInput.files.length === 0) {
+                    event.preventDefault();
+                    alert('Please select a CSV file first.');
+                    return false;
+                }
+
+                if (!selectedInstruments) {
+                    event.preventDefault();
+                    alert('Please select at least one instrument from the CSV file.');
+                    return false;
+                }
+                
+                console.log("Form validation passed. Submitting with instruments:", selectedInstruments);
                 // Show the overlay with the loading spinner
                 document.getElementById("overlay").style.display = "block";
             }

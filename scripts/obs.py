@@ -15,8 +15,8 @@ import copy
 
 def eliminar_columnes(csv_name):
   arxiu = pd.read_csv(csv_name)
-  arxiu = arxiu.reindex(columns=["cruise_id","latitude", "longitude","Instrument", "instrument","vessel", "id", "met_cat" ,"Coments"])
-  arxiu = arxiu.rename (columns={'latitude': 'lat', 'longitude': 'lon', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'codiid'})
+  arxiu = arxiu.reindex(columns=["cruise_name", "Site","longitude", "latitude","Instrument", "instrument","vessel","met_cat","cruise_id"])
+  arxiu = arxiu.rename (columns={'longitude': 'Longitude', 'latitude': 'Latitude', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'cdiid'})
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
@@ -109,7 +109,18 @@ def funcio_obs (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       vessel_reduit="hes"
       vessel = "Hespérides"
       vessel_mayus = "HESPERIDES"
-    
+    elif vessel_input == "odb":
+      vessel = "Odón de Buen"
+      vessel_mode = "Odón"
+      vessel_reduit = "odb"
+      vessel_mayus = "ODON DE BUEN"
+      vessel_code = "29OD"
+    elif vessel_input == "gdc":
+      vessel = "García del Cid"
+      vessel_mode = "García"
+      vessel_reduit = "gdc"
+      vessel_mayus = "GARCÍA DEL CID"
+      vessel_code = "29GD"  
 
     header_list=['longitude', 'latitude', 'End_lat', 'End_long', 'First_time', 'End_time','Instrument', 'Coments']
     samples_and_stations = pd.read_csv(ruta_csv, names = header_list)
@@ -146,13 +157,35 @@ def funcio_obs (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       lista_cruise_id.append(id2)
     samples['cruise_id'] = lista_cruise_id
 
-    for i in range(0,total_lines):    
-      
-      id= '<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:' + cruise_id + cdi_model + '"  target="_blank">View in metadata catalog</a>' 
-      
+    for i in range(0,total_lines):          
+      id= '<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:' + cruise_id + cdi_model + '"  target="_blank">View in metadata catalog</a>'  
       lista_met_cat.append(id)
     samples['met_cat'] = lista_met_cat
-  
+    
+    lista_instrument=[]
+    for i in range(0,total_lines):    
+      instrument= 'ocean bottom seismometers'
+      lista_instrument.append(instrument)
+    samples['instrument'] = lista_instrument
+
+    lista_site=[]
+    for i in range(0,total_lines):  
+      id=str(samples.loc [i,"index"])
+      id = id.zfill(2) #fem que el id sigui de 2 digits i ho ompli amb 0 a la esquerre
+      
+      id2="obs_" + id 
+      site= id2
+      lista_site.append(site)
+    samples['Site'] = lista_site
+
+
+    lista_cruise=[]
+    for i in range(0,total_lines):    
+      cruise= cruise_name
+      lista_cruise.append(cruise)
+    samples['cruise_name'] = lista_cruise
+
+
   #<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:29SG20230719_ctd_ros_ladcp"  target="_blank">View in metadata catalog</a>
     for i in range(0,total_lines):    
       lista_vessel.append(vessel_mayus)
@@ -209,7 +242,6 @@ def funcio_obs (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       lista_hora.append (hora)
       lista_hora_1.append (hora_1)
       lista_min.append (min)
-
     samples['fecha'] = lista_fecha
     samples['hora'] = lista_hora
     samples['hora_1'] = lista_hora_1
@@ -224,14 +256,13 @@ def funcio_obs (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     for i in range(0,total_lines):
       fecha=str(samples.loc [i,"fecha"])
-      dia = fecha.split("-")[0]
+      any = fecha.split("-")[0]
       mes= fecha.split("-")[1]
-      any= fecha.split("-")[2]
+      dia= fecha.split("-")[2]
       fila=fila+1
       lista_dia.append(dia)
       lista_mes.append(mes)
       lista_any.append (any)
-
     samples['dia'] = lista_dia
     samples['mes'] = lista_mes
     samples['any'] = lista_any
@@ -295,10 +326,10 @@ def funcio_obs (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
     posList_w.text=w
-    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-    posList_s.text= s
-    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
+    posList_e = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
     posList_e.text= e
+    posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
+    posList_s.text= s
     posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
     posList_n.text=n
 
