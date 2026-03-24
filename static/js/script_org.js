@@ -1,220 +1,179 @@
-// Variable para almacenar todas las organizaciones
+// =========================
+// Variables globales
+// =========================
 let todasLasOrganizaciones = [];
 
-// Función para cargar las organizaciones desde el enlace SPARQL
+// =========================
+// URL SPARQL EDMO
+// =========================
+const ORGANIZATIONS_SPARQL_URL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20%3FaltName%20%3Fnotation%20%3Fstreet%20%3Fpostal%20%3Flocality%20%3Fcountry%20%3Femail%20%3Ftel%20%3Fweb%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23postal-code%3E%20%3Fpostal%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23locality%3E%20%3Flocality%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23country-name%3E%20%3Fcountry%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23email%3E%20%3Femail%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23tel%3E%20%3Ftel%20%7D%20OPTIONAL%20%7B%20%3Forg%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23seeAlso%3E%20%3Fweb%20%7D%20%7D%20ORDER%20BY%20LCASE(%3Fname)&accept=application%2Fsparql-results%2Bjson';
+
+// =========================
+// Cargar organizaciones desde EDMO
+// =========================
 function cargarOrganizaciones() {
-  // URL que devuelve todas las organizaciones en formato JSON
-  const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20(CONCAT(%3Fname%2C%20%22%20(%22%2C%20%3FaltName%2C%20%22)%22)%20AS%20%3ForgName)%20%3Fnotation%20%3Ftel%20%3FaltName%20%3Fstreet%20%3Fcodepostal%20%3Flocality%20%3Femail%20%3Fcountry%20%3Fweb%0D%0AWHERE%20%7B%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23tel%3E%20%3Ftel%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23postal-code%3E%20%3Fcodepostal%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23locality%3E%20%3Flocality%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23email%3E%20%3Femail%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23country-name%3E%20%3Fcountry%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23seeAlso%3E%20%3Fweb%20.%0D%0A%7D%0D%0AORDER%20BY%20%3Fname&accept=*%2F*';
+  console.log("cargarOrganizaciones() called");
+  document.getElementById("overlay").style.display = "block";
 
-  // Realizar la solicitud AJAX directamente al enlace
-  fetch(jsonDataURL)
-    .then(response => response.json())
-    .then(data => {
-      // Almacenar todas las organizaciones en la variable
-      todasLasOrganizaciones = data.results.bindings;
-
-      // Llenar la lista desplegable con las organizaciones
+  fetch(ORGANIZATIONS_SPARQL_URL)
+    .then(response => response.text())
+    .then(text => {
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error("Respuesta SPARQL no es JSON válido:", text);
+        throw e;
+      }
+      todasLasOrganizaciones = data?.results?.bindings || [];
       llenarListaDesplegable(todasLasOrganizaciones);
     })
-    .catch(error => {
-      console.error('Error al cargar las organizaciones desde el enlace:', error);
-      });
+    .catch(error => console.error("Fetch error:", error))
+    .finally(() => document.getElementById("overlay").style.display = "none");
 }
 
-// Función para llenar la lista desplegable con las organizaciones
+
+// =========================
+// Llenar select con organizaciones
+// =========================
 function llenarListaDesplegable(organizaciones) {
-  const listaDesplegable = document.getElementById('organizaciones');
+  const select = document.getElementById('organizaciones');
+  if (!select) return;
 
-  // Limpiar cualquier contenido anterior en la lista desplegable
-  listaDesplegable.innerHTML = '<option value="">Select organization*</option>';
+  select.innerHTML = '<option value="">Select organization*</option>';
 
-  // Agregar las organizaciones a la lista desplegable
-  organizaciones.forEach(organizacion => {
-    const orgName = organizacion.orgName.value; // Se utiliza la propiedad orgName según la definición en el SPARQL
-    const orgURI = organizacion.org.value;
+  organizaciones.forEach(o => {
+    const orgURI = o.org?.value;
+    const name = o.name?.value;
+    if (!orgURI || !name) return;
 
-    const optionElement = document.createElement('option');
-    optionElement.value = orgURI;
-    optionElement.textContent = orgName;
+    const alt = o.altName?.value || '';
+    const label = alt ? `${name} (${alt})` : name;
 
-    listaDesplegable.appendChild(optionElement);
+    const opt = document.createElement('option');
+    opt.value = orgURI;
+    opt.textContent = label;
+
+    // Guardar metadata completa
+    opt.dataset.org = JSON.stringify({
+      uri: orgURI,
+      name: name,
+      altName: alt,
+      notation: o.notation?.value || '',
+      street: o.street?.value || '',
+      postal: o.postal?.value || '',
+      locality: o.locality?.value || '',
+      country: o.country?.value || '',
+      email: o.email?.value || '',
+      tel: o.tel?.value || '',
+      web: o.web?.value || ''
+    });
+
+    select.appendChild(opt);
   });
+
+  console.log(`Se cargaron ${select.options.length - 1} organizaciones`);
 }
 
-// Función para realizar la búsqueda en la lista de organizaciones
-function realizarBusqueda() {
-  const campoBusqueda = document.getElementById('busqueda');
-  const valorBusqueda = campoBusqueda.value.toLowerCase();
-
-  // Filtrar las organizaciones según la búsqueda
-  const resultadosFiltrados = todasLasOrganizaciones.filter(organizacion => {
-    const nombre = organizacion.name.value.toLowerCase();
-    return nombre.includes(valorBusqueda);
-  });
-
-  // Llenar la lista desplegable con los resultados filtrados
-  llenarListaDesplegable(resultadosFiltrados);
-}
-
-// Función para cargar los resultados directamente desde el enlace
+// =========================
+// Cargar resultados para organización seleccionada
+// =========================
 function cargarResultadosDesdeEnlace(organizacionURI) {
-  // URL que devuelve los resultados en formato JSON
   const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*';
-
-  // Realizar la solicitud AJAX directamente al enlace
   fetch(jsonDataURL)
     .then(response => response.json())
-    .then(data => {
-      // Manejar los resultados de la consulta y mostrarlos en la página
-      mostrarResultados(data);
-    })
-    .catch(error => {
-      console.error('Error al cargar los resultados desde el enlace:', error);
-    });
+    .then(data => mostrarResultados(data))
+    .catch(error => console.error('Error al cargar los resultados desde EDMO:', error));
 }
 
-// Función para mostrar los resultados en la página
 function mostrarResultados(resultados) {
   const resultadosDiv = document.getElementById('resultados');
-
-  // Limpiar cualquier contenido anterior
+  if (!resultadosDiv) return;
   resultadosDiv.innerHTML = '';
 
-  // Crear elementos HTML para cada resultado
-  resultados.results.bindings.forEach(resultado => {
-    const orgName = resultado.name.value;
-    const orgURI = resultado.org.value;
-
-
-
-    const resultadoElemento = document.createElement('p');
-    resultadoElemento.textContent = `${orgURI}`;//Organization ${orgName},
-
-    resultadosDiv.appendChild(resultadoElemento);
+  (resultados.results?.bindings || []).forEach(resultado => {
+    const orgURI = resultado.org?.value || '';
+    const p = document.createElement('p');
+    p.textContent = orgURI;
+    resultadosDiv.appendChild(p);
   });
 }
 
-// Función para cargar los resultados cuando se selecciona una organización
+// =========================
+// Manejar selección de organización
+// =========================
 function cargarResultadosSeleccionados() {
-  const listaDesplegable = document.getElementById('organizaciones');
-  const organizacionSeleccionada = listaDesplegable.value;
-
-  // Cargar los resultados solo si se selecciona una organización
-  if (organizacionSeleccionada) {
-    cargarResultadosDesdeEnlace(organizacionSeleccionada);
-  }
+  const lista = document.getElementById('organizaciones');
+  const orgURI = lista?.value;
+  if (orgURI) cargarResultadosDesdeEnlace(orgURI);
 }
+
+// =========================
+// Cargar CSR y filtrar vessels
+// =========================
 function loadDoc() {
-  console.log("loadDoc() initated"); // Log a message to console indicating loadDoc() function is called
+  console.log("loadDoc() called");
   document.getElementById("overlay").style.display = "block";
-  //fetch response
-  fetch("http://161.111.137.92:8001/static/csrCodeList.xml")
-      .then(response => {
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+  const csrUrl = 'static/csrCodeList.xml?ts=' + Date.now();
+
+  fetch(csrUrl)
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       return response.text();
-
-      })
-      .then(xmlString => {
-      var parser = new DOMParser();
-      var xmlDoc = parser.parseFromString(xmlString, "application/xml");
-
-      // Verificar si xmlDoc es válido y tiene elementos CodeDefinition
-      if (xmlDoc && xmlDoc.documentElement && xmlDoc.documentElement.nodeName === "parsererror") {
-          console.error("XML parsing error:", xmlDoc);
+    })
+    .then(xmlString => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+      if (xmlDoc?.documentElement?.nodeName === "parsererror") {
+        console.error("XML parsing error:", xmlDoc);
       } else {
-          filtrevessel(xmlDoc); //myFunction(xmlDoc); es carregaran tots els csr reference de 29AH i 29HE
+        filtrevessel(xmlDoc);
       }
-      // Hide the overlay after successful fetch
       document.getElementById("overlay").style.display = "none";
-      console.log("loadDoc() successfull"); // Log a message to console indicating loadDoc() function is called
-
-      })
-      .catch(error => {
-      console.error("Fetch error:", error);
-      // Hide the overlay after successful fetch
+    })
+    .catch(error => {
+      console.error("Fetch error (csr):", error);
       document.getElementById("overlay").style.display = "none";
-      });
-}
-// funcio  per carregar 
-function myFunction(xml) {
-  var select = document.getElementById("cdSelect");
-  var codeDefinitions = xml.querySelectorAll("CodeDefinition");
-
-  // Verificar si hay CodeDefinitions
-  if (codeDefinitions) {
-    codeDefinitions.forEach(function (codeDefinition, index) {
-      var platformCodeElement = codeDefinition.querySelector("platformcode");
-      var cruisenameElement = codeDefinition.querySelector("cruisename");
-
-      if (platformCodeElement && cruisenameElement) {
-        var platformCode = platformCodeElement.textContent;
-        var cruisename = cruisenameElement.textContent;
-
-        // Aplicar filtro para mostrar solo los valores correspondientes a los platformcodes 29AH e 29HE
-        if (platformCode === "29AH" || platformCode === "29HE") {
-          var option = document.createElement("option");
-          option.value = cruisename;
-          option.text = cruisename;
-          select.add(option);
-        }
-      }
     });
-
-
-  } else {
-    console.error("No CodeDefinitions found in the XML");
-  }
 }
 
 function filtrevessel(xml) {
-  var select = document.getElementById("cdSelect");
-  var codeDefinitions = xml.querySelectorAll("CodeDefinition");
+  const select = document.getElementById("cdSelect");
+  if (!select) return;
+  select.innerHTML = '';
 
-
-  // Obtener el valor seleccionado del "vessel"
-  var selectedVessel = document.getElementById("vessel_input").value;
-
-  // Verificar si hay CodeDefinitions
-  if (codeDefinitions) {
-    codeDefinitions.forEach(function (codeDefinition, index) {
-      var platformCodeElement = codeDefinition.querySelector("platformcode");
-      var cruisenameElement = codeDefinition.querySelector("cruisename");
-
-      if (platformCodeElement && cruisenameElement) {
-        var platformCode = platformCodeElement.textContent;
-        var cruisename = cruisenameElement.textContent;
-
-        // Aplicar filtro según el "vessel" seleccionado
-        // Aplicar filtro para mostrar solo los valores correspondientes a los platformcodes 29AH e 29HE
-        if (selectedVessel === "select" && platformCode === "29AH" && platformCode === "29HE") {
-          var option = document.createElement("option");
-          option.value = cruisename;
-          option.text = cruisename;
-          select.add(option);
-        }
-        else if (selectedVessel === "sdg" && platformCode === "29AH") {
-          var option = document.createElement("option");
-          option.value = cruisename;
-          option.text = cruisename;
-          select.add(option);
-        } 
-        else if (selectedVessel === "hes" && platformCode === "29HE") {
-          var option = document.createElement("option");
-          option.value = cruisename;
-          option.text = cruisename;
-          select.add(option);
-        }
-      }
-    });
-  } else {
-    console.error("No CodeDefinitions found in the XML");
+  // Siempre inicializa codeDefinitions como lista vacía
+  const codeDefinitions = xml.querySelectorAll("CodeDefinition") || [];
+  if (!codeDefinitions.length) {
+    console.error("No CodeDefinitions found in XML");
+    return;
   }
-}
-// Llamar a la función para cargar las organizaciones cuando la página se carga
-window.onload = function () {
-  cargarOrganizaciones()  
-};
-  //loadDoc();
 
+  const selectedVessel = document.getElementById("vessel_input")?.value || 'select';
+
+  codeDefinitions.forEach(cd => {
+    const platformCode = cd.querySelector("platformcode")?.textContent;
+    const cruisename = cd.querySelector("cruisename")?.textContent;
+    if (!platformCode || !cruisename) return;
+
+    if (
+      (selectedVessel === "select" && (platformCode === "29AH" || platformCode === "29HE")) ||
+      (selectedVessel === "sdg" && platformCode === "29AH") ||
+      (selectedVessel === "hes" && platformCode === "29HE")
+    ) {
+      const option = document.createElement("option");
+      option.value = cruisename;
+      option.text = cruisename;
+      select.add(option);
+    }
+  });
+}
+
+
+// =========================
+// Ejecutar al cargar la página
+// =========================
+window.onload = function () {
+  cargarOrganizaciones();
+  loadDoc();
+};

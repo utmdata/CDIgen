@@ -38,7 +38,19 @@ def funcio_ts (cruise_id, cruise_name, date_inicial, date_final, vessel_input, d
         vessel_mode ="Hesperides"
         vessel_reduit="hes"
         vessel = "Hespérides"
-    
+    elif vessel_input == "odb":
+        vessel = "Odón de Buen"
+        vessel_mode = "Odón"
+        vessel_reduit = "odb"
+        vessel_mayus = "ODON DE BUEN"
+        vessel_code = "29OD"
+    elif vessel_input == "gdc":
+        vessel = "García del Cid"
+        vessel_mode = "García"
+        vessel_reduit = "gdc"
+        vessel_mayus = "GARCÍA DEL CID"
+        vessel_code = "29GD"
+        
     shutil.copy(underway_general, underway_ts)
     input_file= underway_ts
     output_file= underway_ts

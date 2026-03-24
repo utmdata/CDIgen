@@ -391,8 +391,8 @@
             // Add loading class to the button to change cursor
             document.getElementById("fetchButton").classList.add("loading");
 
-            // Perform the fetch operation
-            fetch("/fetch_csr_code_list")
+            // Perform the fetch operation (use relative path so app prefix is preserved)
+            fetch("fetch_csr_code_list")
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
