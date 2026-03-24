@@ -111,10 +111,13 @@ else:
     try:
         from numpy.__config__ import show_config
     except ImportError as e:
-        msg = """Error importing numpy: you should not try to import numpy from
-        its source directory; please exit the numpy source tree, and relaunch
-        your python interpreter from there."""
-        raise ImportError(msg) from e
+        if isinstance(e, ModuleNotFoundError) and e.name == "numpy.__config__":
+            # The __config__ module itself was not found, so add this info:
+            msg = """Error importing numpy: you should not try to import numpy from
+            its source directory; please exit the numpy source tree, and relaunch
+            your python interpreter from there."""
+            raise ImportError(msg) from e
+        raise
 
     from . import _core
     from ._core import (
@@ -451,13 +454,11 @@ else:
             pass
     del ta
 
-    from . import lib
-    from . import matrixlib as _mat
+    from . import lib, matrixlib as _mat
     from .lib import scimath as emath
     from .lib._arraypad_impl import pad
     from .lib._arraysetops_impl import (
         ediff1d,
-        in1d,
         intersect1d,
         isin,
         setdiff1d,
@@ -504,7 +505,6 @@ else:
         sinc,
         sort_complex,
         trapezoid,
-        trapz,
         trim_zeros,
         unwrap,
         vectorize,
@@ -674,9 +674,6 @@ else:
     __array_api_version__ = "2024.12"
 
     from ._array_api_info import __array_namespace_info__
-
-    # now that numpy core module is imported, can initialize limits
-    _core.getlimits._register_known_types()
 
     __all__ = list(
         __numpy_submodules__ |
@@ -872,6 +869,23 @@ else:
                 del _wn
             del w
     del _mac_os_check
+
+    def blas_fpe_check():
+        # Check if BLAS adds spurious FPEs, mostly seen on M4 arms with Accelerate.
+        with errstate(all='raise'):
+            x = ones((20, 20))
+            try:
+                x @ x
+            except FloatingPointError:
+                res = _core._multiarray_umath._blas_supports_fpe(False)
+                if res:  # res was not modified (hardcoded to True for now)
+                    warnings.warn(
+                        "Spurious warnings given by blas but suppression not "
+                        "set up on this platform. Please open a NumPy issue.",
+                        UserWarning, stacklevel=2)
+
+    blas_fpe_check()
+    del blas_fpe_check
 
     def hugepage_setup():
         """
