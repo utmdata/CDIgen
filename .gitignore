@@ -1,0 +1,8 @@
+static/data/
+cdigen.ini
+cdigen.sock
+maintenance.py
+wsgi.py
+*.log
+__pycache__
+.vscode/
