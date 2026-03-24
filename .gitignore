@@ -4,5 +4,6 @@ cdigen.sock
 maintenance.py
 wsgi.py
 *.log
-__pycache__
+./__pycache__
 .vscode/
+venv
