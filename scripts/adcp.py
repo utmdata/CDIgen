@@ -24,8 +24,9 @@ def funcio_adcp (cruise_id, cruise_name, date_inicial, date_final, vessel_input)
       'xlink': 'http://www.w3.org/1999/xlink'
   }
 
-
-    underway_general =cruise_id + "_underway.xml"
+    underway_general_org = cruise_id + "_underway_org.xml"
+    underway_general_default = cruise_id + "_underway.xml"
+    underway_general = underway_general_org if path.exists(underway_general_org) else underway_general_default
 
     underway_adcp =cruise_id + "/" + cruise_id + "_adcp.xml"
     

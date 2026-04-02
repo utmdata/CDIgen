@@ -121,17 +121,19 @@ def grabar_underway (cruise_id, cruise_name, date_inicial, date_final, vessel_in
         logging.info(f"arriba aqui 123")
         scripts.underwayweb.underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code)
         print(data)
+        
         logging.info(f"arriba aqui a data {data}")
+        
         if "met" in data:
             scripts.met_script.funcio_met (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
         else:
             print ("No met")
-
+            
         if "grv" in data:
             scripts.grv.funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
         else:
             print ("No grv")    
-
+            
         if "ts" in data:
             scripts.ts_script.funcio_ts (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data)
         else:
@@ -569,236 +571,368 @@ def grabar_individual(cruise_id, cruise_name, vessel_input, valor_org, csr_code,
         logging.info(f"ruta_csv: {ruta_csv}")
         #tienen que contener el nombre de los eventos del fichero de Eventos:  sftp://172.16.101.247/home/utmtel/Eventos/ArcaDeLaVerdadIncorruptible
         if "ARGO" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name,vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.arg.funcio_arg(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados ARGO's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name,vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.arg.funcio_arg(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados ARGO's")
+            except Exception as e:
+                logging.error(f"Error processing ARGO: {str(e)}")
+                raise
         else: 
             print ("No hay select de ARGO")
 
         if "AUV" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.auv.funcio_auv(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados AUV's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.auv.funcio_auv(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados AUV's")
+            except Exception as e:
+                logging.error(f"Error processing AUV: {str(e)}")
+                raise
         else: 
             print ("No hay select de AUV")
 
         if "BOYA DERIVA" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.dft.funcio_dft(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" BOYA DERIVA")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.dft.funcio_dft(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" BOYA DERIVA")
+            except Exception as e:
+                logging.error(f"Error processing BOYA DERIVA: {str(e)}")
+                raise
         else:
             print("no hi ha select de BOYA DERIVA") 
 
         if "CORER" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.cor.funcio_cor(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados COR's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.cor.funcio_cor(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados COR's")
+            except Exception as e:
+                logging.error(f"Error processing CORER: {str(e)}")
+                raise
         else: 
             print ("No hay select de COR")
 
         if "CTD" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.ctd.funcio_ctd(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados CTD's")
+            try:
+                scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.ctd.funcio_ctd(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados CTD's")
+            except Exception as e:
+                logging.error(f"Error processing CTD: {str(e)}")
+                raise
         else:
             print("no hay select de CTD")
 
         if "CTD_ROS" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.ctd_ros.funcio_ctd_ros(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados CTD_ROS")
+            try:
+                scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.ctd_ros.funcio_ctd_ros(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados CTD_ROS")
+            except Exception as e:
+                logging.error(f"Error processing CTD_ROS: {str(e)}")
+                raise
         else:
             print("no hi ha select de CTD_ROS")   
 
         if "CTD_ROS_LADCP" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.ctd_ros_ladcp.funcio_ctd_ros_ladcp(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados ctd_ros_ladcp")
+            try:
+                scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.ctd_ros_ladcp.funcio_ctd_ros_ladcp(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados ctd_ros_ladcp")
+            except Exception as e:
+                logging.error(f"Error processing CTD_ROS_LADCP: {str(e)}")
+                raise
         else:
             print("no hay select de CTD_ROS_LADCP")  
 
         if "CTD UNDULANTE" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.ctd_und.funcio_ctd_und(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados CTD_UND")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.ctd_und.funcio_ctd_und(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados CTD_UND")
+            except Exception as e:
+                logging.error(f"Error processing CTD UNDULANTE: {str(e)}")
+                raise
         else:
-            print("no hay select de CTD_UND")  
+            print("no hay select de CTD_UND")
+            # Ja va, canviat el script ctd_und
 
         if "DOPPLER" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.adcp.funcio_adcp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados ADCP's")
+            try:
+                scripts.globalweb.underway_general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.adcp.funcio_adcp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados ADCP's")
+            except Exception as e:
+                logging.error(f"Error processing DOPPLER: {str(e)}")
+                raise
         else: 
             print ("No hay select de ADCP")
 
         if "DRAGA" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.dre.funcio_dre(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados DRE's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.dre.funcio_dre(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados DRE's")
+            except Exception as e:
+                logging.error(f"Error processing DRAGA: {str(e)}")
+                raise
         else:
             print("no hay select de DRE")
         
         if "FLUOROMETRO" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.flu.funcio_flu(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados FLUOROMETRO's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.flu.funcio_flu(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados FLUOROMETRO's")
+            except Exception as e:
+                logging.error(f"Error processing FLUOROMETRO: {str(e)}")
+                raise
         else: 
             print ("No hay select de  FLU")
 
         if "GO-FLO" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.flo.funcio_flo(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("GO-FLO")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.flo.funcio_flo(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("GO-FLO")
+            except Exception as e:
+                logging.error(f"Error processing GO-FLO: {str(e)}")
+                raise
         else:
             print("no hi ha select de GO-FLO")
 
         if "SONDA BIOLOGICA" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.ffe.funcio_ffe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados FFE's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.ffe.funcio_ffe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados FFE's")
+            except Exception as e:
+                logging.error(f"Error processing SONDA BIOLOGICA: {str(e)}")
+                raise
         else: 
             print ("No nay select de FFE")
 
         if "GRAVIMETRO" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.grv.funcio_grv(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados GRV's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.grv.funcio_grv(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados GRV's")
+            except Exception as e:
+                logging.error(f"Error processing GRAVIMETRO: {str(e)}")
+                raise
         else: 
             print ("No hay select de GRV")
 
         if "INSITUPUMPS" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.isp.funcio_isp(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados ISP's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.isp.funcio_isp(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados ISP's")
+            except Exception as e:
+                logging.error(f"Error processing INSITUPUMPS: {str(e)}")
+                raise
         else: 
             print ("No hay select de ISP")
 
         if "MAGNETOMETRO" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.mag.funcio_mag(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados MAG's")
+            try:
+                scripts.globalweb.underway_general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.mag.funcio_mag(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados MAG's")
+            except Exception as e:
+                logging.error(f"Error processing MAGNETOMETRO: {str(e)}")
+                raise
         else: 
             print ("No hay select de MAG")
             #No se perquè no es genera
 
         if "SONDA MULTIHAZ" in selects:
-            scripts.globalweb.underway_general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados MBE's")
+            try:
+                scripts.globalweb.underway_general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.mbe.funcio_mbe(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados MBE's")
+            except Exception as e:
+                logging.error(f"Error processing SONDA MULTIHAZ: {str(e)}")
+                raise
         else: 
             print ("No hay select de MBE")
-            #Deixa dos unknowns al fer el mbe
 
         if "SISMICA MULTICANAL" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados MCS's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.mcs.funcio_mcs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados MCS's")
+            except Exception as e:
+                logging.error(f"Error processing SISMICA MULTICANAL: {str(e)}")
+                raise
         else: 
             print ("No hay select de MCS")
-            #{"error":"[Errno 2] No such file or directory: '/home/utm/cdigen/29SG20240306'"}
+            
         
         if "MOCNESS" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.moc.funcio_moc(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados MOC")
+            try:
+                scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.moc.funcio_moc(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados MOC")
+            except Exception as e:
+                logging.error(f"Error processing MOCNESS: {str(e)}")
+                raise
         else:
             print("no hay select de MOC")
 
         if "MOORING" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.moo.funcio_moo(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados MOO's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.moo.funcio_moo(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados MOO's")
+            except Exception as e:
+                logging.error(f"Error processing MOORING: {str(e)}")
+                raise
         else:
             print("No hay select de MOO") 
 
         if "MARINE SNOW CATCHER" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.msc.funcio_msc(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados MSC's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.msc.funcio_msc(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados MSC's")
+            except Exception as e:
+                logging.error(f"Error processing MARINE SNOW CATCHER: {str(e)}")
+                raise
         else: 
             print ("No hay select de MSC")
 
         if "RADIOMETRO" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.rad.funcio_rad(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados RADIOMETER")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.rad.funcio_rad(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados RADIOMETER")
+            except Exception as e:
+                logging.error(f"Error processing RADIOMETRO: {str(e)}")
+                raise
         else:
             print("no hay select de RADIOMETER")
 
         if "RED" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.net.funcio_net(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados NET's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.net.funcio_net(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados NET's")
+            except Exception as e:
+                logging.error(f"Error processing RED: {str(e)}")
+                raise
         else: 
             print ("No hay select de NET")
 
         if "OBS" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.obs.funcio_obs(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados OBS's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.obs.funcio_obs(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados OBS's")
+            except Exception as e:
+                logging.error(f"Error processing OBS: {str(e)}")
+                raise
         else:
             print("no hay select de OBS")
 
         if "PIES" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.pies.funcio_pies(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados PIES")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.pies.funcio_pies(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados PIES")
+            except Exception as e:
+                logging.error(f"Error processing PIES: {str(e)}")
+                raise
         else:
             print("No hay select de PIES")
 
         if "ROV" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.rov.funcio_rov(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados ROV's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.rov.funcio_rov(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados ROV's")
+            except Exception as e:
+                logging.error(f"Error processing ROV: {str(e)}")
+                raise
         else: 
             print ("No hay selects de ROV")    
 
         if "PERFILADOR DE FONDO" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados SBP's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.sbp.funcio_sbp(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados SBP's")
+            except Exception as e:
+                logging.error(f"Error processing PERFILADOR DE FONDO: {str(e)}")
+                raise
         else: 
             print ("No hay select de SBP")
 
         if "SISMICA DE REFRACCION" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados SRS's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.srs.funcio_srs(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados SRS's")
+            except Exception as e:
+                logging.error(f"Error processing SISMICA DE REFRACCION: {str(e)}")
+                raise
         else: 
             print ("No hay select de SRS")
 
         if "SONAR DE BARRIDO LATERAL" in selects:
-            scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.sss.funcio_sss(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
-            print("Generados SSS's")
+            try:
+                scripts.globalweb.underway_general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.sss.funcio_sss(cruise_id, cruise_name, date_inicial, date_final, vessel_input)
+                print("Generados SSS's")
+            except Exception as e:
+                logging.error(f"Error processing SONAR DE BARRIDO LATERAL: {str(e)}")
+                raise
         else: 
             print ("No hay select de SSS")
 
         if "SVP" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.svp.funcio_svp(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados SVP's")
+            try:
+                scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.svp.funcio_svp(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados SVP's")
+            except Exception as e:
+                logging.error(f"Error processing SVP: {str(e)}")
+                raise
         else:
             print("no hay select de SVP")
 
         if "TRAMPA SEDIMENTO" in selects:
-            scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.tra.funcio_tra(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print("Generados TRA's")
+            try:
+                scripts.generalweb.general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.tra.funcio_tra(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print("Generados TRA's")
+            except Exception as e:
+                logging.error(f"Error processing TRAMPA SEDIMENTO: {str(e)}")
+                raise
         else:
             print("no hay select de TRA")
 
         if "XBT" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.xbt.funcio_xbt(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados xbt's")
+            try:
+                scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.xbt.funcio_xbt(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados xbt's")
+            except Exception as e:
+                logging.error(f"Error processing XBT: {str(e)}")
+                raise
         else:
             print("no hay select de XBT")
 
         if "XSV" in selects:
-            scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
-            scripts.xsv.funcio_xsv(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
-            print(" Generados XSV")
+            try:
+                scripts.generalweb.general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final)
+                scripts.xsv.funcio_xsv(cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final)
+                print(" Generados XSV")
+            except Exception as e:
+                logging.error(f"Error processing XSV: {str(e)}")
+                raise
         else:
             print("no hay select de XSV")
 

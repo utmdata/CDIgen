@@ -100,7 +100,7 @@ def funcio_net (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     posList_1.set ("codeListValue","XYZ")
     tree.write(output_file)   
     
-     #canviar versio del data format
+    #canviar versio del data format
     tree = etree.parse(input_file)
     posList_1 = tree.xpath(".//gco:CharacterString[contains(text(), '0.4')]", namespaces=namespace)[0]
     posList_1.text =  '1'

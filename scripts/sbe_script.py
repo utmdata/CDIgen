@@ -85,7 +85,7 @@ def funcio_sbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     #canviar intruments ( de unknown al meteorological data)
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'single-beam echosounder'
+    posList_1.text =  'single-beam echosounders'
     posList_1.set ("codeListValue","156")
     tree.write(output_file)
 

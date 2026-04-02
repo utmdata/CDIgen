@@ -55,6 +55,22 @@ def get_country_code_by_label(label):
                         return row["conceptid"]
             return "99"  # Código por defecto
 
+
+def compose_org_name(name, alt_name):
+    name = (name or "").strip()
+    alt_name = (alt_name or "").strip()
+
+    has_name = name not in ("", "N/A")
+    has_alt_name = alt_name not in ("", "N/A")
+
+    if has_name and has_alt_name and alt_name != name:
+        return f"{name} ({alt_name})"
+    if has_name:
+        return name
+    if has_alt_name:
+        return alt_name
+    return "N/A"
+
 def get_organization_info(valor_org):
     try:
         # Load metadata from JSON file
@@ -129,7 +145,7 @@ def general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, 
         print(f"CSR Description: {description_csr}")
 
         # Load metadata from JSON
-        json_path = os.path.join("static", "csv", "sparql.json")
+        json_path = os.path.join("static", "sparql.json")
         with open(json_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
@@ -151,6 +167,17 @@ def general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, 
         country = matched.get("country", {}).get("value", "N/A")
         web = matched.get("web", {}).get("value", "N/A")
         email = matched.get("email", {}).get("value", "sdn-userdesk@seadatanet.org").replace("mailto:", "").replace("%40", "@")
+
+        name = matched.get("name", {}).get("value", "N/A")
+        print(f"DEBUG: Extracted org_name from JSON: '{org_name}'")
+        print(f"DEBUG: Extracted alt_name from JSON: '{alt_name}'")
+        print(f"DEBUG: Extracted name from JSON: '{name}'")
+
+        org_name = compose_org_name(name, alt_name)
+        if org_name == "N/A":
+            print("WARNING: Organization name from JSON is N/A and no alternative name available!")
+        else:
+            print(f"INFO: Composed organization name: '{org_name}'")
 
         print(f"Organization URI: {org}")
         print(f"Organization Name: {org_name}")
@@ -249,41 +276,83 @@ def general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, 
 
         #afegim org_name
         tree = etree.parse(input_file)
-        posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-        posList.text = org_name
-        posList.set("codeListValue", notation)
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)
+            if posList:
+                posList[0].text = org_name
+                posList[0].set("codeListValue", notation)
+                tree.write(output_file)
+                print("✓ Updated organization name (1st occurrence)")
+            else:
+                print("⚠ WARNING: No SDN_EDMOCode element with 'ORG_NAME' text found")
+        except Exception as e:
+            print(f"✗ ERROR updating org_name (1st): {str(e)}")
 
         #afegim org_name per segon cop
         tree = etree.parse(input_file)
-        posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-        posList.text = org_name
-        posList.set("codeListValue", notation)
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)
+            if posList:
+                posList[0].text = org_name
+                posList[0].set("codeListValue", notation)
+                tree.write(output_file)
+                print("✓ Updated organization name (2nd occurrence)")
+            else:
+                print("⚠ WARNING: No SDN_EDMOCode element with 'ORG_NAME' text found (2nd time)")
+        except Exception as e:
+            print(f"✗ ERROR updating org_name (2nd): {str(e)}")
 
         #afegim street
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-        posList.text = street
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)
+            if posList:
+                posList[0].text = street
+                tree.write(output_file)
+                print("✓ Updated street (1st occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_street' text found")
+        except Exception as e:
+            print(f"✗ ERROR updating street (1st): {str(e)}")
 
         #afegim street per segon cop
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-        posList.text = street
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)
+            if posList:
+                posList[0].text = street
+                tree.write(output_file)
+                print("✓ Updated street (2nd occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_street' text found (2nd time)")
+        except Exception as e:
+            print(f"✗ ERROR updating street (2nd): {str(e)}")
 
         #afegim city
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-        posList.text = locality
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)
+            if posList:
+                posList[0].text = locality
+                tree.write(output_file)
+                print("✓ Updated city (1st occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_city' text found")
+        except Exception as e:
+            print(f"✗ ERROR updating city (1st): {str(e)}")
 
         #afegim city per segon cop
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-        posList.text = locality
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)
+            if posList:
+                posList[0].text = locality
+                tree.write(output_file)
+                print("✓ Updated city (2nd occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_city' text found (2nd time)")
+        except Exception as e:
+            print(f"✗ ERROR updating city (2nd): {str(e)}")
 
         #afegim country
         tree = etree.parse(input_file)
@@ -341,10 +410,17 @@ def general(cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, 
 
         #afegim csrcodelist
         tree = etree.parse(input_file)
-        posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)[0]
-        posList.text = description_csr
-        posList.set ("codeListValue",id_csr)
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)
+            if posList:
+                posList[0].text = description_csr
+                posList[0].set("codeListValue", id_csr)
+                tree.write(output_file)
+                print("✓ Updated CSR code")
+            else:
+                print("⚠ WARNING: No CSR code element found")
+        except Exception as e:
+            print(f"✗ ERROR updating CSR code: {str(e)}")
         print("fet generalweb----------------") 
 
 
@@ -372,7 +448,7 @@ def general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_co
         print(f"CSR Description: {description_csr}")
 
         # Load metadata from JSON
-        json_path = os.path.join("static", "csv", "sparql.json")
+        json_path = os.path.join("static", "sparql.json")
         with open(json_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
@@ -394,6 +470,17 @@ def general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_co
         country = matched.get("country", {}).get("value", "N/A")
         web = matched.get("web", {}).get("value", "N/A")
         email = matched.get("email", {}).get("value", "sdn-userdesk@seadatanet.org").replace("mailto:", "").replace("%40", "@")
+
+        name = matched.get("name", {}).get("value", "N/A")
+        print(f"DEBUG: Extracted org_name from JSON: '{org_name}'")
+        print(f"DEBUG: Extracted alt_name from JSON: '{alt_name}'")
+        print(f"DEBUG: Extracted name from JSON: '{name}'")
+
+        org_name = compose_org_name(name, alt_name)
+        if org_name == "N/A":
+            print("WARNING: Organization name from JSON is N/A and no alternative name available!")
+        else:
+            print(f"INFO: Composed organization name: '{org_name}'")
 
         print(f"Organization URI: {org}")
         print(f"Organization Name: {org_name}")
@@ -485,41 +572,83 @@ def general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_co
 
         #afegim org_name
         tree = etree.parse(input_file)
-        posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-        posList.text = org_name
-        posList.set ("codeListValue",notation)
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)
+            if posList:
+                posList[0].text = org_name
+                posList[0].set("codeListValue", notation)
+                tree.write(output_file)
+                print("✓ Updated organization name (1st occurrence)")
+            else:
+                print("⚠ WARNING: No SDN_EDMOCode element with 'ORG_NAME' text found")
+        except Exception as e:
+            print(f"✗ ERROR updating org_name (1st): {str(e)}")
 
         #afegim org_name per segon cop
         tree = etree.parse(input_file)
-        posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-        posList.text = org_name
-        posList.set ("codeListValue",notation)
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)
+            if posList:
+                posList[0].text = org_name
+                posList[0].set("codeListValue", notation)
+                tree.write(output_file)
+                print("✓ Updated organization name (2nd occurrence)")
+            else:
+                print("⚠ WARNING: No SDN_EDMOCode element with 'ORG_NAME' text found (2nd time)")
+        except Exception as e:
+            print(f"✗ ERROR updating org_name (2nd): {str(e)}")
         
         #afegim street
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-        posList.text = street
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)
+            if posList:
+                posList[0].text = street
+                tree.write(output_file)
+                print("✓ Updated street (1st occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_street' text found")
+        except Exception as e:
+            print(f"✗ ERROR updating street (1st): {str(e)}")
 
         #afegim street per segon cop
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-        posList.text = street
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)
+            if posList:
+                posList[0].text = street
+                tree.write(output_file)
+                print("✓ Updated street (2nd occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_street' text found (2nd time)")
+        except Exception as e:
+            print(f"✗ ERROR updating street (2nd): {str(e)}")
 
         #afegim city
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-        posList.text = locality
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)
+            if posList:
+                posList[0].text = locality
+                tree.write(output_file)
+                print("✓ Updated city (1st occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_city' text found")
+        except Exception as e:
+            print(f"✗ ERROR updating city (1st): {str(e)}")
 
         #afegim city per segon cop
         tree = etree.parse(input_file)
-        posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-        posList.text = locality
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)
+            if posList:
+                posList[0].text = locality
+                tree.write(output_file)
+                print("✓ Updated city (2nd occurrence)")
+            else:
+                print("⚠ WARNING: No element with 'org_city' text found (2nd time)")
+        except Exception as e:
+            print(f"✗ ERROR updating city (2nd): {str(e)}")
 
         #afegim country
         tree = etree.parse(input_file)
@@ -579,8 +708,15 @@ def general_sense_sensor(cruise_id, cruise_name, vessel_input, valor_org, csr_co
 
         #afegim csrcodelist
         tree = etree.parse(input_file)
-        posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)[0]
-        posList.text = description_csr
-        posList.set ("codeListValue",id_csr)
-        tree.write(output_file)
+        try:
+            posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)
+            if posList:
+                posList[0].text = description_csr
+                posList[0].set("codeListValue", id_csr)
+                tree.write(output_file)
+                print("✓ Updated CSR code")
+            else:
+                print("⚠ WARNING: No CSR code element found")
+        except Exception as e:
+            print(f"✗ ERROR updating CSR code: {str(e)}")
 

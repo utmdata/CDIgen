@@ -79,7 +79,6 @@ def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     tree.write(output_file)
 
     #canviar paràmetres
-    
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Gravity'

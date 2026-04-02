@@ -56,20 +56,25 @@ def funcio_rad (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     output_file= cdi_individual
 
     #canviar paràmetres
-    tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
-    posList_1.text =  'Visible waveband radiance and irradiance measurements in the water column'
-    posList_1.set ("codeListValue","FVLT")
-   
-    tree.write(output_file)
+    try:
+        tree = etree.parse(input_file)
+        posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
+        posList_1.text =  'Visible waveband radiance and irradiance measurements in the water column'
+        posList_1.set ("codeListValue","FVLT")
+        tree.write(output_file)
+    except IndexError:
+        print("Warning: Could not update parameter in XML")
 
 
     #canviar intruments ( de unknown al meteorological data)
-    tree = etree.parse(input_file)
-    posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
-    posList_1.text =  'radiometers'
-    posList_1.set ("codeListValue","122")
-    tree.write(output_file)
+    try:
+        tree = etree.parse(input_file)
+        posList_1 = tree.xpath("//sdn:SDN_DeviceCategoryCode[contains(text(), 'unknown')]", namespaces=namespace)[0]
+        posList_1.text =  'radiometers'
+        posList_1.set ("codeListValue","122")
+        tree.write(output_file)
+    except IndexError:
+        print("Warning: Could not update instrument in XML")
 
 
 
@@ -120,7 +125,7 @@ def funcio_rad (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     #canviar segons el cdi:   
 
-    select_instrument = "RADIOMETER"
+    select_instrument = "RADIOMETRO"
 
     shutil.copy(cdi_individual, "static/csv/cdi_model_1.xml")
     filename = "cdi_model_1.xml"
@@ -158,7 +163,7 @@ def funcio_rad (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     lista_instrument=[]
     for i in range(0,total_lines):          
-      instrument= 'RADIOMETER'
+      instrument= 'RADIOMETRO'
       lista_instrument.append(instrument)
     samples['instrument'] = lista_instrument
 
@@ -287,82 +292,77 @@ def funcio_rad (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
               os.rename(folder_copy, nombre_archivo )
 
   #fem el cdi global
-  
-    # Construct campaign directory, e.g., HES20230103
-    campaign_dir = f"{vessel_code}{cruise_id[4:12]}"
-    campaign_path = os.path.join(os.path.expanduser("~"), "csrgen", "static", "generated", campaign_dir)
-    print(f'La ruta de la campanya es {campaign_path}')
 
-    # Read bounding box
-    bbox_file = os.path.join(campaign_path, "bounding_box.txt")
-    bbox_content = "-180.0 -90.0,180.0 90.0"  # Default
-    if os.path.exists(bbox_file):
-        with open(bbox_file, 'r') as f:
-            raw_bbox = f.read().strip()
-            if raw_bbox.startswith("BOX(") and raw_bbox.endswith(")"):
-                bbox_content = raw_bbox[4:-1]  # Remove 'BOX(' and ')'
-            else:
-                pass  # Skip if not in the expected format
-    else:
-        print(f"Warning: BBox file {bbox_file} not found, using default coordinates")
-    
-    # Update bounding box coordinates
-    print(f'El bbox es:{bbox_content}')
+    # Bounding box from DataHub service (same approach as net.py)
+    url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id=" + vessel_reduit + cruise_id[4:12]
+    print(url_bbox)
     tree = etree.parse(cdi_global)
     try:
-        if bbox_content:
-          coord_pairs = bbox_content.split(',')
-          if len(coord_pairs) == 2:
-              first_pair = coord_pairs[0].strip().split()
-              second_pair = coord_pairs[1].strip().split()
-              if len(first_pair) == 2 and len(second_pair) == 2:
-                  w, s = first_pair
-                  e, n = second_pair
+      r = requests.get(url_bbox)
+      r.raise_for_status()
+      raw_bbox = r.text.strip()
 
-                  tree = etree.parse(cdi_global)
-                  # Actualiza los valores en el XML
-                  posList_w = tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-                  posList_w.text = w
-                  posList_e = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-                  posList_e.text = e
-                  posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-                  posList_s.text = s
-                  posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
-                  posList_n.text = n
+      if raw_bbox.upper().startswith("BOX(") and raw_bbox.endswith(")"):
+        bbox_text = raw_bbox[4:-1]
+      elif "," in raw_bbox and " " in raw_bbox:
+        bbox_text = raw_bbox
+      else:
+        raise ValueError(f"Unexpected bbox format: {raw_bbox!r}")
 
-                  tree.write(cdi_global)
-              else:
-                  print("Warning: Bounding box pairs do not have two elements each.")
-    except Exception as e:
-        print(f"Warning: Could not update bounding box coordinates: {str(e)}")
+      pair_1, pair_2 = [p.strip() for p in bbox_text.split(",", 1)]
+      w, s = pair_1.split()
+      e, n = pair_2.split()
 
-    # Write the updated XML
-    tree.write(cdi_global)
+      posList_w = tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)
+      posList_e = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)
+      posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)
+      posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)
+
+      if posList_w and posList_e and posList_s and posList_n:
+        posList_w[0].text = w
+        posList_e[0].text = e
+        posList_s[0].text = s
+        posList_n[0].text = n
+        tree.write(cdi_global)
+      else:
+        raise IndexError("Could not find gco:Decimal bbox placeholders in XML")
+
+    except Exception as err:
+      print(f"Warning: could not get/update bbox from {url_bbox}: {err}")
     
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
-    tree = etree.parse(cdi_global)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
-    tree.write(cdi_global)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
-    posList.text = cruise_id + cdi_model
-    tree.write(cdi_global)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-    posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
-    tree.write(cdi_global)
+    try:
+        tree = etree.parse(cdi_global)
+        posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
+        posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
+        tree.write(cdi_global)
+        posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
+        posList.text = cruise_id + cdi_model
+        tree.write(cdi_global)
+        posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
+        posList.text = "urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
+        tree.write(cdi_global)
+    except IndexError:
+        print("Warning: Could not update dataset ID in XML")
 
     #afegir dataset name
-    tree = etree.parse(cdi_global)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_NAME')]", namespaces=namespace)[0]
-    posList.text = cruise_name + " " + text   + " data"
-    tree.write(cdi_global)
+    try:
+        tree = etree.parse(cdi_global)
+        posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_NAME')]", namespaces=namespace)[0]
+        text = locals().get('text', 'radiometer')  # fallback if no sample-level assignment occurred
+        posList.text = cruise_name + " " + text + " data"
+        tree.write(cdi_global)
+    except IndexError:
+        print("Warning: Could not update dataset name in XML")
 
     #afegir ABSTRACT
-    tree = etree.parse(cdi_global)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
-    posList.text = str(total_lines) + "radiation data stations "+  "acquired on board the R/V " + vessel + " during the " + cruise_name + " cruise."
-   
-    tree.write(cdi_global)
+    try:
+        tree = etree.parse(cdi_global)
+        posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ABSTRACT')]", namespaces=namespace)[0]
+        posList.text = str(total_lines) + "radiation data stations "+  "acquired on board the R/V " + vessel + " during the " + cruise_name + " cruise."
+        tree.write(cdi_global)
+    except IndexError:
+        print("Warning: Could not update abstract in XML")
     print(total_lines)
 
     dia= cruise_id[10:12]
@@ -373,10 +373,13 @@ def funcio_rad (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     hora_inicial = date_inicial[11:]
     begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
 
-    tree = etree.parse(cdi_global)
-    posList = tree.xpath("//gml:beginPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
-    posList.text = begin_position
-    tree.write(cdi_global)
+    try:
+        tree = etree.parse(cdi_global)
+        posList = tree.xpath("//gml:beginPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
+        posList.text = begin_position
+        tree.write(cdi_global)
+    except IndexError:
+        print("Warning: Could not update begin position in XML")
 
     #afegim data final
     hora_final = date_final[11:]
@@ -386,37 +389,13 @@ def funcio_rad (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     any_final=data_final[6:10]
 
     final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
-    tree = etree.parse(cdi_global)
-    posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
-    posList.text = final_position
-    tree.write(cdi_global)
-
-
-
-    eliminar_columnes(csv_name)
-    os.remove ("static/csv/samples.csv")
-    os.remove (cruise_id + "_cdi.xml")
-    os.remove ("static/csv/cdi_model.txt")
-
-    begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
-
-    tree = etree.parse(cdi_global)
-    posList = tree.xpath("//gml:beginPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
-    posList.text = begin_position
-    tree.write(cdi_global)
-
-    #afegim data final
-    hora_final = date_final[11:]
-    data_final = date_final[:10]
-    dia_final= data_final[0:2]
-    mes_final=data_final[3:5]
-    any_final=data_final[6:10]
-
-    final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
-    tree = etree.parse(cdi_global)
-    posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
-    posList.text = final_position
-    tree.write(cdi_global)
+    try:
+        tree = etree.parse(cdi_global)
+        posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
+        posList.text = final_position
+        tree.write(cdi_global)
+    except IndexError:
+        print("Warning: Could not update end position in XML")
 
 
 

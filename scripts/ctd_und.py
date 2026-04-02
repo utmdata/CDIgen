@@ -184,7 +184,7 @@ def funcio_ctd_und (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
 
     #canviar segons el cdi:   
 
-    select_instrument = "CTD_UND"
+    select_instrument = "CTD UNDULANTE"
 
     shutil.copy(cdi_individual, "static/csv/cdi_model_1.xml")
     filename = "cdi_model_1.xml"
@@ -244,7 +244,7 @@ def funcio_ctd_und (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
     for i in range(0,total_lines):
       name=str(samples.loc [i,"index"])
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
-      text = "CTD undulant"  #canviar  
+      text = "CTD undulante"  #canviar  
 
       name2= cruise_name  +" " +  text +" " +  name + " data"  
       fila=fila+1

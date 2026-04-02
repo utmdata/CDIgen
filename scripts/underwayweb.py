@@ -10,6 +10,7 @@ from datetime import datetime
 import requests, argparse
 from lxml import etree
 import copy, json
+import csv
 from flask import send_file
 import logging
 from logging.handlers import RotatingFileHandler 
@@ -23,6 +24,45 @@ def crear_carpeta (nombre_carpeta):
     except FileExistsError:
             # Si la carpeta ya existe, imprime un mensaje
             print(f"La carpeta '{nombre_carpeta}' ya existe.")
+
+
+def get_country_code_by_label(label):
+    with open("static/c32_countries.csv", encoding="latin1") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row["preflabel"].strip().lower() == label.strip().lower():
+                return row["conceptid"]
+    return "99"
+
+
+def compose_org_name(name, alt_name):
+    name = (name or "").strip()
+    alt_name = (alt_name or "").strip()
+
+    has_name = name not in ("", "N/A")
+    has_alt_name = alt_name not in ("", "N/A")
+
+    if has_name and has_alt_name and alt_name != name:
+        return f"{name} ({alt_name})"
+    if has_name:
+        return name
+    if has_alt_name:
+        return alt_name
+    return "N/A"
+
+
+def set_xpath_text(tree, xpath, namespaces, value, code_list_value=None):
+    nodes = tree.xpath(xpath, namespaces=namespaces)
+    if not nodes:
+        logging.warning(f"No XML nodes found for xpath: {xpath}")
+        return 0
+
+    for node in nodes:
+        node.text = value
+        if code_list_value is not None:
+            node.set("codeListValue", code_list_value)
+
+    return len(nodes)
             
 
 def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_input, data, valor_org, csr_code):
@@ -54,7 +94,7 @@ def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_in
     print(f"CSR Description: {description_csr}")
 
     # Load metadata from JSON
-    json_path = os.path.join("static", "csv", "sparql.json")
+    json_path = os.path.join("static", "sparql.json")
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -66,7 +106,7 @@ def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_in
     
     # Extract the required fields
     org = matched.get("org", {}).get("value", "N/A")
-    org_name = matched.get("orgName", {}).get("value", "N/A")
+    org_name = matched.get("name", {}).get("value", "N/A")
     notation = matched.get("notation", {}).get("value", "N/A")
     tel = matched.get("tel", {}).get("value", "N/A")
     alt_name = matched.get("altName", {}).get("value", "N/A")
@@ -76,6 +116,9 @@ def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_in
     country = matched.get("country", {}).get("value", "N/A")
     web = matched.get("web", {}).get("value", "N/A")
     email = matched.get("email", {}).get("value", "sdn-userdesk@seadatanet.org").replace("mailto:", "").replace("%40", "@")
+    name = matched.get("name", {}).get("value", "N/A")
+
+    org_name = compose_org_name(name, alt_name)
 
     print(f"Organization URI: {org}")
     print(f"Organization Name: {org_name}")
@@ -89,6 +132,8 @@ def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_in
     print(f"Web: {web}")
     print(f"Email: {email}")
 
+    departure_country_code = get_country_code_by_label(country)
+
     if vessel_input == "sdg":
         vessel_mode = "Sarmiento"
         vessel_reduit='sdg' 
@@ -101,6 +146,10 @@ def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_in
         vessel_mode = "Odon de Buen"
         vessel_reduit = "odb"
         vessel = "Odon de Buen"
+    elif vessel_input == "gdc":
+        vessel_mode = "Garcia del Cid"
+        vessel_reduit = "gdc"
+        vessel = "Garcia del Cid"
         
     dia= cruise_id[10:12]
     mes=cruise_id[8:10]
@@ -221,67 +270,39 @@ def underway_general(cruise_id, cruise_name, date_inicial, date_final, vessel_in
     posList.text = final_position
     tree.write(output_file)
 
-    #afegim org_name
     tree = etree.parse(input_file)
-    posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-    posList.text = org_name
-    posList.set ("codeListValue",notation)
-    tree.write(output_file)
-    
-    #afegim street
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-    posList.text = street
-    tree.write(output_file)
-
-    #afegim city
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-    posList.text = locality
-    tree.write(output_file)
-    
-    #afegim country
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//sdn:SDN_CountryCode[contains(text(), 'org_country')]", namespaces=namespace)[0]
-    posList.text = country
-    tree.write(output_file)
-
-    #afegim email
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
-    posList.text = email
-    tree.write(output_file)
-
-    #DUPLIQUEM ELS PARAMETRES DE LA ORGANITZACIÓ PERQUE ESTAN DOS COPS: 
-    #afegim org_name
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-    posList.text = org_name
-    posList.set ("codeListValue",notation)
-    tree.write(output_file)
-    
-    #afegim street
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-    posList.text = street
-    tree.write(output_file)
-
-    #afegim city
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-    posList.text = locality
-    tree.write(output_file)
-    
-    #afegim country
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//sdn:SDN_CountryCode[contains(text(), 'org_country')]", namespaces=namespace)[0]
-    posList.text = country
-    tree.write(output_file)
-
-    #afegim email
-    tree = etree.parse(input_file)
-    posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_mail')]", namespaces=namespace)[0]
-    posList.text = email
+    set_xpath_text(
+        tree,
+        "//gmd:CI_ResponsibleParty/gmd:organisationName/sdn:SDN_EDMOCode",
+        namespace,
+        org_name,
+        notation,
+    )
+    set_xpath_text(
+        tree,
+        "//gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString",
+        namespace,
+        street,
+    )
+    set_xpath_text(
+        tree,
+        "//gmd:CI_Address/gmd:city/gco:CharacterString",
+        namespace,
+        locality,
+    )
+    set_xpath_text(
+        tree,
+        "//gmd:CI_Address/gmd:country/sdn:SDN_CountryCode",
+        namespace,
+        country,
+        departure_country_code,
+    )
+    set_xpath_text(
+        tree,
+        "//gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString",
+        namespace,
+        email,
+    )
     tree.write(output_file)
 
     #afegim csrcodelist

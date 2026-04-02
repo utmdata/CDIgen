@@ -316,28 +316,38 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv,date_inicial, dat
     url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
     print (url_bbox)
     tree = etree.parse(cdi_global)
-    r = requests.get(url_bbox)
-    coord= r.text[4:-2] #nomes coordenades 4separades per espais i comes
-    posicio_primer_espai= r.text[4:-2].index(" ")
-    posicio_coma= r.text[4:-2].index(",")
-    w= coord[0:posicio_primer_espai]
-    s= coord[posicio_primer_espai:posicio_coma].strip()
-    coord_2=coord[posicio_coma:]
-    coord_2= coord_2[1:]
-    posicio_segon_espai= coord_2.index(" ")
-    e= coord_2[0:posicio_segon_espai].strip()
-    n= coord_2[posicio_segon_espai:].strip()
+    try:
+      r = requests.get(url_bbox)
+      r.raise_for_status()
+      raw_bbox = r.text.strip()
 
-    posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-    posList_w.text=w
-    posList_e = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-    posList_e.text= e
-    posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-    posList_s.text= s
-    posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
-    posList_n.text=n
+      if raw_bbox.upper().startswith("BOX(") and raw_bbox.endswith(")"):
+        bbox_text = raw_bbox[4:-1]
+      elif "," in raw_bbox and " " in raw_bbox:
+        bbox_text = raw_bbox
+      else:
+        raise ValueError(f"Unexpected bbox format: {raw_bbox!r}")
 
-    tree.write(cdi_global)
+      pair_1, pair_2 = [p.strip() for p in bbox_text.split(",", 1)]
+      w, s = pair_1.split()
+      e, n = pair_2.split()
+
+      posList_w = tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)
+      posList_e = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)
+      posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)
+      posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)
+
+      if posList_w and posList_e and posList_s and posList_n:
+        posList_w[0].text = w
+        posList_e[0].text = e
+        posList_s[0].text = s
+        posList_n[0].text = n
+        tree.write(cdi_global)
+      else:
+        print("Warning: Could not find gco:Decimal bbox placeholders in XML")
+
+    except Exception as err:
+      print(f"Warning: could not get/update bbox from {url_bbox}: {err}")
 
   #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(cdi_global)
@@ -370,8 +380,17 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv,date_inicial, dat
 
  
   #afegim data inicial
-    hora_inicial = date_inicial[11:]
-    begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
+    # Normalize date_inicial: accepts DD/MM/YYYY HH:MM:SS or YYYY-MM-DD (with optional time)
+    try:
+        if "/" in date_inicial:
+            dt_inicial = datetime.strptime(date_inicial.strip(), "%d/%m/%Y %H:%M:%S")
+        elif "T" in date_inicial:
+            dt_inicial = datetime.strptime(date_inicial.strip(), "%Y-%m-%dT%H:%M:%S")
+        else:
+            dt_inicial = datetime.strptime(date_inicial.strip()[:10], "%Y-%m-%d")
+    except ValueError:
+        dt_inicial = datetime.strptime(any + "-" + mes + "-" + dia, "%Y-%m-%d")
+    begin_position = dt_inicial.strftime("%Y-%m-%dT%H:%M:%S")
 
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gml:beginPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
@@ -379,13 +398,18 @@ def funcio_xbt (cruise_id, cruise_name, vessel_input, ruta_csv,date_inicial, dat
     tree.write(cdi_global)
 
     #afegim data final
-    hora_final = date_final[11:]
-    data_final = date_final[:10]
-    dia_final= data_final[0:2]
-    mes_final=data_final[3:5]
-    any_final=data_final[6:10]
+    # Normalize date_final: accepts DD/MM/YYYY HH:MM:SS or YYYY-MM-DD (with optional time)
+    try:
+        if "/" in date_final:
+            dt_final = datetime.strptime(date_final.strip(), "%d/%m/%Y %H:%M:%S")
+        elif "T" in date_final:
+            dt_final = datetime.strptime(date_final.strip(), "%Y-%m-%dT%H:%M:%S")
+        else:
+            dt_final = datetime.strptime(date_final.strip()[:10], "%Y-%m-%d")
+    except ValueError:
+        dt_final = datetime.strptime(date_final.strip()[:10], "%Y-%m-%d")
+    final_position = dt_final.strftime("%Y-%m-%dT%H:%M:%S")
 
-    final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
     posList.text = final_position
