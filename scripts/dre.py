@@ -194,7 +194,7 @@ def funcio_dre (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     for i in range(0,total_lines):
       name=str(samples.loc [i,"index"])
       name = name.zfill(2) #fem que el nom sigui de 2 digits i ho ompli amb 0 a la esquerre
-      text = "dredge"  
+      text = " dredge"  
 
       name2= cruise_name  + text + name + " data"  
       fila=fila+1

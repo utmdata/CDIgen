@@ -32,6 +32,22 @@ def get_country_code_by_label(label):
                         return row["conceptid"]
             return "99"  # Código por defecto
 
+
+def compose_org_name(name, alt_name):
+  name = (name or "").strip()
+  alt_name = (alt_name or "").strip()
+
+  has_name = name not in ("", "N/A")
+  has_alt_name = alt_name not in ("", "N/A")
+
+  if has_name and has_alt_name and alt_name != name:
+      return f"{name} ({alt_name})"
+  if has_name:
+      return name
+  if has_alt_name:
+      return alt_name
+  return "N/A"
+
 def underway_general (cruise_id, cruise_name, vessel_input, valor_org, csr_code, selects, ruta_csv, date_inicial, date_final):
 
     # Handle CSR code 
@@ -86,15 +102,16 @@ def underway_general (cruise_id, cruise_name, vessel_input, valor_org, csr_code,
   notation = matched.get("notation", {}).get("value", "N/A")
   alt_name = matched.get("altName", {}).get("value", "N/A")
   
+  name = matched.get("name", {}).get("value", "N/A")
   print(f"DEBUG: Extracted org_name from JSON: '{org_name}'")
   print(f"DEBUG: Extracted alt_name from JSON: '{alt_name}'")
-  
-  # Fallback to alternative name if orgName is N/A
-  if org_name == "N/A" and alt_name != "N/A":
-      print(f"INFO: orgName was N/A, using altName instead: '{alt_name}'")
-      org_name = alt_name
-  elif org_name == "N/A":
-      print(f"WARNING: Organization name from JSON is N/A and no alternative name available!")
+  print(f"DEBUG: Extracted name from JSON: '{name}'")
+
+  org_name = compose_org_name(name, alt_name)
+  if org_name == "N/A":
+      print("WARNING: Organization name from JSON is N/A and no alternative name available!")
+  else:
+      print(f"INFO: Composed organization name: '{org_name}'")
   
   tel = matched.get("tel", {}).get("value", "N/A")
   street = matched.get("street", {}).get("value", "N/A")
@@ -146,11 +163,11 @@ def underway_general (cruise_id, cruise_name, vessel_input, valor_org, csr_code,
 
   fila=0
 
-  if path.exists("model_underway.txt"):
-    remove("model_underway.txt")
+  if path.exists("model_underway_org.txt"):
+    remove("model_underway_org.txt")
   
 
-  underway_general =cruise_id + "_underway.xml"
+  underway_general =cruise_id + "_underway_org.xml"
   print(f'El arxiu es {underway_general}')
 
   
@@ -159,7 +176,7 @@ def underway_general (cruise_id, cruise_name, vessel_input, valor_org, csr_code,
   crear_carpeta (nombre_carpeta)
 
 
-  shutil.copy("model_underway.xml", underway_general)
+  shutil.copy("model_underway_org.xml", underway_general)
   print (underway_general)
 
   #Posem la url perque trobi el gml i l'enganxi en el xml
@@ -191,33 +208,38 @@ def underway_general (cruise_id, cruise_name, vessel_input, valor_org, csr_code,
   url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
   print (url_bbox)
   tree = etree.parse(input_file)
-  r = requests.get(url_bbox)
-  coord= r.text[4:-2] #nomes coordenades 4separades per espais i comes
-  try : 
-    posicio_primer_espai= r.text[4:-2].index(" ")
+  try:
+    r = requests.get(url_bbox)
+    r.raise_for_status()
+    raw_bbox = r.text.strip()
 
-  except:
-      return render_template('error.html', url_bbox=url_bbox, cruise_id= cruise_id)
-  
-  posicio_coma= r.text[4:-2].index(",")
-  w= coord[0:posicio_primer_espai]
-  s= coord[posicio_primer_espai:posicio_coma].strip()
-  coord_2=coord[posicio_coma:]
-  coord_2= coord_2[1:]
-  posicio_segon_espai= coord_2.index(" ")
-  e= coord_2[0:posicio_segon_espai].strip()
-  n= coord_2[posicio_segon_espai:].strip()
+    if raw_bbox.upper().startswith("BOX(") and raw_bbox.endswith(")"):
+      bbox_text = raw_bbox[4:-1]
+    elif "," in raw_bbox and " " in raw_bbox:
+      bbox_text = raw_bbox
+    else:
+      raise ValueError(f"Unexpected bbox format: {raw_bbox!r}")
 
-  posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-  posList_w.text=w
-  posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-  posList_s.text= s
-  posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-  posList_e.text= e
-  posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
-  posList_n.text=n
+    pair_1, pair_2 = [p.strip() for p in bbox_text.split(",", 1)]
+    w, s = pair_1.split()
+    e, n = pair_2.split()
 
-  tree.write(output_file)
+    posList_w = tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)
+    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)
+    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)
+    posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)
+
+    if posList_w and posList_s and posList_e and posList_n:
+      posList_w[0].text = w
+      posList_s[0].text = s
+      posList_e[0].text = e
+      posList_n[0].text = n
+      tree.write(output_file)
+    else:
+      print(f"Warning: Could not find BBOX placeholder elements in {input_file}")
+
+  except Exception as err:
+    print(f"Warning: could not get/update bbox from {url_bbox}: {err}")
 
   #afegim short id
   tree = etree.parse(input_file)
@@ -446,7 +468,7 @@ def underway_general_sense_sensor (cruise_id, cruise_name, vessel_input, valor_o
   print(f"CSR Description: {description_csr}")
 
   # Load metadata from JSON
-  json_path = os.path.join("static", "csv", "sparql.json")
+  json_path = os.path.join("static", "sparql.json")
   with open(json_path, "r", encoding="utf-8") as f:
       data = json.load(f)
 
@@ -468,6 +490,17 @@ def underway_general_sense_sensor (cruise_id, cruise_name, vessel_input, valor_o
   country = matched.get("country", {}).get("value", "N/A")
   web = matched.get("web", {}).get("value", "N/A")
   email = matched.get("email", {}).get("value", "sdn-userdesk@seadatanet.org").replace("mailto:", "").replace("%40", "@")
+
+  name = matched.get("name", {}).get("value", "N/A")
+  print(f"DEBUG: Extracted org_name from JSON: '{org_name}'")
+  print(f"DEBUG: Extracted alt_name from JSON: '{alt_name}'")
+  print(f"DEBUG: Extracted name from JSON: '{name}'")
+
+  org_name = compose_org_name(name, alt_name)
+  if org_name == "N/A":
+      print("WARNING: Organization name from JSON is N/A and no alternative name available!")
+  else:
+      print(f"INFO: Composed organization name: '{org_name}'")
 
   print(f"Organization URI: {org}")
   print(f"Organization Name: {org_name}")
@@ -494,6 +527,10 @@ def underway_general_sense_sensor (cruise_id, cruise_name, vessel_input, valor_o
     vessel_mode = "Odón"
     vessel_reduit = "odb"
     vessel_code = "29OD"
+  if vessel_input == "gdc":
+    vessel_mode = "Garcia del Cid"
+    vessel_reduit = "gdc"
+    vessel = "Garcia del Cid"
     
   url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+ vessel_reduit + cruise_id[4:12]
   r = requests.get(url_bbox)
@@ -550,28 +587,38 @@ def underway_general_sense_sensor (cruise_id, cruise_name, vessel_input, valor_o
   url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
   print (url_bbox)
   tree = etree.parse(input_file)
-  r = requests.get(url_bbox)
-  coord= r.text[4:-2] #nomes coordenades 4separades per espais i comes
-  posicio_primer_espai= r.text[4:-2].index(" ")
-  posicio_coma= r.text[4:-2].index(",")
-  w= coord[0:posicio_primer_espai]
-  s= coord[posicio_primer_espai:posicio_coma].strip()
-  coord_2=coord[posicio_coma:]
-  coord_2= coord_2[1:]
-  posicio_segon_espai= coord_2.index(" ")
-  e= coord_2[0:posicio_segon_espai].strip()
-  n= coord_2[posicio_segon_espai:].strip()
+  try:
+    r = requests.get(url_bbox)
+    r.raise_for_status()
+    raw_bbox = r.text.strip()
 
-  posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-  posList_w.text=w
-  posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-  posList_s.text= s
-  posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-  posList_e.text= e
-  posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
-  posList_n.text=n
+    if raw_bbox.upper().startswith("BOX(") and raw_bbox.endswith(")"):
+      bbox_text = raw_bbox[4:-1]
+    elif "," in raw_bbox and " " in raw_bbox:
+      bbox_text = raw_bbox
+    else:
+      raise ValueError(f"Unexpected bbox format: {raw_bbox!r}")
 
-  tree.write(output_file)
+    pair_1, pair_2 = [p.strip() for p in bbox_text.split(",", 1)]
+    w, s = pair_1.split()
+    e, n = pair_2.split()
+
+    posList_w = tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)
+    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)
+    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)
+    posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)
+
+    if posList_w and posList_s and posList_e and posList_n:
+      posList_w[0].text = w
+      posList_s[0].text = s
+      posList_e[0].text = e
+      posList_n[0].text = n
+      tree.write(output_file)
+    else:
+      print(f"Warning: Could not find BBOX placeholder elements in {input_file}")
+
+  except Exception as err:
+    print(f"Warning: could not get/update bbox from {url_bbox}: {err}")
 
   #afegim short id
   tree = etree.parse(input_file)
@@ -618,41 +665,83 @@ def underway_general_sense_sensor (cruise_id, cruise_name, vessel_input, valor_o
 
   #afegim org_name
   tree = etree.parse(input_file)
-  posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-  posList.text = org_name
-  posList.set ("codeListValue", notation)
-  tree.write(output_file)
+  try:
+      posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)
+      if posList:
+          posList[0].text = org_name
+          posList[0].set("codeListValue", notation)
+          tree.write(output_file)
+          print(f"✓ Updated organization name (1st occurrence)")
+      else:
+          print(f"⚠ WARNING: No SDN_EDMOCode element with 'ORG_NAME' text found")
+  except Exception as e:
+      print(f"✗ ERROR updating org_name (1st): {str(e)}")
 
   #afegim org_name per segon cop
   tree = etree.parse(input_file)
-  posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)[0]
-  posList.text = org_name
-  posList.set ("codeListValue", notation)
-  tree.write(output_file)
+  try:
+      posList = tree.xpath("//sdn:SDN_EDMOCode[contains(text(), 'ORG_NAME')]", namespaces=namespace)
+      if posList:
+          posList[0].text = org_name
+          posList[0].set("codeListValue", notation)
+          tree.write(output_file)
+          print(f"✓ Updated organization name (2nd occurrence)")
+      else:
+          print(f"⚠ WARNING: No SDN_EDMOCode element with 'ORG_NAME' text found (2nd time)")
+  except Exception as e:
+      print(f"✗ ERROR updating org_name (2nd): {str(e)}")
  
   #afegim street
   tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-  posList.text = street
-  tree.write(output_file)
+  try:
+      posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)
+      if posList:
+          posList[0].text = street
+          tree.write(output_file)
+          print(f"✓ Updated street (1st occurrence)")
+      else:
+          print(f"⚠ WARNING: No element with 'org_street' text found")
+  except Exception as e:
+      print(f"✗ ERROR updating street (1st): {str(e)}")
 
   #afegim street per segon cop
   tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)[0]
-  posList.text = street
-  tree.write(output_file)
+  try:
+      posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_street')]", namespaces=namespace)
+      if posList:
+          posList[0].text = street
+          tree.write(output_file)
+          print(f"✓ Updated street (2nd occurrence)")
+      else:
+          print(f"⚠ WARNING: No element with 'org_street' text found (2nd time)")
+  except Exception as e:
+      print(f"✗ ERROR updating street (2nd): {str(e)}")
 
   #afegim city
   tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-  posList.text = locality
-  tree.write(output_file)
+  try:
+      posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)
+      if posList:
+          posList[0].text = locality
+          tree.write(output_file)
+          print(f"✓ Updated city (1st occurrence)")
+      else:
+          print(f"⚠ WARNING: No element with 'org_city' text found")
+  except Exception as e:
+      print(f"✗ ERROR updating city (1st): {str(e)}")
 
   #afegim city per segon cop
   tree = etree.parse(input_file)
-  posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)[0]
-  posList.text = locality
-  tree.write(output_file)
+  try:
+      posList = tree.xpath("//gco:CharacterString[contains(text(), 'org_city')]", namespaces=namespace)
+      if posList:
+          posList[0].text = locality
+          tree.write(output_file)
+          print(f"✓ Updated city (2nd occurrence)")
+      else:
+          print(f"⚠ WARNING: No element with 'org_city' text found (2nd time)")
+  except Exception as e:
+      print(f"✗ ERROR updating city (2nd): {str(e)}")
 
   #afegim country
   tree = etree.parse(input_file)
@@ -710,8 +799,15 @@ def underway_general_sense_sensor (cruise_id, cruise_name, vessel_input, valor_o
 
   #afegim csrcodelist
   tree = etree.parse(input_file)
-  posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)[0]
-  posList.text = description_csr
-  posList.set ("codeListValue",id_csr)
-  tree.write(output_file)
+  try:
+      posList = tree.xpath("//sdn:SDN_CSRCode[contains(text(), '2004 - Unknown(ZZ99)')]", namespaces=namespace)
+      if posList:
+          posList[0].text = description_csr
+          posList[0].set("codeListValue", id_csr)
+          tree.write(output_file)
+          print(f"✓ Updated CSR code")
+      else:
+          print(f"⚠ WARNING: No CSR code element found")
+  except Exception as e:
+      print(f"✗ ERROR updating CSR code: {str(e)}")
 

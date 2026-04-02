@@ -27,7 +27,9 @@ def funcio_mbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
       'xlink': 'http://www.w3.org/1999/xlink'
   }
 
-    underway_general =cruise_id + "_underway.xml"
+    underway_general_org = cruise_id + "_underway_org.xml"
+    underway_general_default = cruise_id + "_underway.xml"
+    underway_general = underway_general_org if path.exists(underway_general_org) else underway_general_default
     cdi =cruise_id + "/" + cruise_id + "_mbe.xml"
     
     if vessel_input == "sdg":
@@ -115,7 +117,6 @@ def funcio_mbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     posList_3.text=  'Sound velocity and travel time in the water column'
     posList_3.set ("codeListValue","SVEL")
     tree.write(output_file)
-
 
     #canviar intruments 
     tree = etree.parse(input_file)

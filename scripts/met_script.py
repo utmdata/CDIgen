@@ -37,15 +37,15 @@ def funcio_met (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
         vessel_reduit="hes"
         vessel = "Hespérides"
     elif vessel_input == "odb":
-        vessel__mode = "Odon de Buen"
+        vessel_mode = "Odon de Buen"
         vessel_reduit="odb"
         vessel = "Odón de Buen"
     elif vessel_input == "gdc":
-        vessel__mode = "García del Cid"
+        vessel_mode = "García del Cid"
         vessel_reduit="gdc"
         vessel = "García del Cid"
 
-   
+
     shutil.copy(underway_general, underway_met)
     input_file= underway_met
     output_file= underway_met

@@ -175,5 +175,5 @@ function filtrevessel(xml) {
 // =========================
 window.onload = function () {
   cargarOrganizaciones();
-  loadDoc();
+  //loadDoc();
 };
