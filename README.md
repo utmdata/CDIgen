@@ -37,7 +37,7 @@ This web application will continue to evolve and be improved over time. Although
 
 1. Launch the Flask application by running the following command in the terminal.
    ```bash
-   python portfo.py
+   python cdigen.py
    ```
 
 2. The application will start running on http://localhost:5000.
