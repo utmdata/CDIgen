@@ -15,13 +15,8 @@ import copy
 
 def eliminar_columnes(csv_name):
   arxiu = pd.read_csv(csv_name)
-<<<<<<< HEAD
   arxiu = arxiu.reindex(columns=["cruise_id","longitude", "latitude","Instrument", "instrument","vessel", "id", "met_cat"])
   arxiu = arxiu.rename (columns={'longitude': 'lon', 'latitude': 'lat', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'cdiid'})
-=======
-  arxiu = arxiu.reindex(columns=["cruise_id","latitude", "longitude","Instrument", "instrument","vessel", "id", "met_cat" ,"Coments"])
-  arxiu = arxiu.rename (columns={'latitude': 'lat', 'longitude': 'lon', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'codiid'})
->>>>>>> main
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
@@ -118,7 +113,6 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       vessel_reduit="hes"
       vessel = "Hespérides"
       vessel_mayus = "HESPERIDES"
-<<<<<<< HEAD
     elif vessel_input == "odb":
       vessel = "Odón de Buen"
       vessel_mode = "Odón"
@@ -131,9 +125,6 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       vessel_reduit = "gdc"
       vessel_mayus = "GARCÍA DEL CID"
       vessel_code = "29GD"  
-=======
-    
->>>>>>> main
 
 
 
@@ -146,11 +137,7 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     #canviar segons el cdi:   
 
-<<<<<<< HEAD
     select_instrument = "MOCNESS"
-=======
-    select_instrument = "MOC"
->>>>>>> main
 
     shutil.copy(cdi_individual, "static/csv/cdi_model_1.xml")
     filename = "cdi_model_1.xml"
@@ -184,16 +171,12 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       
       lista_met_cat.append(id)
     samples['met_cat'] = lista_met_cat
-<<<<<<< HEAD
     
     lista_instrument=[]
     for i in range(0,total_lines):    
       instrument= 'Mocness'
       lista_instrument.append(instrument)
     samples['instrument'] = lista_instrument
-=======
-
->>>>>>> main
 
 #<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:29SG20230719_ctd_ros_ladcp"  target="_blank">View in metadata catalog</a>
     for i in range(0,total_lines):    
@@ -267,15 +250,9 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     for i in range(0,total_lines):
       fecha=str(samples.loc [i,"fecha"])
-<<<<<<< HEAD
       any = fecha.split("-")[0]
       mes= fecha.split("-")[1]
       dia= fecha.split("-")[2]
-=======
-      dia = fecha.split("-")[0]
-      mes= fecha.split("-")[1]
-      any= fecha.split("-")[2]
->>>>>>> main
       fila=fila+1
       lista_dia.append(dia)
       lista_mes.append(mes)
@@ -331,7 +308,6 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     url_bbox = "http://datahub.utm.csic.es/ws/getBBox/?id="+vessel_reduit + cruise_id[4:12]
     print (url_bbox)
     tree = etree.parse(cdi_global)
-<<<<<<< HEAD
     try:
       r = requests.get(url_bbox)
       r.raise_for_status()
@@ -364,49 +340,17 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     except Exception as err:
       print(f"Warning: could not get/update bbox from {url_bbox}: {err}")
-=======
-    r = requests.get(url_bbox)
-    coord= r.text[4:-2] #nomes coordenades 4separades per espais i comes
-    posicio_primer_espai= r.text[4:-2].index(" ")
-    posicio_coma= r.text[4:-2].index(",")
-    w= coord[0:posicio_primer_espai]
-    s= coord[posicio_primer_espai:posicio_coma].strip()
-    coord_2=coord[posicio_coma:]
-    coord_2= coord_2[1:]
-    posicio_segon_espai= coord_2.index(" ")
-    e= coord_2[0:posicio_segon_espai].strip()
-    n= coord_2[posicio_segon_espai:].strip()
-
-    posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-    posList_w.text=w
-    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-    posList_s.text= s
-    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-    posList_e.text= e
-    posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
-    posList_n.text=n
-
-    tree.write(cdi_global)
->>>>>>> main
 
   #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
-=======
-    posList.text = cruise_id + cdi_model
->>>>>>> main
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
-=======
-    posList.text = cruise_id + cdi_model
->>>>>>> main
     tree.write(cdi_global)
 
     #afegir dataset name
@@ -428,7 +372,6 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
  
   #afegim data inicial
-<<<<<<< HEAD
     # Normalize date_inicial: accepts DD/MM/YYYY HH:MM:SS or YYYY-MM-DD (with optional time)
     try:
         if "/" in date_inicial:
@@ -440,10 +383,6 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     except ValueError:
         dt_inicial = datetime.strptime(any + "-" + mes + "-" + dia, "%Y-%m-%d")
     begin_position = dt_inicial.strftime("%Y-%m-%dT%H:%M:%S")
-=======
-    hora_inicial = date_inicial[11:]
-    begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
->>>>>>> main
 
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gml:beginPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
@@ -451,7 +390,6 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     tree.write(cdi_global)
 
     #afegim data final
-<<<<<<< HEAD
     # Normalize date_final: accepts DD/MM/YYYY HH:MM:SS or YYYY-MM-DD (with optional time)
     try:
         if "/" in date_final:
@@ -464,15 +402,6 @@ def funcio_moc (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
         dt_final = datetime.strptime(date_final.strip()[:10], "%Y-%m-%d")
     final_position = dt_final.strftime("%Y-%m-%dT%H:%M:%S")
 
-=======
-    hora_final = date_final[11:]
-    data_final = date_final[:10]
-    dia_final= data_final[0:2]
-    mes_final=data_final[3:5]
-    any_final=data_final[6:10]
-
-    final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
->>>>>>> main
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
     posList.text = final_position

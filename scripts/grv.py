@@ -14,11 +14,7 @@ import copy
 #Definim el namespace perquè el trobi en el XML
  
             
-<<<<<<< HEAD
 def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
-=======
-def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, data):
->>>>>>> main
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',
       'gml': 'http://www.opengis.net/gml',
@@ -40,7 +36,6 @@ def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
         vessel_mode ="Hesperides"
         vessel_reduit="hes"
         vessel = "Hespérides"
-<<<<<<< HEAD
     elif vessel_input == "odb":
         vessel = "Odón de Buen"
         vessel_mode = "Odón"
@@ -53,8 +48,6 @@ def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
         vessel_reduit = "gdc"
         vessel_mayus = "GARCÍA DEL CID"
         vessel_code = "29GD"
-=======
->>>>>>> main
 
    
     shutil.copy(underway_general, underway_met)
@@ -64,21 +57,13 @@ def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(input_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_grv"
-=======
-    posList.text = cruise_id + "_grv"
->>>>>>> main
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + "_grv"
     tree.write(output_file)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + "_grv"
-=======
-    posList.text = cruise_id + "_grv"
->>>>>>> main
     tree.write(output_file)
 
     #afegir dataset name
@@ -94,10 +79,6 @@ def funcio_grv (cruise_id, cruise_name, date_inicial, date_final, vessel_input, 
     tree.write(output_file)
 
     #canviar paràmetres
-<<<<<<< HEAD
-=======
-    
->>>>>>> main
     tree = etree.parse(input_file)
     posList_1 = tree.xpath("//sdn:SDN_ParameterDiscoveryCode[contains(text(), 'Date and time')]", namespaces=namespace)[0]
     posList_1.text =  'Gravity'

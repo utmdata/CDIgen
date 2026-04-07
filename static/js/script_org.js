@@ -12,7 +12,6 @@ const ORGANIZATIONS_SPARQL_URL = 'https://edmo.seadatanet.org/sparql/sparql?quer
 // Cargar organizaciones desde EDMO
 // =========================
 function cargarOrganizaciones() {
-<<<<<<< HEAD
   console.log("cargarOrganizaciones() called");
   document.getElementById("overlay").style.display = "block";
 
@@ -27,20 +26,6 @@ function cargarOrganizaciones() {
         throw e;
       }
       todasLasOrganizaciones = data?.results?.bindings || [];
-=======
-  // URL que devuelve todas las organizaciones en formato JSON
-  const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20%3FaltName%20(CONCAT(%3Fname%2C%20%22%20(%22%2C%20%3FaltName%2C%20%22)%22)%20AS%20%3ForgName)%20%3Fnotation%20%3Fstreet%20%3Fcodepostal%20%3Flocality%20%3Fcountry%20%3Fweb%0D%0A%0D%0AWHERE%20%7B%0D%0A%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23postal-code%3E%20%3Fcodepostal%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23locality%3E%20%3Flocality%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23country-name%3E%20%3Fcountry%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23seeAlso%3E%20%3Fweb%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName.%0D%0A%20%20%20%20%20%20%20%20%20%20%20%0D%0A%0D%0A%20%20%20%20%0D%0A%0D%0A%7D&accept=*%2F*'
-  //'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20(CONCAT(%3Fname%2C%20%22%20(%22%2C%20%3FaltName%2C%20%22)%22)%20AS%20%3ForgName)%20%3Fnotation%20%3Ftel%20%3FaltName%20%3Fstreet%20%3Fcodepostal%20%3Flocality%20%3Femail%20%3Fcountry%20%3Fweb%0D%0AWHERE%20%7B%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23tel%3E%20%3Ftel%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23notation%3E%20%3Fnotation%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23street-address%3E%20%3Fstreet%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23postal-code%3E%20%3Fcodepostal%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23locality%3E%20%3Flocality%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23email%3E%20%3Femail%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23country-name%3E%20%3Fcountry%20%3B%0D%0A%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23seeAlso%3E%20%3Fweb%20.%0D%0A%7D%0D%0AORDER%20BY%20%3Fname&accept=*%2F*';
-
-  // Realizar la solicitud AJAX directamente al enlace 
-  fetch(jsonDataURL)
-    .then(response => response.json())
-    .then(data => {
-      // Almacenar todas las organizaciones en la variable
-      todasLasOrganizaciones = data.results.bindings;
-
-      // Llenar la lista desplegable con las organizaciones
->>>>>>> main
       llenarListaDesplegable(todasLasOrganizaciones);
     })
     .catch(error => console.error("Fetch error:", error))
@@ -57,17 +42,10 @@ function llenarListaDesplegable(organizaciones) {
 
   select.innerHTML = '<option value="">Select organization*</option>';
 
-<<<<<<< HEAD
   organizaciones.forEach(o => {
     const orgURI = o.org?.value;
     const name = o.name?.value;
     if (!orgURI || !name) return;
-=======
-  // Agregar las organizaciones a la lista desplegable
-  organizaciones.forEach(organizacion => {
-    const orgName = organizacion.orgName.value; // Se utiliza la propiedad altName según la definición en el SPARQL
-    const orgURI = organizacion.org.value;
->>>>>>> main
 
     const alt = o.altName?.value || '';
     const label = alt ? `${name} (${alt})` : name;
@@ -101,17 +79,7 @@ function llenarListaDesplegable(organizaciones) {
 // Cargar resultados para organización seleccionada
 // =========================
 function cargarResultadosDesdeEnlace(organizacionURI) {
-<<<<<<< HEAD
   const jsonDataURL = 'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*';
-=======
-  // URL que devuelve los resultados en formato JSON
-  const jsonDataURL ='https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*'
-  //'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20%3FaltName%0D%0A%0D%0AWHERE%20%7B%0D%0A%0D%0A%20%20%20%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23altName%3E%20%3FaltName%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%0D%0A%0D%0A%7D&accept=*%2F*'
-
-  //'https://edmo.seadatanet.org/sparql/sparql?query=SELECT%20%3Forg%20%3Fname%20WHERE%20%7B%20%3Forg%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23Organization%3E%20%3B%20%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fmodified%3E%20%3FmodifiedDate%20%3B%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Forg%23name%3E%20%3Fname%20.%20FILTER%28%3Forg%20%3D%20%3C' + encodeURIComponent(organizacionURI) + '%3E%29%20%7D&accept=*%2F*';
-
-  // Realizar la solicitud AJAX directamente al enlace
->>>>>>> main
   fetch(jsonDataURL)
     .then(response => response.json())
     .then(data => mostrarResultados(data))
@@ -123,25 +91,11 @@ function mostrarResultados(resultados) {
   if (!resultadosDiv) return;
   resultadosDiv.innerHTML = '';
 
-<<<<<<< HEAD
   (resultados.results?.bindings || []).forEach(resultado => {
     const orgURI = resultado.org?.value || '';
     const p = document.createElement('p');
     p.textContent = orgURI;
     resultadosDiv.appendChild(p);
-=======
-  // Crear elementos HTML para cada resultado
-  resultados.results.bindings.forEach(resultado => {
-    const orgName = resultado.name.value;
-    const orgURI = resultado.org.value;
-
-
-
-    const resultadoElemento = document.createElement('p');
-    resultadoElemento.textContent = `${orgURI}`;
-
-    resultadosDiv.appendChild(resultadoElemento);
->>>>>>> main
   });
 }
 
@@ -154,30 +108,17 @@ function cargarResultadosSeleccionados() {
   if (orgURI) cargarResultadosDesdeEnlace(orgURI);
 }
 
-<<<<<<< HEAD
 // =========================
 // Cargar CSR y filtrar vessels
 // =========================
-=======
->>>>>>> main
 function loadDoc() {
   console.log("loadDoc() called");
   document.getElementById("overlay").style.display = "block";
-<<<<<<< HEAD
   const csrUrl = 'static/csrCodeList.xml?ts=' + Date.now();
 
   fetch(csrUrl)
     .then(response => {
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-=======
-  
-  //fetch response
-  fetch("http://datahub.utm.csic.es/cdigen/static/csrCodeList.xml")
-      .then(response => {
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
->>>>>>> main
       return response.text();
     })
     .then(xmlString => {
@@ -207,20 +148,6 @@ function filtrevessel(xml) {
     console.error("No CodeDefinitions found in XML");
     return;
   }
-<<<<<<< HEAD
-=======
-}
-
-
-
-
-
-// Llamar a la función para cargar las organizaciones cuando la página se carga
-window.onload = function () {
-  cargarOrganizaciones()  
-};
-  //loadDoc();
->>>>>>> main
 
   const selectedVessel = document.getElementById("vessel_input")?.value || 'select';
 

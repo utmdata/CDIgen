@@ -298,7 +298,6 @@
                                  </label>
                              </fieldset>
                             <fieldset>
-<<<<<<< HEAD
                                 <p>Select the samples and station file (CSV)</p>
                                 <input type="file" class="archivo" id="miInput" accept=".csv"><br><br>
 
@@ -312,35 +311,6 @@
                                 <label hidden id="lbResultado"></label>
 
                                 <br>
-=======
-                                <div id="contenedor-selects">
-                                    <div>
-                                        <p>Select the samples and station file</p>
-                                        
-                                        <div>
-                                            
-                                            <input type="file" id="miInput" class="archivo" accept=".csv" style="display: none;" onchange="displayFileName()">
-                                            <button onclick="document.getElementById('miInput').click()">Choose File</button>
-                                            <span id="fileName" style="margin-left: 5px;"></span>
-                                            <label hidden id="lbResultado" name="lbResultado" value="lbResultado">1</label> 
-                                        </div>
-                                        
-                                        <h4></h4>
-                                        <br>
-                                        <select class="valores-unicos" id="select-0" name="select-0">
-                                        </select>
-                                        
-
-                                        <button class="custom-btn agregar-fila" title="Add more CDIs">
-                                            <img src="static/img/add.png" style="width: 20px; height: 20px;">
-                                        </button>
-                                       
-                                    </div>
-                                    
-                                </div>
-                                
-                                <hr />
->>>>>>> main
                                 <script>
                                     let valoresUnicos = new Set();
                                     let valoresSeleccionados = new Set();
@@ -383,7 +353,6 @@
                                         mostrarListas();
                                     }
 
-<<<<<<< HEAD
                                     function actualizarCampoOculto() {
                                         const hiddenInput = document.getElementById("instrumentos_seleccionados");
                                         hiddenInput.value = Array.from(valoresSeleccionados).join(',');
@@ -406,40 +375,6 @@
                                                     <img src="static/img/minus.png" style="width: 16px; height: 16px;">
                                                 </button>
                                             `;
-=======
-                                    function agregarFila() {
-                                        if (contadorSelects <= maximoValoresUnicos - 1) { // Restar uno al máximo de valores únicos
-                                            const contenedor = document.getElementById('contenedor-selects');
-                                            const nuevaFila = document.createElement('div');
-                                            nuevaFila.innerHTML = `
-                                        <div>
-                                            <select class="valores-unicos" id="select-${contadorSelects}" name="select-${contadorSelects}">
-                                            </select>
-                                            
-                                            <button class="custom-btn eliminar-fila" title="Remove CDIs">
-                                                 <img src="static/img/minus.png" style="width: 16px; height: 16px;">
-                                            </button>
-                                        </div>
-                                    `;
-                                            contenedor.appendChild(nuevaFila);
-                                            const nuevoSelect = nuevaFila.querySelector('.valores-unicos');
-                                            procesarCSV(csvContent, nuevoSelect); // Usamos el contenido del CSV global
-                                            var selects = document.getElementsByTagName('select');
-                                            const nuevoBoton = nuevaFila.querySelector('.eliminar-fila');
-                                            nuevoBoton.addEventListener('click', function () {
-                                                contenedor.removeChild(nuevaFila); // Eliminar la fila al hacer clic en el botón "-"
-                                                contadorSelects--; // Decrementar el contador de selects al eliminar una fila
-                                                
-                                                
-                                                // Contar la cantidad de elementos 'select'
-                                                var cantidadSelects = selects.length;
-                                                var cantidadSelectsLabel = document.getElementById('cantidadSelectsLabel');
-                                                //cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
-                                                maximoValoresUnicos = valoresUnicos.size - 1; // Actualizar el máximo de valores únicos al eliminar una fila
-                                                document.getElementById('lbResultado').innerHTML = ((cantidadSelects - 3) / 2);
-
-
->>>>>>> main
 
                                             item.querySelector('.eliminar-valor').addEventListener('click', (e) => {
                                                 e.preventDefault();
@@ -451,7 +386,6 @@
                                             contenedor.appendChild(item);
                                         });
 
-<<<<<<< HEAD
                                         valoresEliminados.forEach(valor => {
                                             const item = document.createElement('div');
                                             item.className = "item-disponible";
@@ -471,17 +405,6 @@
 
                                             contenedorDisponibles.appendChild(item);
                                         });
-=======
-                                            var cantidadSelectsLabel = document.getElementById('cantidadSelectsLabel');
-                                            //cantidadSelectsLabel.textContent += ((cantidadSelects - 3) / 2);
-
-                                            document.getElementById('lbResultado').innerHTML = ((cantidadSelects - 3) / 2);
-                                            // Mostrar la cantidad de elementos 'select'
-                                            console.log("Cantidad de selects: " + ((cantidadSelects - 3) / 2)); //he posat un tres pq li resti els tres selects que no son del samples and stations
-                                        } else {
-                                            alert('The maximum number of unique values has been reached. Cannot add another line.');
-                                        }
->>>>>>> main
 
                                         actualizarCampoOculto();
                                     }
@@ -520,13 +443,8 @@
                                             procesarCSV(csvContent);
                                             console.log(jsonData);
 
-<<<<<<< HEAD
                                             // Send the JSON data to the server (relative path)
                                             fetch('upload_json', {
-=======
-                                            // Send the JSON data to the server
-                                            fetch('/cdigen/upload_json', {
->>>>>>> main
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -588,13 +506,8 @@
                 // Add loading class to the button to change cursor
                 document.getElementById("fetchButton").classList.add("loading");
 
-<<<<<<< HEAD
                 // Perform the fetch operation (use relative path so app prefix is preserved)
                 fetch("fetch_csr_code_list")
-=======
-                // Perform the fetch operation
-                fetch("/cdigen/fetch_csr_code_list")
->>>>>>> main
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);

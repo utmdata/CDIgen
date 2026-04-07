@@ -16,23 +16,14 @@ import copy
 
 def eliminar_columnes(csv_name):
   arxiu = pd.read_csv(csv_name)
-<<<<<<< HEAD
   arxiu = arxiu.reindex(columns=["cruise_id","longitude", "latitude","Instrument", "instrument","vessel", "id", "met_cat"])
   arxiu = arxiu.rename (columns={'longitude': 'lon', 'latitude': 'lat', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'cdiid'})
-=======
-  arxiu = arxiu.reindex(columns=["cruise_id","latitude", "longitude","Instrument", "instrument","vessel", "id", "met_cat"])
-  arxiu = arxiu.rename (columns={'latitude': 'lat', 'longitude': 'lon', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'codiid'})
->>>>>>> main
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
 def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, date_final):
     cdi_model = "_ctd_ros"
-<<<<<<< HEAD
     text = "CTD and rossette" 
-=======
-    
->>>>>>> main
     fila=0
     lista_id=[]
     lista_name=[]
@@ -182,7 +173,6 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
       vessel_reduit="hes"
       vessel = "Hespérides"
       vessel_mayus = "HESPERIDES"
-<<<<<<< HEAD
     elif vessel_input == "odb":
       vessel = "Odón de Buen"
       vessel_mode = "Odón"
@@ -195,9 +185,6 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
       vessel_reduit = "gdc"
       vessel_mayus = "GARCÍA DEL CID"
       vessel_code = "29GD"  
-=======
-    
->>>>>>> main
 
 
 
@@ -245,7 +232,6 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
       lista_met_cat.append(id)
     samples['met_cat'] = lista_met_cat
 
-<<<<<<< HEAD
     lista_instrument=[]
     for i in range(0,total_lines):    
       
@@ -253,10 +239,6 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
       lista_instrument.append(instrument)
     samples['instrument'] = lista_instrument
     
-=======
-
-#<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:29SG20230719_ctd_ros_ladcp"  target="_blank">View in metadata catalog</a>
->>>>>>> main
     for i in range(0,total_lines):    
       lista_vessel.append(vessel_mayus)
     samples['vessel'] = lista_vessel
@@ -319,11 +301,8 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
     samples['hora_1'] = lista_hora_1
     samples['min'] = lista_min
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> main
     for i in range(0,total_lines):
       fecha_hora=str(samples.loc [i,"hora_1"])
       fecha_min=str(samples.loc [i,"min"])
@@ -333,15 +312,9 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
 
     for i in range(0,total_lines):
       fecha=str(samples.loc [i,"fecha"])
-<<<<<<< HEAD
       any = fecha.split("-")[0]
       mes= fecha.split("-")[1]
       dia= fecha.split("-")[2]
-=======
-      dia = fecha.split("-")[0]
-      mes= fecha.split("-")[1]
-      any= fecha.split("-")[2]
->>>>>>> main
       fila=fila+1
       lista_dia.append(dia)
       lista_mes.append(mes)
@@ -408,7 +381,6 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
     posicio_segon_espai= coord_2.index(" ")
     e= coord_2[0:posicio_segon_espai].strip()
     n= coord_2[posicio_segon_espai:].strip()
-<<<<<<< HEAD
     
     posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
     posList_w.text=w
@@ -416,15 +388,6 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
     posList_e.text= e
     posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
     posList_s.text= s
-=======
-
-    posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
-    posList_w.text=w
-    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
-    posList_s.text= s
-    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
-    posList_e.text= e
->>>>>>> main
     posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
     posList_n.text=n
 
@@ -433,21 +396,13 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
   #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
-<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
-=======
-    posList.text = cruise_id + cdi_model
->>>>>>> main
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
-<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
-=======
-    posList.text = cruise_id + cdi_model
->>>>>>> main
     tree.write(cdi_global)
 
     #afegir dataset name
@@ -469,35 +424,20 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
     any=cruise_id[4:8]
 
  
-<<<<<<< HEAD
     #afegim data inicial
     begin_position = any + "-"+ mes + "-" + dia + "T00:00:00"
-=======
-  #afegim data inicial
-    hora_inicial = date_inicial[11:]
-    begin_position = any + "-"+ mes + "-" + dia + "T" + hora_inicial
-
->>>>>>> main
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gml:beginPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
     posList.text = begin_position
     tree.write(cdi_global)
 
     #afegim data final
-<<<<<<< HEAD
-=======
-    hora_final = date_final[11:]
->>>>>>> main
     data_final = date_final[:10]
     dia_final= data_final[0:2]
     mes_final=data_final[3:5]
     any_final=data_final[6:10]
 
-<<<<<<< HEAD
     final_position = any_final + "-"+ mes_final + "-" + dia_final + "T00:00:00"
-=======
-    final_position = any_final + "-"+ mes_final + "-" + dia_final + "T" + hora_final
->>>>>>> main
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gml:endPosition[contains(text(), '2022-03-15T13:12:00')]", namespaces=namespace)[0]
     posList.text = final_position
@@ -505,10 +445,7 @@ def funcio_ctd_ros (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial
 
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> main
     eliminar_columnes(csv_name)
     os.remove ("static/csv/samples.csv")
     os.remove (cruise_id + "_cdi.xml")
