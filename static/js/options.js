@@ -20,8 +20,13 @@ const lista_cdi = Sortable.create(div2, {
             console.log(orden.join(","));
             localStorage.setItem("tareas_cdi", orden.join(","));
             
+<<<<<<< HEAD
             // Enviar datos al servidor cuando se actualiza localStorage (use relative path to preserve app prefix)
             fetch('guardar_tareas', {
+=======
+            // Enviar datos al servidor cuando se actualiza localStorage
+            fetch('http://datahub.utm.csic.es/cdigen/guardar_tareas', {
+>>>>>>> main
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

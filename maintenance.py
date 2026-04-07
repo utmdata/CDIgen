@@ -13,6 +13,10 @@ logging.basicConfig(filename='zipclear.log', level=logging.INFO, format='%(ascti
 
 
 def delete_zip_folder_content():
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
     # Check if the ZIP_FOLDER exists
     if os.path.exists(ZIP_FOLDER):
         # Iterate over all files inside ZIP_FOLDER
@@ -29,6 +33,7 @@ def delete_zip_folder_content():
     else:
         logging.warning(f"Directory {ZIP_FOLDER} does not exist.")
     
+<<<<<<< HEAD
     # Now let's delete only .zip files in CSV_FOLDER
     if os.path.exists(CSV_FOLDER):
         # Iterate over all files inside CSV_FOLDER
@@ -45,6 +50,27 @@ def delete_zip_folder_content():
     else:
         logging.warning(f"Directory {CSV_FOLDER} does not exist.")
         
+=======
+    #Now let's gonna delete all the content of CSV_FOLDER
+    if os.path.exists(CSV_FOLDER):
+        # Iterate over all files and directories inside CSV_FOLDER
+        for root, dirs, files in os.walk(CSV_FOLDER):
+            for file in files:
+                # Construct the full path to each file
+                file_path = os.path.join(root, file)
+                # Delete the file
+                os.remove(file_path)
+                logging.info(f"Deleted file: {file_path}")
+            for dir in dirs:
+                # Construct the full path to each directory
+                dir_path = os.path.join(root, dir)
+                # Delete the directory
+                shutil.rmtree(dir_path)
+                logging.info(f"Deleted directory: {dir_path}")
+    else:
+        logging.warning(f"Directory {CSV_FOLDER} does not exist.")
+
+>>>>>>> main
 def weekly_maintenance():
     """
     Performs weekly maintenance tasks.

@@ -7,3 +7,5 @@ wsgi.py
 ./__pycache__
 .vscode/
 venv
+static
+scripts/__pycache__

@@ -17,6 +17,11 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 #Definim el namespace perquè el trobi en el XML
+<<<<<<< HEAD
+=======
+ 
+            
+>>>>>>> main
 def funcio_mbe (cruise_id, cruise_name, date_inicial, date_final, vessel_input):
     namespace = {
       'gmd': 'http://www.isotc211.org/2005/gmd',

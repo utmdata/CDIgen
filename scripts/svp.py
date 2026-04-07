@@ -15,8 +15,13 @@ import copy
 
 def eliminar_columnes(csv_name):
   arxiu = pd.read_csv(csv_name)
+<<<<<<< HEAD
   arxiu = arxiu.reindex(columns=["cruise_id","longitude", "latitude","Instrument","vessel", "id", "met_cat","parameter", "parameter_"])
   arxiu = arxiu.rename (columns={'longitude': 'lon', 'latitude': 'lat', 'Instrument': 'instrument','cruise_id': 'cruiseid','id': 'codiid'})
+=======
+  arxiu = arxiu.reindex(columns=["cruise_id","latitude", "longitude","Instrument", "instrument","vessel", "id", "met_cat" ,"Coments"])
+  arxiu = arxiu.rename (columns={'latitude': 'lat', 'longitude': 'lon', 'Instrument': 'instrument_id','cruise_id': 'cruiseid','id': 'codiid'})
+>>>>>>> main
   arxiu = arxiu.to_csv(csv_name,header=True, index=False)
 
 
@@ -109,6 +114,7 @@ def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       vessel_reduit="hes"
       vessel = "Hespérides"
       vessel_mayus = "HESPERIDES"
+<<<<<<< HEAD
     elif vessel_input == "odb":
       vessel = "Odón de Buen"
       vessel_mode = "Odón"
@@ -121,6 +127,9 @@ def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
       vessel_reduit = "gdc"
       vessel_mayus = "GARCÍA DEL CID"
       vessel_code = "29GD"  
+=======
+    
+>>>>>>> main
 
 
 
@@ -162,6 +171,7 @@ def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     samples['cruise_id'] = lista_cruise_id
 
     for i in range(0,total_lines):    
+<<<<<<< HEAD
       id= '<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:' + cruise_id + cdi_model + '"  target="_blank">View in metadata catalog</a>'       
       lista_met_cat.append(id)
     samples['met_cat'] = lista_met_cat
@@ -179,6 +189,16 @@ def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
     samples['parameter_'] = lista_parameter
 
 
+=======
+      
+      id= '<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:' + cruise_id + cdi_model + '"  target="_blank">View in metadata catalog</a>' 
+      
+      lista_met_cat.append(id)
+    samples['met_cat'] = lista_met_cat
+
+
+#<a href="http://data.utm.csic.es/geonetwork/srv/eng/catalog.search#/metadata/urn:SDN:CDI:LOCAL:29SG20230719_ctd_ros_ladcp"  target="_blank">View in metadata catalog</a>
+>>>>>>> main
     for i in range(0,total_lines):    
       lista_vessel.append(vessel_mayus)
     samples['vessel'] = lista_vessel
@@ -250,9 +270,15 @@ def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     for i in range(0,total_lines):
       fecha=str(samples.loc [i,"fecha"])
+<<<<<<< HEAD
       any = fecha.split("-")[0]
       mes= fecha.split("-")[1]
       dia= fecha.split("-")[2]
+=======
+      dia = fecha.split("-")[0]
+      mes= fecha.split("-")[1]
+      any= fecha.split("-")[2]
+>>>>>>> main
       fila=fila+1
       lista_dia.append(dia)
       lista_mes.append(mes)
@@ -322,10 +348,17 @@ def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
 
     posList_w= tree.xpath("//gco:Decimal[contains(text(), '80.00')]", namespaces=namespace)[0]
     posList_w.text=w
+<<<<<<< HEAD
     posList_e = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
     posList_e.text= e
     posList_s = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
     posList_s.text= s
+=======
+    posList_s = tree.xpath("//gco:Decimal[contains(text(), '10.00')]", namespaces=namespace)[0]
+    posList_s.text= s
+    posList_e = tree.xpath("//gco:Decimal[contains(text(), '90.00')]", namespaces=namespace)[0]
+    posList_e.text= e
+>>>>>>> main
     posList_n = tree.xpath("//gco:Decimal[contains(text(), '20.00')]", namespaces=namespace)[0]
     posList_n.text=n
 
@@ -334,13 +367,21 @@ def funcio_svp (cruise_id, cruise_name, vessel_input, ruta_csv, date_inicial, da
   #afegir dataset id (ho fem tres cops perque s'ha de canviar tres vegades)
     tree = etree.parse(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#1
+<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
+=======
+    posList.text = cruise_id + cdi_model
+>>>>>>> main
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#2
     posList.text = cruise_id + cdi_model
     tree.write(cdi_global)
     posList = tree.xpath("//gco:CharacterString[contains(text(), 'new_ID')]", namespaces=namespace)[0]#3
+<<<<<<< HEAD
     posList.text ="urn:SDN:CDI:LOCAL:" + cruise_id + cdi_model
+=======
+    posList.text = cruise_id + cdi_model
+>>>>>>> main
     tree.write(cdi_global)
 
     #afegir dataset name
