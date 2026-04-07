@@ -1,4 +1,4 @@
-static/data/
+static
 cdigen.ini
 cdigen.sock
 maintenance.py
@@ -7,5 +7,5 @@ wsgi.py
 ./__pycache__
 .vscode/
 venv
-static
 scripts/__pycache__
+static/csrCodeList.xml
