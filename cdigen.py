@@ -555,7 +555,7 @@ def download_step1():
             logging.info(f"Creating zip file: {zip_filename}")
             shutil.make_archive(zip_filename[:-4], 'zip', source_folder)
 
-            # Delete the original folder from portfo folder
+            # Delete the original folder
             shutil.rmtree(source_folder)
 
             return render_template('service.html', cruise_id=cruise_id)
